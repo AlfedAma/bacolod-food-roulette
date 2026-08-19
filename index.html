@@ -3,317 +3,103 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#111827">
-<title>Bacolod Food Roulette</title>
+<meta name="theme-color" content="#f7f7f5">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Dibs for you">
+<title>Dibs for you</title>
 <link rel="manifest" href="manifest.json">
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <style>
-:root{color-scheme:light dark;--bg:#f6f7f9;--card:#fff;--text:#111827;--muted:#6b7280;--border:#e5e7eb;--accent:#111827}
-@media(prefers-color-scheme:dark){:root{--bg:#0b0f17;--card:#151b26;--text:#f3f4f6;--muted:#9ca3af;--border:#2b3443;--accent:#f3f4f6}}
-*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text)}
-main{max-width:820px;margin:auto;padding:18px 14px 40px}h1{font-size:28px;margin:4px 0 6px}p{line-height:1.45}
-.sub{color:var(--muted);margin-top:0}.card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:15px;margin:12px 0}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}@media(max-width:560px){.grid{grid-template-columns:1fr}}
-label{display:block;font-size:13px;color:var(--muted);margin-bottom:5px}select,input,button{font:inherit}
-select,input{width:100%;padding:11px;border-radius:12px;border:1px solid var(--border);background:var(--card);color:var(--text)}
-button{border:0;border-radius:13px;padding:12px 15px;font-weight:700;cursor:pointer}.primary{background:var(--text);color:var(--bg)}.secondary{background:transparent;color:var(--text);border:1px solid var(--border)}
-.actions{display:flex;gap:9px;flex-wrap:wrap}.pill{display:inline-block;border:1px solid var(--border);border-radius:999px;padding:5px 9px;font-size:12px;color:var(--muted)}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.stat{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:10px;text-align:center}.stat b{display:block;font-size:20px}
-#map{height:300px;border-radius:16px;overflow:hidden;border:1px solid var(--border)}.result{border:2px solid var(--text);border-radius:20px;padding:18px;margin-top:12px}
-.result h2{margin:4px 0 8px;font-size:25px}.muted{color:var(--muted)}.list{display:grid;gap:8px}.row{border:1px solid var(--border);border-radius:14px;padding:11px}.row b{display:block}
-.small{font-size:12px}.hide{display:none}.status{min-height:22px}.roulette{font-size:36px;letter-spacing:5px;text-align:center;margin:8px 0}
-a{color:inherit}.check{display:flex;align-items:center;gap:8px}.check input{width:auto}
+:root{color-scheme:light;--bg:#f7f7f5;--surface:#fff;--text:#171717;--muted:#777771;--line:#e7e7e2;--soft:#efefeb;--accent:#171717}
+@media(prefers-color-scheme:dark){:root{color-scheme:dark;--bg:#111210;--surface:#191a17;--text:#f5f5f1;--muted:#9b9b93;--line:#2d2f2a;--soft:#232520;--accent:#f5f5f1}}
+*{box-sizing:border-box}html{background:var(--bg)}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;background:var(--bg);color:var(--text)}
+button,input,select{font:inherit}button{touch-action:manipulation}main{width:min(100%,720px);margin:0 auto;padding:26px 16px 50px}
+.top{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:22px}.brand h1{margin:0;font-size:30px;line-height:1;letter-spacing:-1.1px;font-weight:700}.brand p{margin:7px 0 0;color:var(--muted);font-size:14px}
+.icon-btn,.ghost,.primary{border:0;border-radius:14px;min-height:46px;padding:0 15px}.icon-btn,.ghost{background:var(--surface);color:var(--text);border:1px solid var(--line)}.primary{background:var(--accent);color:var(--bg);font-weight:650}
+.location-row{display:flex;align-items:center;gap:8px;margin-bottom:14px}.location-pill{flex:1;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 14px;color:var(--muted);font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.filters{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-bottom:12px}.field{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:8px 10px}.field label{display:block;font-size:11px;color:var(--muted);margin-bottom:2px}.field select{width:100%;border:0;outline:0;background:transparent;color:var(--text);font-size:14px;padding:2px 0}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:3px 2px 14px;color:var(--muted);font-size:13px}.toggle{display:flex;align-items:center;gap:8px}.toggle input{width:18px;height:18px}
+.scan-row{display:grid;grid-template-columns:1fr auto;gap:8px;margin-bottom:16px}.status{min-height:20px;margin:0 2px 10px;font-size:12px;color:var(--muted)}
+.wheel-wrap{position:relative;display:grid;place-items:center;margin:4px 0 14px}.pointer{position:absolute;top:-3px;z-index:3;width:0;height:0;border-left:12px solid transparent;border-right:12px solid transparent;border-top:24px solid var(--text)}
+#wheel{width:min(92vw,540px);height:auto;overflow:visible}.center-dot{position:absolute;width:58px;height:58px;border-radius:50%;background:var(--surface);border:1px solid var(--line);display:grid;place-items:center;font-weight:750;font-size:13px;z-index:2}
+.wheel-meta{display:flex;justify-content:center;gap:7px;flex-wrap:wrap;margin-bottom:13px}.pill{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:7px 10px;font-size:12px;color:var(--muted)}
+.actions{display:grid;grid-template-columns:1fr auto;gap:8px;margin-bottom:18px}.spin{min-height:54px;font-size:16px}
+.result{display:none;margin:8px 0 20px;background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:18px}.result.show{display:block}.eyebrow{text-transform:uppercase;letter-spacing:1.2px;font-size:10px;color:var(--muted)}
+.result h2{margin:5px 0 7px;font-size:25px;letter-spacing:-.6px}.result p{margin:5px 0;color:var(--muted);line-height:1.4;font-size:14px}.result-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:15px}
+.section{margin-top:18px;border-top:1px solid var(--line);padding-top:18px}.section-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:10px}.section-head h3{margin:0;font-size:15px}.section-head span{color:var(--muted);font-size:12px}
+.search{width:100%;background:var(--surface);color:var(--text);border:1px solid var(--line);border-radius:14px;padding:13px 14px;outline:0}.list{display:grid;gap:7px;margin-top:9px}.row{background:var(--surface);border:1px solid var(--line);border-radius:13px;padding:11px 12px}.row-name{font-size:14px;font-weight:600}.row-meta{font-size:11px;color:var(--muted);margin-top:3px}
+.manual{display:grid;grid-template-columns:1fr auto;gap:8px}details{margin-top:14px}summary{color:var(--muted);font-size:13px;cursor:pointer}.note{font-size:11px;color:var(--muted);line-height:1.45;margin-top:24px}
+@media(max-width:520px){main{padding-top:20px}.filters{grid-template-columns:1fr 1fr}.field:last-child{grid-column:1/-1}}
 </style>
 </head>
 <body>
 <main>
-<h1>🍽️ Bacolod Food Roulette</h1>
-<p class="sub">100% free version. No Google API key, no billing account. Uses your GPS + OpenStreetMap restaurant data.</p>
-
-<div class="card">
-  <div class="actions">
-    <button id="locate" class="primary">📍 Use my location</button>
-    <button id="bacolod" class="secondary">Use Bacolod center</button>
-  </div>
-  <p id="locationText" class="status muted">Location not set yet.</p>
-</div>
-
-<div class="card grid">
-  <div><label>Search radius</label><select id="radius">
-    <option value="1000">1 km</option><option value="2000">2 km</option><option value="3000" selected>3 km</option>
-    <option value="5000">5 km</option><option value="8000">8 km</option><option value="12000">12 km</option><option value="20000">20 km</option>
-  </select></div>
-  <div><label>Cuisine</label><select id="cuisine"><option value="">Anything</option></select></div>
-  <div><label>Meal time</label><input id="mealTime" type="datetime-local"></div>
-  <div><label>Known price range</label><select id="price">
-    <option value="">Any / unknown included</option><option value="1">₱ Budget</option><option value="2">₱₱ Mid-range</option><option value="3">₱₱₱ Premium</option>
-  </select></div>
-  <label class="check"><input id="openOnly" type="checkbox" checked> Only restaurants known open at meal time</label>
-  <label class="check"><input id="includeUnknownHours" type="checkbox" checked> Include restaurants with unknown hours</label>
-</div>
-
-<div class="card">
-  <div class="actions">
-    <button id="scan" class="primary">🔎 Scan nearby restaurants</button>
-    <button id="deepScan" class="secondary">Deep scan Bacolod</button>
-  </div>
-  <p class="small muted">Deep scan uses a wider restaurant query and may take longer on public OpenStreetMap servers.</p>
-  <p id="scanStatus" class="status muted"></p>
-</div>
-
-<div class="stats">
-  <div class="stat"><b id="found">0</b><span class="small muted">Found</span></div>
-  <div class="stat"><b id="eligible">0</b><span class="small muted">Eligible</span></div>
-  <div class="stat"><b id="distance">-</b><span class="small muted">Radius</span></div>
-</div>
-
-<div class="card">
-  <label>Find a restaurant in the pool</label>
-  <input id="search" placeholder="Try Odaegam, Calea, Nezu...">
-  <div id="searchResults" class="list" style="margin-top:10px"></div>
-</div>
-
-<div class="card">
-  <div class="roulette" id="roulette">○ ○ ○ ○ ○ ○</div>
-  <div class="actions" style="justify-content:center">
-    <button id="spin" class="primary">🎲 Russian roulette my dinner</button>
-    <button id="reset" class="secondary">Reset picks</button>
-  </div>
-  <p id="spinStatus" class="status muted" style="text-align:center"></p>
-</div>
-
-<div id="winner" class="result hide">
-  <span class="pill">TONIGHT'S PICK</span>
-  <h2 id="winnerName"></h2>
-  <p id="winnerMeta"></p>
-  <p id="winnerAddress" class="muted"></p>
-  <div class="actions">
-    <a id="osmLink" target="_blank"><button class="secondary">Open in OpenStreetMap</button></a>
-    <button id="savePrice" class="secondary">Set price category</button>
-  </div>
-</div>
-
-<div class="card">
-  <div id="map"></div>
-</div>
-
-<details class="card">
-  <summary><b>Browse eligible restaurants</b></summary>
-  <div id="pool" class="list" style="margin-top:10px"></div>
-</details>
-
-<div class="card">
-  <b>Free-data tradeoff</b>
-  <p class="small muted">OpenStreetMap can provide names, locations, cuisine tags and opening-hours tags when contributors have added them. Ratings and standardized price levels are generally not part of OSM restaurant data. This app keeps a small local price override list and lets you add your own price category on your phone.</p>
-</div>
+<header class="top"><div class="brand"><h1>Dibs for you</h1><p>One spin. Dinner decided.</p></div><button id="resetAll" class="icon-btn" type="button">↻</button></header>
+<div class="location-row"><div id="locationText" class="location-pill">Bacolod City center</div><button id="locate" class="ghost" type="button">Use GPS</button></div>
+<section class="filters">
+<div class="field"><label for="radius">Distance</label><select id="radius"><option value="1000">1 km</option><option value="2000">2 km</option><option value="3000" selected>3 km</option><option value="5000">5 km</option><option value="8000">8 km</option><option value="12000">12 km</option><option value="20000">20 km</option></select></div>
+<div class="field"><label for="cuisine">Cuisine</label><select id="cuisine"><option value="">Anything</option></select></div>
+<div class="field"><label for="budget">Budget</label><select id="budget"><option value="">Any</option><option value="1">₱</option><option value="2">₱₱</option><option value="3">₱₱₱</option></select></div>
+</section>
+<div class="toggle-row"><label class="toggle"><input id="openOnly" type="checkbox" checked> Open now</label><label class="toggle"><input id="unknownHours" type="checkbox" checked> Include unknown hours</label></div>
+<div class="scan-row"><button id="scan" class="primary" type="button">Find food near me</button><button id="deep" class="ghost" type="button">Bacolod scan</button></div>
+<p id="scanStatus" class="status">Ready when you are.</p>
+<section class="wheel-wrap"><div class="pointer"></div><svg id="wheel" viewBox="-270 -270 540 540" role="img" aria-label="Restaurant choice wheel"></svg><div class="center-dot">Dibs</div></section>
+<div class="wheel-meta"><span id="wheelCount" class="pill">0 on wheel</span><span id="poolCount" class="pill">0 found</span></div>
+<div class="actions"><button id="spin" class="primary spin" type="button">Spin it</button><button id="shuffle" class="ghost" type="button">Shuffle</button></div>
+<section id="result" class="result" aria-live="polite"><div class="eyebrow">Dibs</div><h2 id="winnerName"></h2><p id="winnerMeta"></p><p id="winnerAddress"></p><div class="result-actions"><button id="googleWinner" class="primary" type="button">Google Maps</button><button id="reroll" class="ghost" type="button">Not feeling it</button></div></section>
+<section class="section"><div class="section-head"><h3>Search the pool</h3><span id="eligibleCount">0 eligible</span></div><input id="search" class="search" type="search" placeholder="Odaegam, Calea, Nezu..."><div id="searchResults" class="list"></div></section>
+<section class="section"><div class="section-head"><h3>Missing something?</h3><span>Add it yourself</span></div><div class="manual"><input id="manualName" class="search" placeholder="Restaurant name"><button id="manualAdd" class="ghost" type="button">Add</button></div><p class="status">Search it in Google Maps, copy its name, then add it here. Your additions stay on this phone.</p></section>
+<details class="section"><summary>See all eligible restaurants</summary><div id="poolList" class="list"></div></details>
+<p class="note">Restaurant discovery uses OpenStreetMap and public Overpass servers. Google Maps is used only to open or search a restaurant, which does not require an API key.</p>
 </main>
-
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 const BACOLOD={lat:10.6765,lon:122.9509}
-let center=null,restaurants=[],used=new Set(),winner=null
-const endpoints=[
-  'https://overpass-api.de/api/interpreter',
-  'https://overpass.kumi.systems/api/interpreter'
-]
-const builtInPrices={
-  'odaegam ramen station':2,'calea pastries & coffee':2,'nezu modern japanese':2,
-  'furai contemporary japanese':2,'aida’s chicken inasal - art district':1,
-  "aida's chicken inasal - art district":1,'vikings luxury buffet':3,
-  'botejyu sm city bacolod':2,'romantic baboy':2
-}
-const savedPrices=JSON.parse(localStorage.getItem('bacolodRoulettePrices')||'{}')
-const $=x=>document.getElementById(x)
-const map=L.map('map').setView([BACOLOD.lat,BACOLOD.lon],13)
-L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; OpenStreetMap contributors'}).addTo(map)
-let markers=L.layerGroup().addTo(map),youMarker=null
-
-function nowLocal(){
-  const d=new Date(),p=n=>String(n).padStart(2,'0')
-  return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`
-}
-$('mealTime').value=nowLocal()
-
-function hav(a,b,c,d){
-  const R=6371,toRad=x=>x*Math.PI/180,dp=toRad(c-a),dl=toRad(d-b)
-  const z=Math.sin(dp/2)**2+Math.cos(toRad(a))*Math.cos(toRad(c))*Math.sin(dl/2)**2
-  return R*2*Math.atan2(Math.sqrt(z),Math.sqrt(1-z))
-}
-
-function parseCoord(e){
-  if(e.lat!=null)return [e.lat,e.lon]
-  if(e.center)return [e.center.lat,e.center.lon]
-  return [null,null]
-}
-
-function priceOf(r){
-  const k=r.name.toLowerCase()
-  return savedPrices[k]||builtInPrices[k]||null
-}
-function priceText(v){return v==1?'₱ Budget':v==2?'₱₱ Mid-range':v==3?'₱₱₱ Premium':'Price unknown'}
-
-function dayCode(d){return ['Su','Mo','Tu','We','Th','Fr','Sa'][d.getDay()]}
-function timeMins(d){return d.getHours()*60+d.getMinutes()}
-function hm(s){const [h,m]=s.split(':').map(Number);return h*60+m}
-function simpleOpen(hours,date){
-  if(!hours)return null
-  hours=hours.trim()
-  if(hours==='24/7')return true
-  if(/[A-Za-z]{3}|PH|off|sunrise|sunset|\+/.test(hours.replace(/Mo|Tu|We|Th|Fr|Sa|Su/g,'')))return null
-  try{
-    const dc=dayCode(date),tm=timeMins(date)
-    let known=false
-    for(const part of hours.split(';')){
-      const m=part.trim().match(/^((?:Mo|Tu|We|Th|Fr|Sa|Su)(?:-(?:Mo|Tu|We|Th|Fr|Sa|Su))?(?:,(?:Mo|Tu|We|Th|Fr|Sa|Su))*)\\s+(.+)$/)
-      if(!m)continue
-      const days=[]
-      for(const token of m[1].split(',')){
-        if(token.includes('-')){
-          const codes=['Mo','Tu','We','Th','Fr','Sa','Su'],[a,b]=token.split('-'),ia=codes.indexOf(a),ib=codes.indexOf(b)
-          if(ia<=ib)days.push(...codes.slice(ia,ib+1));else days.push(...codes.slice(ia),...codes.slice(0,ib+1))
-        }else days.push(token)
-      }
-      if(!days.includes(dc))continue
-      known=true
-      if(m[2].trim()==='off')return false
-      for(const span of m[2].split(',')){
-        const q=span.trim().match(/^(\\d\\d?:\\d\\d)-(\\d\\d?:\\d\\d)$/)
-        if(!q)continue
-        let a=hm(q[1]),b=hm(q[2]);if(b<=a)b+=1440
-        if(tm>=a&&tm<b)return true
-      }
-    }
-    return known?false:null
-  }catch(e){return null}
-}
-
-function cuisineList(){
-  const vals=[...new Set(restaurants.flatMap(r=>(r.cuisine||'').split(';').map(x=>x.trim()).filter(Boolean)))].sort()
-  const old=$('cuisine').value
-  $('cuisine').innerHTML='<option value="">Anything</option>'+vals.map(v=>`<option>${v}</option>`).join('')
-  if(vals.includes(old))$('cuisine').value=old
-}
-
-function filtered(){
-  const c=$('cuisine').value.toLowerCase(),p=$('price').value,date=new Date($('mealTime').value)
-  return restaurants.filter(r=>{
-    if(c&&!String(r.cuisine||'').toLowerCase().split(';').includes(c))return false
-    const rp=priceOf(r)
-    if(p&&rp&&String(rp)!==p)return false
-    if(p&&!rp)return false
-    if($('openOnly').checked){
-      const o=simpleOpen(r.opening_hours,date)
-      if(o===false)return false
-      if(o===null&&!$('includeUnknownHours').checked)return false
-    }
-    return true
-  })
-}
-
-function draw(){
-  const list=filtered()
-  $('found').textContent=restaurants.length
-  $('eligible').textContent=list.length
-  $('distance').textContent=(Number($('radius').value)/1000)+' km'
-  $('pool').innerHTML=list.map(r=>`<div class="row"><b>${esc(r.name)}</b><span class="small muted">${esc(r.cuisine||'Cuisine unknown')} · ${priceText(priceOf(r))} · ${r.distance.toFixed(1)} km${r.opening_hours?' · '+esc(r.opening_hours):''}</span></div>`).join('')||'<p class="muted">No matches.</p>'
-  markers.clearLayers()
-  list.slice(0,250).forEach(r=>L.marker([r.lat,r.lon]).bindPopup(`<b>${esc(r.name)}</b><br>${esc(r.cuisine||'Cuisine unknown')}<br>${r.distance.toFixed(1)} km`).addTo(markers))
-}
+const endpoints=['https://overpass-api.de/api/interpreter','https://overpass.kumi.systems/api/interpreter']
+const builtInPrices={'odaegam ramen station':2,'calea pastries & coffee':2,'nezu modern japanese':2,'furai contemporary japanese':2,'vikings luxury buffet':3,'romantic baboy':2}
+let center={...BACOLOD},restaurants=[],wheelChoices=[],winner=null,rotation=0,spinning=false,used=new Set()
+const savedPrices=JSON.parse(localStorage.getItem('dibsPrices')||'{}')
+const manualRestaurants=JSON.parse(localStorage.getItem('dibsManual')||'[]')
+const $=id=>document.getElementById(id)
 function esc(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-
-async function queryOverpass(radius,lat,lon){
-  const q=`[out:json][timeout:35];(nwr(around:${radius},${lat},${lon})["amenity"~"restaurant|fast_food|cafe|food_court"];);out center tags;`
-  let last
-  for(const url of endpoints){
-    try{
-      const res=await fetch(url,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},body:'data='+encodeURIComponent(q)})
-      if(!res.ok)throw new Error('HTTP '+res.status)
-      return await res.json()
-    }catch(e){last=e}
-  }
-  throw last||new Error('Overpass unavailable')
-}
-
-async function scan(deep=false){
-  if(!center){setCenter(BACOLOD.lat,BACOLOD.lon,'Bacolod center');}
-  const radius=deep?Math.max(Number($('radius').value),12000):Number($('radius').value)
-  $('scanStatus').textContent='Searching OpenStreetMap…'
-  $('scan').disabled=$('deepScan').disabled=true
-  try{
-    const data=await queryOverpass(radius,center.lat,center.lon)
-    const seen=new Set()
-    restaurants=data.elements.map(e=>{
-      const [lat,lon]=parseCoord(e),t=e.tags||{}
-      if(lat==null||!t.name)return null
-      const key=t.name.toLowerCase()+'|'+lat.toFixed(4)+'|'+lon.toFixed(4)
-      if(seen.has(key))return null
-      seen.add(key)
-      return {id:e.type+'/'+e.id,name:t.name,lat,lon,cuisine:t.cuisine||'',opening_hours:t.opening_hours||t['opening_hours:kitchen']||'',address:[t['addr:housenumber'],t['addr:street'],t['addr:city']].filter(Boolean).join(' ')||t['addr:full']||'',distance:hav(center.lat,center.lon,lat,lon)}
-    }).filter(Boolean).sort((a,b)=>a.distance-b.distance)
-    cuisineList();draw()
-    $('scanStatus').textContent=`Found ${restaurants.length} food places within ${(radius/1000).toFixed(0)} km.`
-    if(restaurants.some(r=>r.name.toLowerCase().includes('odaegam')))$('scanStatus').textContent+=' Odaegam is in the live pool.'
-    map.setView([center.lat,center.lon],radius<=3000?14:radius<=8000?13:12)
-  }catch(e){
-    $('scanStatus').textContent='The free public restaurant server did not respond. Tap Scan again in a moment.'
-  }finally{$('scan').disabled=$('deepScan').disabled=false}
-}
-
-function setCenter(lat,lon,label){
-  center={lat,lon};$('locationText').textContent=`${label}: ${lat.toFixed(5)}, ${lon.toFixed(5)}`
-  if(youMarker)map.removeLayer(youMarker)
-  youMarker=L.circleMarker([lat,lon],{radius:8}).addTo(map).bindPopup('Your roulette center')
-  map.setView([lat,lon],14)
-}
-
-$('locate').onclick=()=>{
-  $('locationText').textContent='Getting your location…'
-  navigator.geolocation.getCurrentPosition(p=>{setCenter(p.coords.latitude,p.coords.longitude,'Your location')},()=>{$('locationText').textContent='Location permission was not available. Using Bacolod center instead.';setCenter(BACOLOD.lat,BACOLOD.lon,'Bacolod center')},{enableHighAccuracy:true,timeout:12000})
-}
-$('bacolod').onclick=()=>setCenter(BACOLOD.lat,BACOLOD.lon,'Bacolod center')
-$('scan').onclick=()=>scan(false)
-$('deepScan').onclick=()=>scan(true)
-;['radius','cuisine','mealTime','price','openOnly','includeUnknownHours'].forEach(id=>$(id).addEventListener('change',draw))
-
-$('search').oninput=()=>{
-  const q=$('search').value.trim().toLowerCase()
-  const hits=q?restaurants.filter(r=>r.name.toLowerCase().includes(q)).slice(0,10):[]
-  $('searchResults').innerHTML=hits.map(r=>`<div class="row"><b>${esc(r.name)}</b><span class="small muted">${r.distance.toFixed(1)} km · ${esc(r.cuisine||'Cuisine unknown')} · ${priceText(priceOf(r))}</span></div>`).join('')
-}
-
-$('spin').onclick=()=>{
-  let pool=filtered().filter(r=>!used.has(r.id))
-  if(!pool.length){used.clear();pool=filtered()}
-  if(!pool.length){$('spinStatus').textContent='No eligible restaurants. Change a filter first.';return}
-  let ticks=0
-  const timer=setInterval(()=>{
-    $('roulette').textContent=['● ○ ○ ○ ○ ○','○ ● ○ ○ ○ ○','○ ○ ● ○ ○ ○','○ ○ ○ ● ○ ○','○ ○ ○ ○ ● ○','○ ○ ○ ○ ○ ●'][ticks%6]
-    ticks++
-    if(ticks>18){
-      clearInterval(timer)
-      winner=pool[Math.floor(Math.random()*pool.length)]
-      used.add(winner.id)
-      $('winnerName').textContent=winner.name
-      $('winnerMeta').textContent=[winner.cuisine||'Cuisine unknown',priceText(priceOf(winner)),winner.distance.toFixed(1)+' km',winner.opening_hours||'Hours unknown'].join(' · ')
-      $('winnerAddress').textContent=winner.address||'Address details not mapped'
-      $('osmLink').href=`https://www.openstreetmap.org/?mlat=${winner.lat}&mlon=${winner.lon}#map=18/${winner.lat}/${winner.lon}`
-      $('winner').classList.remove('hide')
-      $('spinStatus').textContent=`Locked in: ${winner.name}`
-      map.setView([winner.lat,winner.lon],16)
-    }
-  },80)
-}
-$('reset').onclick=()=>{used.clear();$('winner').classList.add('hide');$('spinStatus').textContent='Pick history cleared.'}
-$('savePrice').onclick=()=>{
-  if(!winner)return
-  const ans=prompt('Set price category: 1 = Budget, 2 = Mid-range, 3 = Premium')
-  if(!['1','2','3'].includes(ans))return
-  savedPrices[winner.name.toLowerCase()]=Number(ans)
-  localStorage.setItem('bacolodRoulettePrices',JSON.stringify(savedPrices))
-  draw()
-  $('winnerMeta').textContent=[winner.cuisine||'Cuisine unknown',priceText(priceOf(winner)),winner.distance.toFixed(1)+' km',winner.opening_hours||'Hours unknown'].join(' · ')
-}
-setCenter(BACOLOD.lat,BACOLOD.lon,'Bacolod center')
+function hav(a,b,c,d){const R=6371,toRad=x=>x*Math.PI/180,dp=toRad(c-a),dl=toRad(d-b),z=Math.sin(dp/2)**2+Math.cos(toRad(a))*Math.cos(toRad(c))*Math.sin(dl/2)**2;return R*2*Math.atan2(Math.sqrt(z),Math.sqrt(1-z))}
+function coords(e){if(e.lat!=null)return[e.lat,e.lon];if(e.center)return[e.center.lat,e.center.lon];return[null,null]}
+function priceOf(r){return savedPrices[r.name.toLowerCase()]||builtInPrices[r.name.toLowerCase()]||r.manualPrice||null}
+function priceText(v){return v===1?'₱':v===2?'₱₱':v===3?'₱₱₱':'price ?'}
+function dayCode(d){return['Su','Mo','Tu','We','Th','Fr','Sa'][d.getDay()]}
+function hm(s){const[h,m]=s.split(':').map(Number);return h*60+m}
+function isOpenSimple(hours,date){
+if(!hours)return null;if(hours.trim()==='24/7')return true
+const code=dayCode(date),now=date.getHours()*60+date.getMinutes();let foundDay=false
+try{for(const raw of hours.split(';')){const part=raw.trim(),match=part.match(/^((?:Mo|Tu|We|Th|Fr|Sa|Su)(?:-(?:Mo|Tu|We|Th|Fr|Sa|Su))?(?:,(?:Mo|Tu|We|Th|Fr|Sa|Su))*)\s+(.+)$/);if(!match)continue
+const days=[];for(const token of match[1].split(',')){if(token.includes('-')){const codes=['Mo','Tu','We','Th','Fr','Sa','Su'],[a,b]=token.split('-'),ia=codes.indexOf(a),ib=codes.indexOf(b);if(ia<=ib)days.push(...codes.slice(ia,ib+1));else days.push(...codes.slice(ia),...codes.slice(0,ib+1))}else days.push(token)}
+if(!days.includes(code))continue;foundDay=true;if(match[2].trim()==='off')return false
+for(const slot of match[2].split(',')){const m=slot.trim().match(/^(\d\d?:\d\d)-(\d\d?:\d\d)$/);if(!m)continue;let a=hm(m[1]),b=hm(m[2]);if(b<=a)b+=1440;if(now>=a&&now<b)return true}}
+return foundDay?false:null}catch(e){return null}}
+function currentPool(){const c=$('cuisine').value.toLowerCase(),b=$('budget').value,now=new Date();return restaurants.filter(r=>{if(c){const tags=String(r.cuisine||'').toLowerCase().split(';').map(x=>x.trim());if(!tags.includes(c))return false}const p=priceOf(r);if(b&&p&&String(p)!==b)return false;if(b&&!p)return false;if($('openOnly').checked){const o=isOpenSimple(r.opening_hours,now);if(o===false)return false;if(o===null&&!$('unknownHours').checked)return false}return true})}
+function refreshCuisine(){const old=$('cuisine').value,vals=[...new Set(restaurants.flatMap(r=>String(r.cuisine||'').split(';').map(x=>x.trim()).filter(Boolean)))].sort();$('cuisine').innerHTML='<option value="">Anything</option>'+vals.map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join('');if(vals.includes(old))$('cuisine').value=old}
+function makeWheelChoices(){const p=currentPool().filter(r=>!used.has(r.id)),source=p.length?p:currentPool();wheelChoices=[...source].sort(()=>Math.random()-.5).slice(0,Math.min(source.length,12));drawWheel();updateLists()}
+function polar(r,a){const x=(a-90)*Math.PI/180;return{x:r*Math.cos(x),y:r*Math.sin(x)}}
+function arcPath(s,e){const p1=polar(255,e),p2=polar(255,s),large=e-s<=180?0:1;return`M 0 0 L ${p1.x} ${p1.y} A 255 255 0 ${large} 0 ${p2.x} ${p2.y} Z`}
+function shortName(n){if(n.length<=18)return n;let out='';for(const w of n.split(' ')){if((out+' '+w).trim().length>18)break;out=(out+' '+w).trim()}return out||n.slice(0,17)+'…'}
+function drawWheel(){const svg=$('wheel');svg.innerHTML='';svg.style.transform=`rotate(${rotation}deg)`;svg.style.transition='none';if(!wheelChoices.length){svg.innerHTML='<circle cx="0" cy="0" r="252" fill="var(--surface)" stroke="var(--line)" stroke-width="2"></circle><text x="0" y="-92" text-anchor="middle" fill="var(--muted)" font-size="16">Find restaurants first</text>';$('wheelCount').textContent='0 on wheel';return}
+const n=wheelChoices.length,slice=360/n;wheelChoices.forEach((r,i)=>{const start=i*slice,end=(i+1)*slice,path=document.createElementNS('http://www.w3.org/2000/svg','path');path.setAttribute('d',arcPath(start,end));path.setAttribute('fill',i%2===0?'var(--surface)':'var(--soft)');path.setAttribute('stroke','var(--line)');path.setAttribute('stroke-width','1');svg.appendChild(path);const mid=start+slice/2,p=polar(178,mid),text=document.createElementNS('http://www.w3.org/2000/svg','text');text.setAttribute('x',p.x);text.setAttribute('y',p.y);text.setAttribute('fill','var(--text)');text.setAttribute('font-size',n>10?'11':'12');text.setAttribute('font-weight','600');text.setAttribute('text-anchor','middle');text.setAttribute('dominant-baseline','middle');const flip=mid>90&&mid<270;text.setAttribute('transform',`rotate(${flip?mid+180:mid} ${p.x} ${p.y})`);text.textContent=shortName(r.name);svg.appendChild(text)});const ring=document.createElementNS('http://www.w3.org/2000/svg','circle');ring.setAttribute('cx','0');ring.setAttribute('cy','0');ring.setAttribute('r','255');ring.setAttribute('fill','none');ring.setAttribute('stroke','var(--text)');ring.setAttribute('stroke-width','2');svg.appendChild(ring);$('wheelCount').textContent=`${wheelChoices.length} on wheel`}
+function updateLists(){const p=currentPool();$('poolCount').textContent=`${restaurants.length} found`;$('eligibleCount').textContent=`${p.length} eligible`;$('poolList').innerHTML=p.map(r=>`<div class="row"><div class="row-name">${esc(r.name)}</div><div class="row-meta">${esc(r.cuisine||'cuisine ?')} · ${priceText(priceOf(r))}${r.distance!=null?' · '+r.distance.toFixed(1)+' km':''}${r.opening_hours?' · '+esc(r.opening_hours):''}</div></div>`).join('')||'<div class="row"><div class="row-meta">No matches.</div></div>';searchPool()}
+function searchPool(){const q=$('search').value.trim().toLowerCase();if(!q){$('searchResults').innerHTML='';return}const hits=restaurants.filter(r=>r.name.toLowerCase().includes(q)).slice(0,10);$('searchResults').innerHTML=hits.map(r=>`<div class="row"><div class="row-name">${esc(r.name)}</div><div class="row-meta">${esc(r.cuisine||'cuisine ?')} · ${priceText(priceOf(r))}${r.distance!=null?' · '+r.distance.toFixed(1)+' km':''}</div></div>`).join('')||'<div class="row"><div class="row-meta">Not in the current pool. Add it below.</div></div>'}
+async function overpass(radius,lat,lon){const q=`[out:json][timeout:40];(nwr(around:${radius},${lat},${lon})["amenity"~"restaurant|fast_food|cafe|food_court"];);out center tags;`;let last;for(const ep of endpoints){try{const res=await fetch(ep,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},body:'data='+encodeURIComponent(q)});if(!res.ok)throw new Error('HTTP '+res.status);return await res.json()}catch(e){last=e}}throw last||new Error('Search unavailable')}
+function mergeManual(list){const existing=new Set(list.map(r=>r.name.toLowerCase()));for(const m of manualRestaurants){if(existing.has(m.name.toLowerCase()))continue;list.push({id:'manual:'+m.name.toLowerCase(),name:m.name,cuisine:'',opening_hours:'',address:'Added manually',distance:0,manual:true})}return list}
+async function scan(deep=false){const radius=deep?Math.max(Number($('radius').value),12000):Number($('radius').value);$('scanStatus').textContent=deep?'Scanning Bacolod…':'Looking nearby…';$('scan').disabled=true;$('deep').disabled=true
+try{const data=await overpass(radius,center.lat,center.lon),seen=new Set();let list=data.elements.map(e=>{const[lat,lon]=coords(e),t=e.tags||{};if(lat==null||!t.name)return null;const key=t.name.toLowerCase()+'|'+lat.toFixed(4)+'|'+lon.toFixed(4);if(seen.has(key))return null;seen.add(key);const address=t['addr:full']||[t['addr:housenumber'],t['addr:street'],t['addr:suburb'],t['addr:city']].filter(Boolean).join(' ');return{id:e.type+'/'+e.id,name:t.name,lat,lon,cuisine:t.cuisine||'',opening_hours:t.opening_hours||t['opening_hours:kitchen']||'',address:address||'Bacolod City',distance:hav(center.lat,center.lon,lat,lon)}}).filter(Boolean).sort((a,b)=>a.distance-b.distance);restaurants=mergeManual(list);used.clear();refreshCuisine();makeWheelChoices();$('scanStatus').textContent=`Found ${restaurants.length} places${deep?' across Bacolod':''}.`;if(restaurants.some(r=>r.name.toLowerCase().includes('odaegam')))$('scanStatus').textContent+=' Odaegam is in the pool.'}catch(e){restaurants=mergeManual([]);refreshCuisine();makeWheelChoices();$('scanStatus').textContent='The free restaurant server is busy. Try again in a moment.'}finally{$('scan').disabled=false;$('deep').disabled=false}}
+function showWinner(r){winner=r;$('winnerName').textContent=r.name;$('winnerMeta').textContent=[r.cuisine||'Cuisine not tagged',priceText(priceOf(r)),r.distance!=null?r.distance.toFixed(1)+' km':null,r.opening_hours||'hours not tagged'].filter(Boolean).join(' · ');$('winnerAddress').textContent=r.address||'Bacolod City';$('result').classList.add('show')}
+function spinWheel(){if(spinning||!wheelChoices.length)return;spinning=true;$('result').classList.remove('show');const index=Math.floor(Math.random()*wheelChoices.length),slice=360/wheelChoices.length,target=index*slice+slice/2,extra=360*(5+Math.floor(Math.random()*3)),normalized=((rotation%360)+360)%360,delta=(360-target-normalized+360)%360;rotation+=extra+delta;$('wheel').style.transition='transform 4.2s cubic-bezier(.14,.74,.12,1)';$('wheel').style.transform=`rotate(${rotation}deg)`;setTimeout(()=>{const pick=wheelChoices[index];used.add(pick.id);showWinner(pick);spinning=false},4250)}
+function googleMaps(name){window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(name+', Bacolod City')}`,'_blank')}
+$('locate').addEventListener('click',()=>{$('locationText').textContent='Finding you…';navigator.geolocation.getCurrentPosition(p=>{center={lat:p.coords.latitude,lon:p.coords.longitude};$('locationText').textContent='Using your current location';scan(false)},()=>{center={...BACOLOD};$('locationText').textContent='Bacolod City center';$('scanStatus').textContent='GPS unavailable. Using Bacolod City center.'},{enableHighAccuracy:true,timeout:12000})})
+$('scan').addEventListener('click',()=>scan(false));$('deep').addEventListener('click',()=>scan(true));$('spin').addEventListener('click',spinWheel);$('shuffle').addEventListener('click',makeWheelChoices);$('reroll').addEventListener('click',()=>{$('result').classList.remove('show');makeWheelChoices();setTimeout(spinWheel,150)});$('googleWinner').addEventListener('click',()=>winner&&googleMaps(winner.name));$('search').addEventListener('input',searchPool)
+$('manualAdd').addEventListener('click',()=>{const name=$('manualName').value.trim();if(!name)return;if(!manualRestaurants.some(x=>x.name.toLowerCase()===name.toLowerCase())){manualRestaurants.push({name});localStorage.setItem('dibsManual',JSON.stringify(manualRestaurants))}$('manualName').value='';restaurants=mergeManual(restaurants);refreshCuisine();makeWheelChoices();$('scanStatus').textContent=`Added ${name}.`})
+$('manualName').addEventListener('keydown',e=>{if(e.key==='Enter')$('manualAdd').click()});$('resetAll').addEventListener('click',()=>{used.clear();rotation=0;$('result').classList.remove('show');makeWheelChoices()})
+;['cuisine','budget','openOnly','unknownHours'].forEach(id=>$(id).addEventListener('change',makeWheelChoices))
+restaurants=mergeManual([]);refreshCuisine();drawWheel();updateLists()
 if('serviceWorker' in navigator)navigator.serviceWorker.register('./service-worker.js').catch(()=>{})
 </script>
 </body>

@@ -1,26 +1,13 @@
-# Bacolod Food Roulette - Free Version
+# Dibs for you
 
-No Google Maps API key and no billing account required.
+Minimal Bacolod restaurant roulette.
 
-Data:
-- OpenStreetMap restaurant/place data
-- Overpass API public community servers
-- Device GPS through the browser
-- OpenStreetMap map tiles
+Replace the old files in your GitHub Pages repository with all files in this folder, then commit. GitHub Pages should redeploy automatically.
 
-Important:
-- Host the folder on an HTTPS website for reliable iPhone GPS and Add to Home Screen.
-- Ratings are not included because OpenStreetMap does not provide Google-style restaurant ratings.
-- Price data is often missing in OpenStreetMap. The app includes a few local overrides and lets you save a Budget / Mid-range / Premium category on your phone.
-- Opening hours depend on what OpenStreetMap contributors have mapped.
-- Public Overpass servers may occasionally be busy; retry the scan if needed.
+Free setup:
+- Discovery: OpenStreetMap + Overpass
+- GPS: browser geolocation
+- Winner verification/directions: Google Maps URL, no API key
+- Hosting: GitHub Pages
 
-Suggested free hosting:
-- GitHub Pages
-- Cloudflare Pages
-- Netlify free tier
-
-Files:
-- index.html
-- manifest.json
-- service-worker.js
+Google Maps cannot provide its complete restaurant database to this website without the Places API. Missing restaurants can be added manually in the app and are saved on the phone.

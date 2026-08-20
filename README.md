@@ -1,25 +1,14 @@
-# Dibs4u v15 - Tray Shape + GIF Fix
+# Dibs4u v17 - Sushi Plate Aesthetic
 
-## Fixes in this version
+## What changed
+- changed the wheel aesthetic to a cleaner plate-style sushi tray
+- restored a circular tray feel like the version you liked
+- each slot now looks like a ceramic plate on a sushi serving tray
+- kept the crisp dancing sushi winner, drum roll, confetti, and all filters/features
 
-### 1) Dancing GIF fixed
-- rebuilt from the approved sushi icon source instead of the lower-quality cropped winner art
-- larger canvas so the sushi no longer gets cut off
-- smoother upscaled frames for a cleaner look
-- centered soft shadow under the mascot
-
-### 2) Tray shape fixed
-The roulette is no longer just a round tray.
-It now looks closer to the provided reference:
-- dark green rounded-square tray base
-- circular tray center
-- six rounded compartments around the center
-- cream plate centers for the six food choices
-- gold pointer at the top
-
-Everything else from v14 stays included:
+## Included
+- Filters / Near Me / 6 Choices
+- area, nearby, cuisine, budget, open now
 - 363+ Bacolod restaurants
-- Home Filters / Near Me / 6 Choices shortcuts
-- location, area, nearby, cuisine, budget, open-now filters
-- favorites, recent wins, delete / restore, Google Maps importer
-- sounds, PEW effect, confetti, dancing winner sushi
+- favorites, recent, delete / restore
+- sounds, music, PEW, drum roll

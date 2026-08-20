@@ -1860,13 +1860,23 @@ function ensureAudio(){
     const A=window.AudioContext||window.webkitAudioContext;
     if(!A)return false;
     if(!audioCtx)audioCtx=new A();
-    if(audioCtx.state==='suspended')audioCtx.resume();
-    audioUnlocked=true;
+
+    if(audioCtx.state==='running'){
+      audioUnlocked=true;
+      return true;
+    }
+
+    const resume=audioCtx.resume();
+    if(resume&&typeof resume.then==='function'){
+      resume.then(()=>{audioUnlocked=audioCtx.state==='running';}).catch(()=>{});
+    }
     return true;
-  }catch(e){return false}
+  }catch(e){
+    return false;
+  }
 }
 function tone(freq,dur=.06,type='triangle',gain=.045,delay=0){
-  if(!sound||!audioUnlocked||!audioCtx)return;
+  if(!sound||!audioCtx||audioCtx.state!=='running')return;
   try{
     const n=audioCtx.currentTime+delay,o=audioCtx.createOscillator(),g=audioCtx.createGain();
     o.type=type;o.frequency.setValueAtTime(freq,n);
@@ -1875,19 +1885,71 @@ function tone(freq,dur=.06,type='triangle',gain=.045,delay=0){
   }catch(e){}
 }
 function startMusic(){
-  if(!sound)return;
-  const a=$('bgMusic');a.volume=.14;
-  const p=a.play();if(p&&p.catch)p.catch(()=>{});
-}
-function stopMusic(){$('bgMusic').pause()}
-function soundTap(){
-  if(!audioUnlocked){
-    sound=true;ensureAudio();startMusic();
-    tone(620,.08,'triangle',.06);tone(820,.12,'sine',.065,.09);
-    return;
+  if(!sound)return false;
+  const a=$('bgMusic');
+  if(!a)return false;
+
+  try{
+    a.loop=true;
+    a.volume=.14;
+    a.muted=false;
+
+    // iOS occasionally unloads or suspends a media element.
+    if(a.readyState===0){
+      try{a.load();}catch(e){}
+    }
+
+    const p=a.play();
+    if(p&&typeof p.then==='function'){
+      p.then(()=>{
+        audioUnlocked=true;
+        updateSoundLabels();
+      }).catch(()=>{
+        // Do not mark sound off. The next physical tap will retry.
+        updateSoundLabels();
+      });
+    }
+    return true;
+  }catch(e){
+    return false;
   }
+}
+function stopMusic(){
+  const a=$('bgMusic');
+  if(a){
+    try{a.pause();}catch(e){}
+  }
+}
+function updateSoundLabels(){
+  const settings=$('settingsSound');
+  if(settings)settings.textContent=sound?'ON':'OFF';
+}
+function armAudioFromGesture(){
+  if(!sound)return;
+  ensureAudio();
+  startMusic();
+
+  // A second resume on the next microtask helps Safari after phone calls,
+  // Control Center, tab switching, or screen locking.
+  Promise.resolve().then(()=>{
+    if(sound){
+      ensureAudio();
+      const a=$('bgMusic');
+      if(a&&a.paused)startMusic();
+    }
+  });
+}
+function soundTap(){
   sound=!sound;
-  if(sound){ensureAudio();startMusic();tone(700,.07)}else stopMusic();
+
+  if(sound){
+    armAudioFromGesture();
+    setTimeout(()=>tone(700,.08,'triangle',.055),60);
+  }else{
+    stopMusic();
+    clearDrumRoll();
+  }
+  updateSoundLabels();
 }
 
 let drumRollTimers=[];
@@ -1965,37 +2027,103 @@ function confetti(){
   }
 }
 
-const WINNER_DANCE_FRAMES=["dance-frame-01.png", "dance-frame-02.png", "dance-frame-03.png", "dance-frame-04.png", "dance-frame-05.png", "dance-frame-06.png", "dance-frame-07.png", "dance-frame-08.png", "dance-frame-09.png", "dance-frame-10.png", "dance-frame-11.png", "dance-frame-12.png", "dance-frame-13.png", "dance-frame-14.png"];
-const WINNER_DANCE_DURATIONS=[95, 80, 75, 70, 70, 70, 75, 80, 80, 90, 105, 90, 95, 110];
-let winnerDanceTimer=null;
-let winnerDanceIndex=0;
+const WINNER_DANCE_FRAMES=["dance-frame-01.png","dance-frame-02.png","dance-frame-03.png","dance-frame-04.png","dance-frame-05.png","dance-frame-06.png","dance-frame-07.png","dance-frame-08.png","dance-frame-09.png","dance-frame-10.png","dance-frame-11.png","dance-frame-12.png","dance-frame-13.png","dance-frame-14.png"];
+const WINNER_DANCE_DURATIONS=[95,80,75,70,70,70,75,80,80,90,105,90,95,110];
+
+let winnerFrameImages=[];
+let winnerFramesReadyPromise=null;
+let winnerDanceRaf=null;
+let winnerDanceRunId=0;
 
 function preloadWinnerDance(){
-  WINNER_DANCE_FRAMES.forEach(src=>{
+  if(winnerFramesReadyPromise)return winnerFramesReadyPromise;
+
+  winnerFrameImages=WINNER_DANCE_FRAMES.map(src=>{
     const img=new Image();
+    img.decoding='async';
     img.src=src;
+    return img;
   });
+
+  winnerFramesReadyPromise=Promise.allSettled(
+    winnerFrameImages.map(img=>{
+      if(img.complete&&img.naturalWidth>0)return Promise.resolve();
+      if(typeof img.decode==='function'){
+        return img.decode().catch(()=>new Promise(resolve=>{
+          img.addEventListener('load',resolve,{once:true});
+          img.addEventListener('error',resolve,{once:true});
+        }));
+      }
+      return new Promise(resolve=>{
+        img.addEventListener('load',resolve,{once:true});
+        img.addEventListener('error',resolve,{once:true});
+      });
+    })
+  );
+
+  return winnerFramesReadyPromise;
 }
 function stopWinnerDance(){
-  if(winnerDanceTimer){
-    clearTimeout(winnerDanceTimer);
-    winnerDanceTimer=null;
+  winnerDanceRunId++;
+  if(winnerDanceRaf!==null){
+    cancelAnimationFrame(winnerDanceRaf);
+    winnerDanceRaf=null;
   }
+}
+function runWinnerDance(runId){
+  const mascot=$('winnerMascot');
+  if(!mascot||runId!==winnerDanceRunId)return;
+
+  let frameIndex=0;
+  let frameStarted=performance.now();
+
+  // Force a known first frame on every single roll.
+  mascot.src=winnerFrameImages[0]?.src||WINNER_DANCE_FRAMES[0];
+
+  const tick=now=>{
+    if(runId!==winnerDanceRunId)return;
+
+    const duration=WINNER_DANCE_DURATIONS[frameIndex]||85;
+    if(now-frameStarted>=duration){
+      frameStarted=now;
+      frameIndex=(frameIndex+1)%WINNER_DANCE_FRAMES.length;
+      const next=winnerFrameImages[frameIndex];
+      mascot.src=(next&&next.naturalWidth>0)?next.src:WINNER_DANCE_FRAMES[frameIndex];
+    }
+
+    winnerDanceRaf=requestAnimationFrame(tick);
+  };
+
+  winnerDanceRaf=requestAnimationFrame(tick);
 }
 function startWinnerDance(){
   stopWinnerDance();
-  winnerDanceIndex=0;
+  const runId=winnerDanceRunId;
+
   const mascot=$('winnerMascot');
-  const step=()=>{
-    mascot.src=WINNER_DANCE_FRAMES[winnerDanceIndex];
-    const wait=WINNER_DANCE_DURATIONS[winnerDanceIndex]||85;
-    winnerDanceIndex=(winnerDanceIndex+1)%WINNER_DANCE_FRAMES.length;
-    winnerDanceTimer=setTimeout(step,wait);
-  };
-  step();
+  if(mascot)mascot.src=WINNER_DANCE_FRAMES[0];
+
+  // Start immediately, then restart from frame 1 once preload finishes.
+  runWinnerDance(runId);
+
+  preloadWinnerDance().then(()=>{
+    if(runId!==winnerDanceRunId)return;
+    if(winnerDanceRaf!==null)cancelAnimationFrame(winnerDanceRaf);
+    winnerDanceRaf=null;
+    runWinnerDance(runId);
+  });
 }
 
+function syncWinnerFavoriteButton(){
+  const btn=$('winnerFavorite');
+  if(!btn)return;
+
+  const isSaved=!!winner&&favorites.has(winner.name);
+  btn.dataset.saved=isSaved?'true':'false';
+  btn.textContent=isSaved?'♥ SAVED TO FAVORITES':'♡ SAVE TO FAVORITES';
+}
 function showWinner(){
+  syncWinnerFavoriteButton();
   $('winnerOverlay').classList.add('show');
   startWinnerDance();
   confetti();
@@ -2057,6 +2185,7 @@ function deleteRestaurant(r){
   }
   favorites.delete(r.name);skipped.delete(r.name);saveSets();
   preloadWinnerDance();
+updateSoundLabels();
 populateAreas();renderBrowse();loadSix();updateCount();
 }
 function restoreDeleted(){
@@ -2141,13 +2270,13 @@ function show(name){
 document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>show(b.dataset.go)));
 $('backTop').addEventListener('click',()=>show('home'));
 $('soundBtn').addEventListener('click',()=>show('settings'));
-$('pullHome').addEventListener('click',shoot);
-$('pullChoices').addEventListener('click',shoot);
+$('pullHome').addEventListener('click',()=>{armAudioFromGesture();shoot();});
+$('pullChoices').addEventListener('click',()=>{armAudioFromGesture();shoot();});
 $('showChoices').addEventListener('click',()=>show('choices'));
 $('homeFilters').addEventListener('click',()=>show('filters'));
 $('homeNearMe').addEventListener('click',()=>{show('filters');useGPS();});
 $('nearMeBig').addEventListener('click',useGPS);
-$('newSix').addEventListener('click',loadSix);
+$('newSix').addEventListener('click',()=>{armAudioFromGesture();loadSix();});
 $('filtersDone').addEventListener('click',()=>{loadSix();show('home')});
 document.querySelectorAll('.filter-row').forEach(b=>b.addEventListener('click',()=>{$('mood').value=b.dataset.mood;syncFilters();loadSix()}));
 ['area','proximity','cuisineDetail','price','openOnly','allowUnknown'].forEach(id=>$(id).addEventListener('change',loadSix));
@@ -2160,12 +2289,60 @@ $('customName').addEventListener('keydown',e=>{if(e.key==='Enter')saveCustom()})
 $('clearHistory').addEventListener('click',()=>{history=[];saveHistory();renderRecent()});
 $('restoreDeleted').addEventListener('click',restoreDeleted);
 $('winnerMaps').addEventListener('click',()=>openMaps(winner));
-$('winnerFavorite').addEventListener('click',()=>{saveFavorite(winner);$('winnerFavorite').textContent='♥ SAVED'});
+$('winnerFavorite').addEventListener('click',()=>{
+  if(!winner)return;
+
+  if(favorites.has(winner.name)){
+    favorites.delete(winner.name);
+    saveSets();
+    renderFavorites();
+  }else{
+    saveFavorite(winner);
+  }
+
+  syncWinnerFavoriteButton();
+});
 $('winnerClose').addEventListener('click',()=>{hideWinner();show('home')});
 $('settingsSound').addEventListener('click',soundTap);
 $('settingsRecent').addEventListener('click',()=>{$('noRepeats').checked=!$('noRepeats').checked;$('settingsRecent').textContent=$('noRepeats').checked?'ON':'OFF';loadSix()});
 $('settingsOpen').addEventListener('click',()=>{$('openOnly').checked=!$('openOnly').checked;$('settingsOpen').textContent=$('openOnly').checked?'ON':'OFF';loadSix()});
 $('settingsGPS').addEventListener('click',useGPS);
+
+// iPhone Safari can suspend media after locking the screen, switching apps,
+// opening Control Center, phone calls, or navigating away. Re-arm on the next
+// real touch/pointer event without requiring a separate sound button.
+document.addEventListener('pointerdown',()=>{
+  if(sound)armAudioFromGesture();
+},{capture:true,passive:true});
+
+document.addEventListener('touchend',()=>{
+  if(sound)armAudioFromGesture();
+},{capture:true,passive:true});
+
+document.addEventListener('visibilitychange',()=>{
+  if(document.visibilityState==='visible'&&sound&&audioUnlocked){
+    ensureAudio();
+    startMusic();
+  }
+});
+
+window.addEventListener('pageshow',()=>{
+  if(sound&&audioUnlocked){
+    ensureAudio();
+    startMusic();
+  }
+});
+
+const bgMusic=$('bgMusic');
+if(bgMusic){
+  bgMusic.addEventListener('ended',()=>{
+    if(sound){
+      try{bgMusic.currentTime=0;}catch(e){}
+      startMusic();
+    }
+  });
+}
+
 
 /* Init */
 populateAreas();

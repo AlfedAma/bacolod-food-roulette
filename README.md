@@ -1,40 +1,27 @@
-# Dibs4u FINAL
+# Dibs4u v28 - Reliability Fix
 
-This is the final GitHub Pages package.
+This version fixes three intermittent bugs.
 
-Included:
-- full Bacolod restaurant database
-- sushi plate roulette
-- Filters / Near Me / 6 Choices
-- location, area, nearby, cuisine, budget and open-now filters
-- favorites, recent winners, delete/restore and Google Maps importer
-- music, roulette clicks, PEW and drum roll
-- full-screen confetti
-- smooth winner animation using 14 separate high-resolution sushi poses
-- `sushi-dance-final.gif` included as a fallback/export asset
-- iPhone Home Screen icons and offline PWA support
+## Audio reliability
+- Music is re-armed on real iPhone taps.
+- AudioContext is resumed after Safari/app interruptions.
+- Music retries when returning to the page after screen lock, app switching,
+  Control Center, or Safari tab suspension.
+- Pull Trigger and New Six explicitly re-arm audio.
 
-The app itself uses the 14 PNG animation frames because they stay much sharper on
-iPhone than a GIF's 256-color compression.
+## Winner dance reliability
+- All 14 animation frames are preloaded.
+- The animation now uses requestAnimationFrame rather than a fragile timeout loop.
+- Every roll explicitly restarts at frame 1.
+- The dance restarts once preload finishes if the first roll happened before
+  every image was cached.
 
-## Upload
-Upload every file from this folder to the root of the existing GitHub Pages repo,
-then commit to `main`.
+## Favorites button
+- Every winner now gets its own correct button state.
+- New unsaved winner: `♡ SAVE TO FAVORITES`
+- Already saved winner: `♥ SAVED TO FAVORITES`
+- Tapping it now toggles save/remove correctly.
+- The previous winner's `SAVED` text can no longer leak into the next roll.
 
-If an older version remains cached on iPhone:
-1. refresh the GitHub Pages URL in Safari
-2. remove the old Home Screen shortcut
-3. add Dibs4u to Home Screen again
-
-
-## v25 cleanup
-- fixed the center sushi alignment
-- removed the extra white/beige ghost circles on the roulette slots
-- forced the wheel surface to render clean green again
-
-## v26 polish
-- moved the six side plates farther outward so they no longer feel cut into the center
-- made empty side slots invisible to remove the white cut-out look
-
-## v27
-- replaced the center mascot with a truly centered transparent mascot asset
+All restaurant data, filters, sushi tray, drum roll, confetti, Maps importer,
+favorites, recent history, delete/restore and PWA features remain unchanged.

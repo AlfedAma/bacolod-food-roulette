@@ -1,27 +1,42 @@
-# Dibs4u v28 - Reliability Fix
+# Dibs4u v29 - Filter / Near Me Fix
 
-This version fixes three intermittent bugs.
+## Fixed
 
-## Audio reliability
-- Music is re-armed on real iPhone taps.
-- AudioContext is resumed after Safari/app interruptions.
-- Music retries when returning to the page after screen lock, app switching,
-  Control Center, or Safari tab suspension.
-- Pull Trigger and New Six explicitly re-arm audio.
+### Filters and Near Me are now separate
+- FILTERS opens only restaurant/category filters.
+- NEAR ME opens only location controls.
+- Clicking NEAR ME no longer opens the Filters screen or automatically mixes both screens.
 
-## Winner dance reliability
-- All 14 animation frames are preloaded.
-- The animation now uses requestAnimationFrame rather than a fragile timeout loop.
-- Every roll explicitly restarts at frame 1.
-- The dance restarts once preload finishes if the first roll happened before
-  every image was cached.
+### Category buttons fixed
+The hidden category state now contains every valid category:
+- Anything
+- Dinner
+- Cafe
+- Burgers
+- Asian
+- Fast Food
+- Filipino
+- Inasal & BBQ
+- Pizza
+- Dessert
+- Breakfast / Brunch
 
-## Favorites button
-- Every winner now gets its own correct button state.
-- New unsaved winner: `♡ SAVE TO FAVORITES`
-- Already saved winner: `♥ SAVED TO FAVORITES`
-- Tapping it now toggles save/remove correctly.
-- The previous winner's `SAVED` text can no longer leak into the next roll.
+This fixes Cafe / Fast Food / other categories reverting back to Anything.
 
-All restaurant data, filters, sushi tray, drum roll, confetti, Maps importer,
-favorites, recent history, delete/restore and PWA features remain unchanged.
+### Filter screen contains
+- broad food type
+- detailed cuisine
+- budget
+- Open Now / unknown-hours options
+
+### Near Me screen contains
+- Use My Current Location
+- Area / Mall
+- Area + nearby / this area only / all Bacolod
+- Reset to All Bacolod
+
+All v28 reliability fixes remain:
+- resilient iPhone music
+- 14-frame winner dance every roll
+- correct Favorites button state
+- drum roll, PEW, confetti, restaurant database and PWA support

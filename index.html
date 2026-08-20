@@ -1392,6 +1392,75 @@ button{touch-action:manipulation}
   margin:0 !important;
 }
 
+
+/* v29 split Filters / Near Me */
+.selection-status{
+  margin-top:10px;
+  min-height:32px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:10px;
+  background:#eef1d9;
+  color:var(--dark);
+  font-size:9px;
+  font-weight:800;
+}
+.near-card{
+  padding:22px 16px;
+  border-radius:17px;
+  background:linear-gradient(180deg,#dfe7b8,#cbd99a);
+  text-align:center;
+  margin-bottom:13px;
+}
+.near-card .near-pin{
+  width:58px;
+  height:58px;
+  border-radius:50%;
+  margin:0 auto 10px;
+  display:grid;
+  place-items:center;
+  background:var(--dark);
+  color:white;
+  font-size:28px;
+}
+.near-card strong{
+  display:block;
+  font-size:15px;
+}
+.near-card span{
+  display:block;
+  max-width:270px;
+  margin:5px auto 14px;
+  color:#61705c;
+  font-size:9px;
+  line-height:1.4;
+}
+.near-card .near-me-big{
+  max-width:280px;
+}
+.clear-location{
+  display:block;
+  width:100%;
+  margin-top:9px;
+  border:1px solid #7e9270;
+  border-radius:999px;
+  background:transparent;
+  color:var(--dark);
+  height:39px;
+  font-size:8px;
+  font-weight:850;
+}
+.filter-row{
+  transition:background .15s ease, transform .1s ease;
+}
+.filter-row:active{
+  transform:scale(.985);
+}
+.filter-row.active{
+  background:#c9d69a !important;
+}
+
 </style>
 </head>
 <body>
@@ -1462,16 +1531,6 @@ button{touch-action:manipulation}
         <button class="filter-row" data-mood="breakfast" type="button"><span class="filter-icon">🍳</span><span class="filter-copy"><b>Breakfast / Brunch</b><small>Morning favorites</small></span><span class="filter-check">✓</span></button>
       </div>
 
-      <div class="location-card">
-        <div class="more-title">LOCATION</div>
-        <button id="nearMeBig" class="near-me-big" type="button">⌖ USE MY CURRENT LOCATION</button><button id="gpsBtn" class="hidden" type="button"></button>
-        <div class="grid2" style="margin-top:9px">
-          <div class="field"><label>Area / Mall</label><select id="area"><option value="">Anywhere in Bacolod</option></select></div>
-          <div class="field"><label>Distance</label><select id="proximity"><option value="nearby">Area + nearby</option><option value="same">This area only</option><option value="all">All Bacolod</option></select></div>
-        </div>
-        <div id="locationLabel" class="location filter-location">📍 Anywhere in Bacolod</div>
-      </div>
-
       <div class="more">
         <div class="more-title">CUISINE & OTHER FILTERS</div>
         <div class="grid2">
@@ -1497,11 +1556,49 @@ button{touch-action:manipulation}
             </select>
           </div>
           <div class="field"><label>Budget</label><select id="price"><option value="">Any budget</option><option value="1">₱ budget</option><option value="2">₱₱ mid</option><option value="3">₱₱₱ treat</option></select></div>
-          <div class="field hidden"><label>Mood</label><select id="mood"><option value="dinner" selected>Dinner</option></select></div>
+          <div class="field hidden"><label>Mood</label><select id="mood">
+            <option value="">Anything</option>
+            <option value="dinner" selected>Dinner</option>
+            <option value="cafe">Cafe</option>
+            <option value="burger">Burgers</option>
+            <option value="asian">Asian</option>
+            <option value="fastfood">Fast Food</option>
+            <option value="filipino">Filipino</option>
+            <option value="inasal">Inasal & BBQ</option>
+            <option value="pizza">Pizza</option>
+            <option value="dessert">Dessert</option>
+            <option value="breakfast">Breakfast / Brunch</option>
+          </select></div>
         </div>
         <div class="checks"><label class="check-pill"><input id="openOnly" type="checkbox"> Open now</label><label class="check-pill"><input id="allowUnknown" type="checkbox" checked> Include unknown hours</label></div>
-        <button id="filtersDone" class="primary" style="width:100%;margin-top:11px" type="button">DONE</button>
+        <div id="filterStatus" class="selection-status">Dinner selected</div>
+        <button id="filtersDone" class="primary" style="width:100%;margin-top:11px" type="button">APPLY FILTERS</button>
       </div>
+    </section>
+
+    <section id="view-nearme" class="view screen">
+      <div class="screen-head"><button class="back" data-go="home" type="button">‹</button><h2>NEAR ME</h2><span></span></div>
+      <p class="helper">Choose where you want Dibs4u to search.</p>
+
+      <div class="near-card">
+        <div class="near-pin">⌖</div>
+        <strong>Use your current location</strong>
+        <span>Dibs4u will match your position to the nearest Bacolod area.</span>
+        <button id="nearMeBig" class="near-me-big" type="button">USE MY CURRENT LOCATION</button>
+        <button id="gpsBtn" class="hidden" type="button"></button>
+      </div>
+
+      <div class="location-card">
+        <div class="more-title">OR CHOOSE AN AREA</div>
+        <div class="grid2">
+          <div class="field"><label>Area / Mall</label><select id="area"><option value="">Anywhere in Bacolod</option></select></div>
+          <div class="field"><label>Distance</label><select id="proximity"><option value="nearby">Area + nearby</option><option value="same">This area only</option><option value="all">All Bacolod</option></select></div>
+        </div>
+        <div id="locationLabel" class="location filter-location">📍 Anywhere in Bacolod</div>
+        <button id="clearLocation" class="clear-location" type="button">RESET TO ALL BACOLOD</button>
+      </div>
+
+      <button id="nearMeDone" class="primary" style="width:100%;margin-top:14px" type="button">APPLY LOCATION</button>
     </section>
 
     <section id="view-choices" class="view screen">
@@ -2252,9 +2349,39 @@ function populateAreas(){
   if(vals.includes(cur))$('area').value=cur;
   if(vals.includes(cc))$('customArea').value=cc;
 }
+function moodLabel(value){
+  const labels={
+    '':'Anything',
+    dinner:'Dinner',
+    cafe:'Cafe',
+    burger:'Burgers',
+    asian:'Asian',
+    fastfood:'Fast Food',
+    filipino:'Filipino',
+    inasal:'Inasal & BBQ',
+    pizza:'Pizza',
+    dessert:'Dessert',
+    breakfast:'Breakfast / Brunch'
+  };
+  return labels[value]||'Anything';
+}
 function syncFilters(){
   const mood=$('mood').value;
-  document.querySelectorAll('.filter-row').forEach(b=>b.classList.toggle('active',b.dataset.mood===mood));
+  document.querySelectorAll('.filter-row').forEach(b=>{
+    const active=b.dataset.mood===mood;
+    b.classList.toggle('active',active);
+    b.setAttribute('aria-pressed',active?'true':'false');
+  });
+  const status=$('filterStatus');
+  if(status){
+    const cuisine=$('cuisineDetail').value;
+    const price=$('price').value;
+    const extras=[];
+    if(cuisine)extras.push($('cuisineDetail').selectedOptions[0]?.textContent||cuisine);
+    if(price)extras.push(priceText(Number(price)));
+    if($('openOnly').checked)extras.push('Open now');
+    status.textContent=`${moodLabel(mood)} selected${extras.length?' · '+extras.join(' · '):''}`;
+  }
 }
 function show(name){
   document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id===`view-${name}`));
@@ -2263,6 +2390,7 @@ function show(name){
   if(name==='recent')renderRecent();
   if(name==='favorites')renderFavorites();
   if(name==='browse')renderBrowse();
+  if(name==='filters')syncFilters();
   window.scrollTo(0,0);
 }
 
@@ -2274,12 +2402,33 @@ $('pullHome').addEventListener('click',()=>{armAudioFromGesture();shoot();});
 $('pullChoices').addEventListener('click',()=>{armAudioFromGesture();shoot();});
 $('showChoices').addEventListener('click',()=>show('choices'));
 $('homeFilters').addEventListener('click',()=>show('filters'));
-$('homeNearMe').addEventListener('click',()=>{show('filters');useGPS();});
+$('homeNearMe').addEventListener('click',()=>show('nearme'));
 $('nearMeBig').addEventListener('click',useGPS);
+$('nearMeDone').addEventListener('click',()=>{loadSix();show('home')});
+$('clearLocation').addEventListener('click',()=>{
+  $('area').value='';
+  $('proximity').value='all';
+  $('locationLabel').textContent='📍 Anywhere in Bacolod';
+  loadSix();
+});
 $('newSix').addEventListener('click',()=>{armAudioFromGesture();loadSix();});
-$('filtersDone').addEventListener('click',()=>{loadSix();show('home')});
-document.querySelectorAll('.filter-row').forEach(b=>b.addEventListener('click',()=>{$('mood').value=b.dataset.mood;syncFilters();loadSix()}));
-['area','proximity','cuisineDetail','price','openOnly','allowUnknown'].forEach(id=>$(id).addEventListener('change',loadSix));
+$('filtersDone').addEventListener('click',()=>{syncFilters();loadSix();show('home')});
+document.querySelectorAll('.filter-row').forEach(b=>b.addEventListener('click',()=>{
+  const value=b.dataset.mood;
+  const moodSelect=$('mood');
+
+  // All category values exist as real <option>s in v29.
+  const valid=[...moodSelect.options].some(o=>o.value===value);
+  if(!valid)return;
+
+  moodSelect.value=value;
+  syncFilters();
+  loadSix();
+}));
+['area','proximity','cuisineDetail','price','openOnly','allowUnknown'].forEach(id=>$(id).addEventListener('change',()=>{
+  loadSix();
+  if(id==='cuisineDetail'||id==='price'||id==='openOnly'||id==='allowUnknown')syncFilters();
+}));
 $('gpsBtn').addEventListener('click',useGPS);
 $('search').addEventListener('input',renderBrowse);
 $('browseAll').addEventListener('click',()=>{browseMode=!browseMode;$('browseAll').textContent=browseMode?'HIDE':'ALL';renderBrowse()});

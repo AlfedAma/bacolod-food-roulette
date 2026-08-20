@@ -3,577 +3,766 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#dff6d4">
+<meta name="theme-color" content="#f7f4e8">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="Dibs for you">
-<title>Dibs for you</title>
+<meta name="apple-mobile-web-app-title" content="Dibs4u">
+<title>Dibs4u Food Roulette</title>
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" href="favicon-64.png" type="image/png">
 <style>
 :root{
-  --cream:#fbf8eb;
-  --cream2:#f5f1df;
-  --ink:#163524;
-  --muted:#688573;
-  --leaf:#2f7d4e;
-  --leaf2:#4ea86d;
-  --mint:#bfe8ae;
-  --mint2:#dcf5ce;
-  --lime:#dafa7e;
-  --avocado:#8fcf6d;
-  --pink:#ff9ea9;
-  --salmon:#ff997e;
-  --yellow:#ffe66f;
-  --white:#fffdf5;
-  --line:#9fcea5;
-  --danger:#d95f68;
+  --cream:#f7f4e8;
+  --paper:#fffdf5;
+  --ink:#173824;
+  --muted:#727a6d;
+  --dark:#355c38;
+  --dark2:#466b43;
+  --sage:#cbd79e;
+  --sage2:#e7ebcd;
+  --sage3:#b9ca88;
+  --line:#d9dcc8;
+  --orange:#ed8c5d;
+  --yellow:#e4bc60;
+  --red:#c86f68;
 }
 *{box-sizing:border-box}
-html{background:#dff4d5}
+html{background:var(--cream)}
 body{
   margin:0;
-  min-height:100vh;
+  background:var(--cream);
   color:var(--ink);
-  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Rounded","Avenir Next","Segoe UI",sans-serif;
-  background:
-    radial-gradient(circle at 12% 3%,rgba(255,230,111,.62),transparent 20rem),
-    radial-gradient(circle at 94% 18%,rgba(191,232,174,.85),transparent 22rem),
-    linear-gradient(180deg,#eff9df,#dff4d5 52%,#cceabf);
+  font-family:-apple-system,BlinkMacSystemFont,"Avenir Next","SF Pro Text","Helvetica Neue",Arial,sans-serif;
 }
 button,input,select{font:inherit}
-button{cursor:pointer;touch-action:manipulation}
-main{
-  width:min(100%,720px);
+button{touch-action:manipulation}
+.app{
+  width:min(100%,430px);
+  min-height:100vh;
   margin:auto;
-  padding:calc(18px + env(safe-area-inset-top)) 13px calc(42px + env(safe-area-inset-bottom));
+  background:
+    radial-gradient(circle at 13% 8%,rgba(203,215,158,.32),transparent 15rem),
+    var(--cream);
+  padding-bottom:calc(74px + env(safe-area-inset-bottom));
+  position:relative;
 }
-.top{
-  display:flex;
-  align-items:flex-start;
-  justify-content:space-between;
-  gap:12px;
+.topbar{
+  height:78px;
+  display:grid;
+  grid-template-columns:44px 1fr 44px;
+  align-items:center;
+  padding:calc(9px + env(safe-area-inset-top)) 14px 4px;
+  background:rgba(247,244,232,.96);
 }
-.brand{display:flex;gap:10px;align-items:center}
-.brand-mark{
-  width:49px;height:49px;border-radius:17px;background:var(--leaf);
-  display:grid;place-items:center;box-shadow:0 7px 0 rgba(47,125,78,.14);
-  transform:rotate(-4deg);
+.brand{text-align:center}
+.brand-name{
+  font-size:31px;
+  line-height:.95;
+  font-weight:900;
+  letter-spacing:-1.1px;
 }
-.brand-mark span{font-size:26px;transform:rotate(4deg)}
-.logo{font-size:29px;line-height:1;font-weight:950;letter-spacing:-1.4px}
-.logo em{font-style:normal;color:var(--leaf)}
-.subtitle{margin-top:5px;color:var(--muted);font-size:11px}
-.audio-controls{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end}
-.sound{
-  border:2px solid var(--line);background:rgba(255,253,245,.8);color:var(--ink);
-  border-radius:999px;padding:8px 10px;font-size:11px;font-weight:800;
-  box-shadow:0 4px 0 rgba(104,133,115,.09);
+.brand-sub{
+  margin-top:5px;
+  font-size:9px;
+  font-weight:750;
+  letter-spacing:2.5px;
 }
+.top-icon{
+  width:40px;height:40px;
+  border:0;
+  background:transparent;
+  color:var(--ink);
+  font-size:21px;
+}
+.view{display:none}
+.view.active{display:block}
 
-.mascot-row{height:86px;position:relative;margin:7px 0 2px;overflow:hidden}
-.sushi{
-  position:absolute;width:68px;height:55px;left:3px;top:10px;
-  animation:bounceWalk 5.4s ease-in-out infinite alternate;
-  filter:drop-shadow(0 6px 0 rgba(47,125,78,.1));
+/* HOME */
+.home{
+  min-height:calc(100vh - 152px);
+  background:linear-gradient(180deg,#f2f1dc 0%,#e6ebc8 47%,#bdcd8e 100%);
+  position:relative;
+  overflow:hidden;
+  padding:6px 18px 25px;
 }
-.sushi .rice{
-  position:absolute;left:8px;bottom:0;width:52px;height:36px;
-  border-radius:18px 18px 14px 14px;background:var(--white);border:3px solid #d8e7cf;
+.cloud{position:absolute;background:#fffdf5;border-radius:999px;opacity:.72}
+.cloud.one{width:62px;height:20px;left:-11px;top:28px}
+.cloud.two{width:80px;height:23px;right:-19px;top:55px}
+.hills{
+  position:absolute;left:-6%;right:-6%;bottom:0;height:215px;
+  background:#aac27b;
+  clip-path:polygon(0 48%,11% 38%,18% 46%,28% 26%,39% 45%,49% 33%,61% 52%,72% 27%,83% 46%,91% 34%,100% 46%,100% 100%,0 100%);
+  opacity:.57;
 }
-.sushi .fish{
-  position:absolute;left:2px;top:4px;width:64px;height:25px;
-  border-radius:17px 17px 10px 10px;background:var(--salmon);
-  border:3px solid #f47e69;transform:rotate(-4deg);
+.home-wheel-zone{
+  height:390px;
+  position:relative;
+  z-index:3;
 }
-.sushi .fish:after{
-  content:"";position:absolute;left:9px;right:9px;top:7px;height:3px;border-radius:999px;
-  background:rgba(255,255,255,.65);box-shadow:0 7px 0 rgba(255,255,255,.47);
-  transform:rotate(-6deg);
-}
-.eye{position:absolute;width:5px;height:7px;border-radius:50%;background:var(--ink);bottom:13px;z-index:4}
-.eye.a{left:26px}.eye.b{left:42px}
-.mouth{position:absolute;left:34px;bottom:7px;width:9px;height:5px;border-bottom:2px solid var(--ink);border-radius:50%;z-index:4}
-.cheek{position:absolute;bottom:10px;width:7px;height:4px;background:var(--pink);border-radius:50%;z-index:3;opacity:.7}
-.cheek.a{left:17px}.cheek.b{left:49px}
-.arm{position:absolute;right:-8px;bottom:13px;width:16px;height:3px;border-radius:999px;background:#d8e7cf;transform:rotate(-30deg)}
-.sushi.dance{animation:sushiDance .38s ease-in-out 7 !important;transform-origin:50% 80%}
-@keyframes sushiDance{
-  0%,100%{transform:translateX(75px) translateY(0) rotate(-10deg) scale(1)}
-  25%{transform:translateX(75px) translateY(-13px) rotate(12deg) scale(1.08)}
-  50%{transform:translateX(75px) translateY(1px) rotate(-14deg) scale(.98)}
-  75%{transform:translateX(75px) translateY(-10px) rotate(14deg) scale(1.08)}
-}
-@keyframes bounceWalk{
-  0%{transform:translateX(0) translateY(0) rotate(-3deg)}
-  40%{transform:translateX(82px) translateY(-6px) rotate(4deg)}
-  70%{transform:translateX(128px) translateY(2px) rotate(-3deg)}
-  100%{transform:translateX(43px) translateY(-4px) rotate(4deg)}
-}
-.speech{
-  position:absolute;right:0;top:8px;max-width:235px;padding:10px 12px;
-  border-radius:18px 18px 18px 6px;background:var(--white);border:2px solid var(--line);
-  font-size:11px;line-height:1.25;font-weight:850;box-shadow:0 5px 0 rgba(47,125,78,.09);
-}
-
-.filters{
-  background:rgba(255,253,245,.72);border:2px solid var(--line);border-radius:22px;
-  padding:10px;margin:4px 0 11px;box-shadow:0 5px 0 rgba(47,125,78,.06);
-}
-.filters-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:7px}
-.field{
-  background:rgba(255,253,245,.88);border:2px solid var(--line);
-  border-radius:15px;padding:8px 9px;
-}
-.field label{
-  display:block;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);
-  font-size:8px;font-weight:900;margin-bottom:2px;
-}
-.field select{
-  width:100%;background:transparent;border:0;outline:0;color:var(--ink);
-  font-size:12px;font-weight:700;padding:2px 0;
-}
-.filter-bottom{
-  display:flex;gap:7px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-top:8px
-}
-.pill{
-  display:flex;align-items:center;gap:6px;background:var(--white);border:2px solid var(--line);
-  border-radius:999px;padding:7px 9px;font-size:10px;color:var(--muted);font-weight:800
-}
-.pill input{accent-color:var(--leaf)}
-.location-row{display:flex;gap:7px;align-items:center;flex:1;min-width:210px}
-.location-label{
-  flex:1;min-width:0;background:var(--white);border:2px solid var(--line);border-radius:999px;
-  padding:7px 10px;font-size:10px;color:var(--muted);font-weight:800;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis
-}
-.location-btn{
-  border:2px solid var(--ink);background:var(--mint2);color:var(--ink);border-radius:999px;
-  padding:7px 10px;font-size:10px;font-weight:900
-}
-
-.game{
-  background:rgba(255,253,245,.76);border:2px solid var(--line);border-radius:29px;
-  padding:14px 9px 16px;box-shadow:0 9px 0 rgba(47,125,78,.08),0 18px 45px rgba(36,91,56,.09);
-}
-.game-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:0 7px 6px}
-.game-head strong{font-size:13px}.game-head span{color:var(--muted);font-size:9px}
-
-.gun-wrap{width:min(96vw,580px);height:330px;margin:auto;position:relative}
-.barrel{
-  position:absolute;left:47%;top:99px;width:43%;height:62px;border-radius:0 28px 28px 0;
-  background:var(--leaf2);border:4px solid var(--ink);border-left-width:2px;z-index:2
-}
-.barrel:before{
-  content:"";position:absolute;left:7px;right:13px;top:11px;height:10px;border-radius:999px;
-  background:rgba(255,255,255,.2)
-}
-.barrel:after{
-  content:"";position:absolute;right:-6px;top:13px;width:31px;height:29px;border-radius:4px 18px 18px 4px;
-  background:var(--ink);box-shadow:inset 10px 0 0 #0a2215
-}
-.front-sight{position:absolute;right:23px;top:-13px;width:12px;height:16px;border-radius:5px 5px 0 0;background:var(--ink)}
-.frame{
-  position:absolute;left:34%;top:123px;width:32%;height:118px;background:var(--avocado);
-  border:4px solid var(--ink);border-radius:28px 29px 40px 34px;z-index:1
-}
-.frame:after{
-  content:"🍣";position:absolute;right:8px;bottom:11px;width:37px;height:37px;display:grid;place-items:center;
-  border-radius:50%;background:var(--cream);border:3px solid var(--ink);font-size:20px;transform:rotate(7deg)
-}
-.grip{
-  position:absolute;left:48%;top:221px;width:94px;height:111px;background:var(--leaf);
-  border:4px solid var(--ink);border-radius:19px 20px 34px 29px;transform:rotate(12deg);
-  transform-origin:top center;z-index:0
-}
-.grip:before{
-  content:"";position:absolute;inset:13px 16px 16px;border-radius:12px;
-  background:radial-gradient(circle,var(--mint) 2px,transparent 3px) 0 0/14px 14px;opacity:.4
-}
-.trigger-guard{
-  position:absolute;left:48%;top:207px;width:77px;height:54px;border:10px solid var(--ink);
-  border-top-width:7px;border-radius:0 0 42px 42px;z-index:3
-}
-.trigger{
-  position:absolute;left:54%;top:217px;width:10px;height:34px;border-radius:999px;
-  background:var(--yellow);border:3px solid var(--ink);transform:rotate(14deg);
-  transform-origin:top center;transition:.18s;z-index:4
-}
-.trigger.pulled{transform:rotate(31deg) translateY(2px)}
-.hammer{
-  position:absolute;left:35%;top:96px;width:35px;height:39px;background:var(--leaf2);
-  border:4px solid var(--ink);border-radius:11px 6px 5px 11px;transform:rotate(-17deg);
-  transform-origin:bottom right;transition:.18s;z-index:1
-}
-.hammer.cocked{transform:rotate(-47deg)}
-
-.cylinder{
-  position:absolute;left:12%;top:53px;width:225px;height:225px;border-radius:50%;
-  background:var(--mint);border:5px solid var(--ink);z-index:6;
-  box-shadow:0 7px 0 rgba(22,53,36,.14);transition:transform 2.45s cubic-bezier(.1,.78,.1,1)
-}
-.cylinder:before{
-  content:"";position:absolute;inset:11px;border:3px dashed rgba(22,53,36,.22);border-radius:50%
+.wheel-shell{
+  position:absolute;
+  left:50%;top:50%;
+  width:318px;height:318px;
+  transform:translate(-50%,-50%);
 }
 .pointer{
-  position:absolute;left:50%;top:-9px;transform:translateX(-50%);
-  width:0;height:0;border-left:11px solid transparent;border-right:11px solid transparent;
-  border-top:23px solid var(--pink);z-index:10
+  position:absolute;
+  left:50%;top:-18px;
+  transform:translateX(-50%);
+  width:0;height:0;
+  border-left:16px solid transparent;
+  border-right:16px solid transparent;
+  border-top:31px solid var(--ink);
+  z-index:20;
 }
-.chamber{
-  position:absolute;width:82px;height:82px;margin:-41px;left:50%;top:50%;
-  transform:rotate(var(--a)) translateY(-69px) rotate(calc(var(--a)*-1));
-  border-radius:50%;background:var(--white);border:3px solid var(--ink);
-  display:flex;align-items:center;justify-content:center;text-align:center;padding:10px 8px;
-  transition:.2s;box-shadow:inset 0 -5px 0 rgba(143,207,109,.2)
+.wheel-rotor{
+  position:absolute;inset:0;
+  border-radius:50%;
+  border:5px solid #38543a;
+  background:conic-gradient(
+    from -30deg,
+    #edf0d8 0deg 60deg,
+    #c7d49a 60deg 120deg,
+    #edf0d8 120deg 180deg,
+    #c7d49a 180deg 240deg,
+    #edf0d8 240deg 300deg,
+    #c7d49a 300deg 360deg
+  );
+  transition:transform 2.45s cubic-bezier(.12,.77,.12,1);
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.19);
 }
-.chamber .number{
-  position:absolute;top:5px;left:6px;width:18px;height:18px;border-radius:50%;display:grid;
-  place-items:center;color:var(--ink);background:var(--yellow);border:2px solid var(--ink);
-  font-size:8px;font-weight:950
+.wheel-rotor:after{
+  content:"";
+  position:absolute;inset:88px;
+  border-radius:50%;
+  background:#5b7a4e;
+  border:5px solid #38543a;
 }
-.chamber .restaurant{
-  width:95%;font-size:9px;line-height:1.02;font-weight:900;letter-spacing:-.15px
+.wheel-line{
+  position:absolute;
+  left:50%;top:50%;
+  width:2px;height:50%;
+  background:#657e55;
+  transform-origin:50% 0;
+  opacity:.52;
 }
-.chamber.win{
-  background:var(--lime);
-  transform:rotate(var(--a)) translateY(-69px) rotate(calc(var(--a)*-1)) scale(1.08);
-  box-shadow:0 0 0 5px rgba(255,158,169,.34),0 8px 0 rgba(22,53,36,.13)
+.food-slot{
+  position:absolute;
+  left:50%;top:50%;
+  width:70px;height:70px;
+  margin:-35px;
+  transform:rotate(var(--a)) translateY(-106px) rotate(calc(var(--a) * -1));
+  display:grid;
+  place-items:center;
+  z-index:4;
+  font-size:37px;
+  filter:drop-shadow(0 3px 0 rgba(60,78,50,.12));
 }
-.center{
-  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
-  width:50px;height:50px;border-radius:50%;background:var(--pink);
-  border:4px solid var(--ink);z-index:9;display:grid;place-items:center
+.food-slot.win{
+  transform:rotate(var(--a)) translateY(-106px) rotate(calc(var(--a) * -1)) scale(1.22);
 }
-.center:after{content:"♡";position:absolute;font-size:22px;color:var(--white)}
+.wheel-center{
+  position:absolute;
+  left:50%;top:50%;
+  transform:translate(-50%,-50%);
+  z-index:10;
+  width:128px;height:128px;
+  border-radius:50%;
+  overflow:hidden;
+  border:5px solid #38543a;
+  background:#58764b;
+}
+.wheel-center img{
+  width:100%;height:100%;
+  object-fit:cover;
+  display:block;
+}
+.pew{
+  position:absolute;
+  right:-4px;top:18px;
+  width:70px;height:70px;
+  display:none;
+  z-index:30;
+}
+.pew.show{display:grid;place-items:center}
+.pew:before{
+  content:"PEW!";
+  width:70px;height:70px;
+  display:grid;place-items:center;
+  background:var(--yellow);
+  color:var(--ink);
+  font-weight:900;font-size:12px;
+  clip-path:polygon(50% 0,61% 27%,86% 10%,78% 38%,100% 43%,76% 56%,94% 80%,65% 72%,54% 100%,42% 76%,15% 92%,25% 62%,0 52%,27% 40%,10% 16%,39% 28%);
+}
+.home-actions{
+  position:relative;z-index:4;
+  display:grid;gap:10px;
+  margin-top:-9px;
+}
+.primary,.outline{
+  height:51px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:850;
+  letter-spacing:.7px;
+}
+.primary{
+  border:0;background:var(--dark);color:white;
+}
+.outline{
+  border:1.5px solid #708861;
+  background:rgba(255,253,245,.62);
+  color:var(--dark);
+}
+.home-status{
+  position:relative;z-index:4;
+  min-height:18px;
+  text-align:center;
+  color:#687460;
+  font-size:9px;
+  padding-top:8px;
+}
 
-.spark{position:absolute;right:-4px;top:86px;width:77px;height:77px;z-index:12;display:none}
-.spark.show{display:block;animation:popSpark .24s ease}
-.spark:before{
-  content:"PEW!";position:absolute;inset:0;display:grid;place-items:center;color:var(--ink);
-  font-size:16px;font-weight:950;transform:rotate(-8deg);background:var(--yellow);
-  border:4px solid var(--ink);
-  clip-path:polygon(50% 0,61% 25%,84% 8%,78% 35%,100% 38%,77% 53%,97% 71%,70% 70%,73% 100%,53% 77%,38% 100%,37% 74%,10% 91%,24% 63%,0 57%,27% 45%,5% 27%,33% 30%)
+/* GENERIC SCREEN */
+.screen{padding:8px 18px 24px}
+.screen-head{
+  display:grid;
+  grid-template-columns:40px 1fr 40px;
+  align-items:center;
+  margin:2px 0 18px;
 }
-@keyframes popSpark{
-  from{transform:scale(.25) rotate(-18deg);opacity:0}
-  55%{transform:scale(1.12) rotate(4deg);opacity:1}
-  to{transform:scale(.9);opacity:0}
+.screen-head h2{
+  text-align:center;
+  margin:0;
+  font-size:14px;
+  letter-spacing:.35px;
 }
-
-.cards-title{display:flex;justify-content:space-between;align-items:center;padding:0 4px 7px}
-.cards-title strong{font-size:12px}.cards-title span{font-size:9px;color:var(--muted)}
-.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
-.card{
-  min-height:76px;border:2px solid var(--line);background:var(--white);color:var(--ink);
-  border-radius:15px;padding:8px;text-align:left;transition:.2s;box-shadow:0 4px 0 rgba(47,125,78,.05)
+.back{
+  border:0;background:transparent;
+  color:var(--ink);
+  font-size:27px;
+  padding:0;
 }
-.card b{
-  display:inline-grid;place-items:center;width:20px;height:20px;border:2px solid var(--ink);
-  border-radius:50%;background:var(--yellow);font-size:8px;margin-bottom:5px
-}
-.card strong{display:block;font-size:9.5px;line-height:1.08}
-.card span{display:block;margin-top:4px;color:var(--muted);font-size:8px}
-.card.hit{
-  background:var(--lime);border-color:var(--ink);transform:translateY(-2px) rotate(-1deg);
-  box-shadow:0 7px 0 rgba(22,53,36,.14)
+.helper{
+  text-align:center;
+  margin:-7px 0 18px;
+  color:#58645a;
+  font-size:11px;
 }
 
-.actions{display:grid;grid-template-columns:1fr 1.45fr;gap:8px;margin-top:11px}
-.btn{
-  min-height:51px;border-radius:16px;font-weight:950;border:3px solid var(--ink);
-  padding:0 11px;box-shadow:0 5px 0 var(--ink)
+/* FILTERS */
+.filter-list{display:grid;gap:7px}
+.filter-row{
+  min-height:67px;
+  width:100%;
+  border:0;
+  border-radius:12px;
+  padding:8px 12px;
+  display:grid;
+  grid-template-columns:43px 1fr 27px;
+  gap:7px;
+  align-items:center;
+  text-align:left;
+  background:rgba(255,253,245,.87);
+  color:var(--ink);
 }
-.btn:active{transform:translateY(3px);box-shadow:0 2px 0 var(--ink)}
-.new{background:var(--white);color:var(--ink)}.shoot{background:var(--lime);color:var(--ink)}
-.status{color:var(--muted);font-size:10px;text-align:center;margin:10px 0 0;min-height:16px;font-weight:700}
+.filter-row.active{background:#c9d69a}
+.filter-icon{
+  font-size:25px;text-align:center
+}
+.filter-copy b{
+  display:block;font-size:13px
+}
+.filter-copy small{
+  display:block;
+  color:var(--muted);
+  font-size:9px;
+  margin-top:2px;
+}
+.filter-check{
+  width:23px;height:23px;
+  border-radius:50%;
+  background:#5d7a4f;
+  color:white;
+  display:grid;place-items:center;
+  opacity:0;
+  font-size:11px;
+}
+.filter-row.active .filter-check{opacity:1}
+.more{
+  margin-top:14px;
+  background:rgba(255,253,245,.83);
+  border-radius:13px;
+  padding:12px;
+}
+.more-title{
+  font-size:8px;font-weight:850;
+  letter-spacing:1.2px;
+  margin-bottom:9px;
+}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.field label{
+  display:block;
+  color:var(--muted);
+  font-size:8px;
+  margin-bottom:4px;
+}
+.field select,.text-input{
+  width:100%;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:#fbf9ee;
+  color:var(--ink);
+  padding:10px;
+  font-size:10px;
+}
+.gps-row{
+  display:grid;grid-template-columns:1fr auto;
+  gap:8px;margin-top:9px
+}
+.location{
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:10px;
+  background:#fbf9ee;
+  font-size:9px;color:#647061;
+}
+.gps{
+  border:0;border-radius:10px;
+  background:var(--dark);
+  color:#fff;
+  font-size:9px;
+  font-weight:800;
+  padding:0 12px
+}
+.checks{
+  display:flex;flex-wrap:wrap;gap:7px;margin-top:9px
+}
+.check-pill{
+  border:1px solid var(--line);
+  border-radius:999px;
+  background:#fbf9ee;
+  padding:7px 9px;
+  font-size:8px;color:#606a5d
+}
+.check-pill input{accent-color:var(--dark)}
 
-.winner{
-  display:none;margin-top:11px;padding:14px;border:3px solid var(--ink);
-  background:var(--white);border-radius:20px;box-shadow:0 7px 0 rgba(22,53,36,.13)
+/* 6 CHOICES */
+.choices{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
 }
-.winner.show{display:block;animation:winnerPop .34s ease}
-@keyframes winnerPop{
-  from{transform:scale(.93) rotate(-1deg);opacity:0}
-  to{transform:scale(1);opacity:1}
+.choice{
+  position:relative;
+  min-height:151px;
+  border:0;
+  border-radius:12px;
+  background:#fffdf5;
+  color:var(--ink);
+  padding:16px 7px 9px;
+  text-align:center;
 }
-.eyebrow{color:var(--leaf);text-transform:uppercase;font-size:9px;font-weight:950;letter-spacing:1.3px}
-.winner h2{margin:4px 0 6px;font-size:23px;letter-spacing:-.5px}
-.winner p{margin:0;color:var(--muted);font-size:10.5px;line-height:1.45}
-.winner-actions{display:grid;grid-template-columns:1.25fr 1fr;gap:7px;margin-top:11px}
-.small-btn{
-  border:2px solid var(--ink);border-radius:13px;min-height:43px;padding:0 9px;
-  font-weight:900;font-size:10px;color:var(--ink);background:var(--cream)
+.choice-icon{
+  font-size:39px;
+  line-height:1;
+  margin:6px 0 10px;
 }
-.maps{background:var(--leaf);color:white}
-.secondary-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:7px}
-.good{background:var(--mint2)}.skip{background:#ffe6e8;color:#7f3339}
+.choice strong{
+  display:block;font-size:10px;line-height:1.13
+}
+.choice small{
+  display:block;color:var(--muted);font-size:8px;margin-top:5px
+}
+.lock{
+  position:absolute;right:7px;top:7px;
+  border:0;background:transparent;
+  font-size:13px
+}
+.choice.locked{outline:2px solid #6d875e;background:#eff2dc}
+.choice.win{background:#dfe7b9}
+.choice-actions{display:grid;gap:10px;margin-top:18px}
+.repeat-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:11px 2px 2px;
+  font-size:10px;color:#556158
+}
+.repeat-row input{accent-color:var(--dark)}
 
-.library{
-  margin-top:12px;background:rgba(255,253,245,.72);border:2px solid var(--line);
-  border-radius:22px;padding:11px;box-shadow:0 5px 0 rgba(47,125,78,.06)
+/* RECENT / FAVORITES / BROWSE */
+.list{display:grid;gap:7px}
+.list-row{
+  min-height:64px;
+  display:grid;
+  grid-template-columns:42px 1fr auto;
+  gap:9px;
+  align-items:center;
+  padding:10px;
+  border-radius:12px;
+  background:#fffdf5;
 }
-.library-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px}
-.library-head strong{font-size:12px}.library-head span{font-size:9px;color:var(--muted)}
-.library-tools{display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:flex-end}
-.restore-deleted{
-  border:2px solid var(--line);background:var(--white);color:var(--muted);
-  border-radius:999px;padding:5px 8px;font-size:8px;font-weight:900
+.row-icon{font-size:27px;text-align:center}
+.list-row strong{display:block;font-size:11px}
+.list-row small{display:block;color:var(--muted);font-size:8px;margin-top:3px}
+.row-actions{display:flex;gap:5px;align-items:center}
+.mini-btn{
+  border:0;
+  border-radius:999px;
+  padding:7px 8px;
+  background:#e6ebd1;
+  color:var(--dark);
+  font-size:7px;
+  font-weight:850;
 }
-.search-row{display:grid;grid-template-columns:1fr auto;gap:7px}
-.search{
-  width:100%;border:2px solid var(--line);background:var(--white);color:var(--ink);
-  border-radius:14px;padding:10px 11px;outline:0;font-size:11px;font-weight:700
+.mini-btn.dark{background:var(--dark);color:white}
+.search-wrap{
+  display:grid;grid-template-columns:1fr auto;gap:7px
 }
-.add-btn{
-  border:2px solid var(--ink);background:var(--mint2);color:var(--ink);border-radius:14px;
-  padding:0 12px;font-size:10px;font-weight:900
+.search-wrap button{
+  border:0;border-radius:10px;background:var(--dark);color:white;
+  font-size:9px;font-weight:850;padding:0 13px
 }
-.browse-row{display:grid;grid-template-columns:1fr auto;gap:7px}
-.import-box{
-  margin-top:10px;padding:10px;border:2px dashed var(--line);border-radius:17px;
-  background:rgba(220,245,206,.58)
+.library-meta{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:10px
 }
-.import-title{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px}
-.import-title strong{font-size:11px}.import-title span{font-size:8px;color:var(--muted)}
-.import-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:7px}
-.tiny-label{display:block;margin:0 0 4px 4px;font-size:8px;font-weight:900;color:var(--muted);text-transform:uppercase;letter-spacing:.6px}
-.import-save{
-  width:100%;margin-top:8px;min-height:44px;border:3px solid var(--ink);border-radius:14px;
-  background:var(--lime);color:var(--ink);font-weight:950;box-shadow:0 4px 0 var(--ink)
+.library-meta strong{font-size:11px}
+.library-meta span{font-size:8px;color:var(--muted)}
+.import{
+  margin-top:14px;
+  border-radius:13px;
+  background:#fffdf5;
+  padding:12px
 }
-.import-save:active{transform:translateY(2px);box-shadow:0 2px 0 var(--ink)}
-.import-help{margin-top:7px;font-size:8.5px;color:var(--muted);line-height:1.4}
-.delete-custom{
-  border:0;background:#ffe6e8;color:#7f3339;border-radius:999px;padding:6px 8px;
-  font-size:8px;font-weight:900;margin-left:4px
+.import h3{margin:0 0 3px;font-size:11px}
+.import p{margin:0 0 10px;color:var(--muted);font-size:8px}
+.import-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.empty{
+  text-align:center;
+  background:#fffdf5;
+  border-radius:13px;
+  padding:45px 18px;
 }
-@media(max-width:480px){.import-grid{grid-template-columns:1fr}.browse-row{grid-template-columns:1fr auto}}
-.list{display:grid;gap:6px;margin-top:8px;max-height:340px;overflow:auto}
-.row{
-  display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;
-  border:2px solid #c0dcc0;background:rgba(255,253,245,.88);border-radius:13px;padding:8px 9px
+.empty img{
+  width:130px;height:125px;object-fit:cover;border-radius:24px
 }
-.row strong{font-size:10px;display:block}.row span{font-size:8px;color:var(--muted);display:block;margin-top:3px}
-.row-map{
-  border:0;background:var(--leaf);color:white;border-radius:999px;padding:7px 9px;
-  font-size:9px;font-weight:900;white-space:nowrap
-}
-.note{margin-top:12px;text-align:center;color:var(--muted);font-size:9px;line-height:1.45}
+.empty strong{display:block;font-size:15px;margin-top:8px}
+.empty span{display:block;font-size:9px;color:var(--muted);margin-top:5px}
 
-@media(max-width:480px){
-  .filters-grid{grid-template-columns:1fr 1fr}
-  .gun-wrap{height:305px}
-  .cylinder{left:7%;top:49px;width:202px;height:202px}
-  .chamber{width:74px;height:74px;margin:-37px;transform:rotate(var(--a)) translateY(-61px) rotate(calc(var(--a)*-1))}
-  .chamber.win{transform:rotate(var(--a)) translateY(-61px) rotate(calc(var(--a)*-1)) scale(1.08)}
-  .barrel{left:46%;top:93px;height:56px}
-  .frame{left:32%;top:116px;height:110px}
-  .grip{left:47%;top:208px;width:86px;height:101px}
-  .trigger-guard{left:47%;top:194px}
-  .trigger{left:54%;top:204px}
-  .hammer{left:32%;top:91px}
-  .cards{grid-template-columns:repeat(2,1fr)}
-  .speech{max-width:190px}
+/* SETTINGS */
+.setting-group{margin-bottom:14px}
+.setting-title{
+  font-size:8px;font-weight:850;letter-spacing:1.2px;margin:0 0 6px 3px
 }
+.setting-row{
+  min-height:50px;background:#fffdf5;
+  display:grid;grid-template-columns:30px 1fr auto;
+  align-items:center;padding:8px 11px;
+  border-bottom:1px solid #ecebdc;
+}
+.setting-row:first-of-type{border-radius:12px 12px 0 0}
+.setting-row:last-of-type{border-radius:0 0 12px 12px;border-bottom:0}
+.setting-row.one{border-radius:12px;border-bottom:0}
+.setting-row span{font-size:10px}
+.setting-row button{
+  border:0;background:transparent;color:var(--dark);font-size:9px;font-weight:850
+}
+
+/* WINNER OVERLAY */
+.winner-overlay{
+  position:fixed;inset:0;z-index:1000;
+  display:none;
+  background:var(--cream);
+  overflow:auto;
+  padding:calc(26px + env(safe-area-inset-top)) 20px calc(30px + env(safe-area-inset-bottom));
+}
+.winner-overlay.show{display:flex;align-items:center;justify-content:center}
+.winner-inner{width:min(100%,390px);text-align:center;position:relative;z-index:2}
+.match{font-size:11px;letter-spacing:2px;font-weight:800;color:var(--dark2)}
+.winner-name{
+  font-size:29px;line-height:1.03;font-weight:900;margin:9px 0 12px
+}
+.winner-art{
+  width:260px;height:205px;
+  object-fit:cover;
+  display:block;
+  margin:10px auto 20px;
+  mix-blend-mode:multiply;
+  animation:dance .68s ease-in-out infinite alternate;
+}
+@keyframes dance{
+  from{transform:translateY(0) rotate(-3deg)}
+  to{transform:translateY(-10px) rotate(4deg)}
+}
+.winner-actions{display:grid;gap:10px}
+.win-btn{
+  height:50px;border-radius:999px;font-weight:850;font-size:11px
+}
+.win-btn.primary{border:0;background:var(--dark);color:white}
+.win-btn.secondary{border:1.5px solid var(--dark);background:transparent;color:var(--dark)}
+.confetti{
+  position:absolute;top:-20px;
+  width:9px;height:14px;border-radius:2px;
+  animation:fall var(--dur) linear forwards
+}
+@keyframes fall{
+  to{transform:translate3d(var(--drift),110vh,0) rotate(720deg)}
+}
+
+/* NAV */
+.nav{
+  position:fixed;
+  left:50%;bottom:0;
+  transform:translateX(-50%);
+  width:min(100%,430px);
+  height:calc(68px + env(safe-area-inset-bottom));
+  padding-bottom:env(safe-area-inset-bottom);
+  background:rgba(255,253,245,.98);
+  border-top:1px solid var(--line);
+  display:grid;grid-template-columns:repeat(5,1fr);
+  z-index:500
+}
+.nav button{
+  border:0;background:transparent;
+  color:#697367;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:2px;font-size:7px
+}
+.nav button b{font-size:20px;line-height:1;font-weight:500}
+.nav button.active{color:var(--dark)}
+
+/* utility */
+.hidden{display:none!important}
+@media(max-width:390px){
+  .wheel-shell{width:292px;height:292px}
+  .food-slot{transform:rotate(var(--a)) translateY(-98px) rotate(calc(var(--a) * -1))}
+  .food-slot.win{transform:rotate(var(--a)) translateY(-98px) rotate(calc(var(--a) * -1)) scale(1.2)}
+  .wheel-rotor:after{inset:81px}
+  .wheel-center{width:116px;height:116px}
+  .home-wheel-zone{height:358px}
+  .choice{min-height:143px}
+}
+
+/* v12 tighter match to approved visual basis */
+.brand-name{font-size:39px;letter-spacing:-1.5px}
+.topbar{height:91px;padding-top:calc(14px + env(safe-area-inset-top))}
+.home{min-height:610px;padding-top:0}
+.home-wheel-zone{height:390px;margin-top:42px}
+.home-actions{margin-top:-2px}
+.choices-link{
+  height:31px;
+  border:0;
+  background:transparent;
+  color:#496743;
+  font-size:9px;
+  font-weight:850;
+  letter-spacing:.8px;
+}
+.home-status{padding-top:3px}
+.hills{height:165px}
+.wheel-center{
+  width:126px;height:126px;
+  background:#708e59;
+  padding:0;
+}
+.wheel-center img{
+  width:100%;height:100%;
+  object-fit:cover;
+  border-radius:50%;
+}
+.food-slot{filter:none}
+.food-slot .food-svg{width:47px;height:47px;display:block}
+.choice-icon .food-svg{width:47px;height:47px;display:block;margin:auto}
+.row-icon .food-svg{width:30px;height:30px;display:block;margin:auto}
+@media(max-width:390px){
+  .home{min-height:575px}
+  .home-wheel-zone{height:350px;margin-top:32px}
+  .brand-name{font-size:36px}
+}
+
+
+/* v13 final iPhone proportion pass */
+.home{
+  min-height:calc(100vh - 159px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+}
+@media(max-width:390px){
+  .home{
+    min-height:calc(100vh - 159px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+  }
+  .home-wheel-zone{
+    margin-top:70px;
+  }
+}
+
 </style>
 </head>
 <body>
 <audio id="bgMusic" src="cute-music.wav" loop preload="auto" playsinline></audio>
-<main>
-  <div class="top">
+
+<div class="app">
+  <header class="topbar">
+    <button id="backTop" class="top-icon" type="button">‹</button>
     <div class="brand">
-      <div class="brand-mark"><span>🍙</span></div>
-      <div>
-        <div class="logo">Dibs <em>for you</em></div>
-        <div class="subtitle">Bacolod's cutest bad decision maker · 363 spots</div>
-      </div>
+      <div class="brand-name">Dibs4u</div>
+      <div class="brand-sub">FOOD ROULETTE</div>
     </div>
-    <button id="sound" class="sound" type="button">🔊 TAP FOR SOUND</button>
+    <button id="soundBtn" class="top-icon" type="button">⚙</button>
+  </header>
+
+  <main>
+    <section id="view-home" class="view active">
+      <div class="home">
+        <div class="cloud one"></div><div class="cloud two"></div><div class="hills"></div>
+        <div class="home-wheel-zone">
+          <div class="wheel-shell">
+            <div class="pointer"></div>
+            <div id="pew" class="pew"></div>
+            <div id="wheelRotor" class="wheel-rotor">
+              <i class="wheel-line" style="transform:rotate(0deg)"></i>
+              <i class="wheel-line" style="transform:rotate(60deg)"></i>
+              <i class="wheel-line" style="transform:rotate(120deg)"></i>
+              <i class="wheel-line" style="transform:rotate(180deg)"></i>
+              <i class="wheel-line" style="transform:rotate(240deg)"></i>
+              <i class="wheel-line" style="transform:rotate(300deg)"></i>
+              <div class="food-slot" style="--a:0deg"></div>
+              <div class="food-slot" style="--a:60deg"></div>
+              <div class="food-slot" style="--a:120deg"></div>
+              <div class="food-slot" style="--a:180deg"></div>
+              <div class="food-slot" style="--a:240deg"></div>
+              <div class="food-slot" style="--a:300deg"></div>
+            </div>
+            <div class="wheel-center"><img src="sushi-icon-source.png" alt="Dibs4u sushi mascot"></div>
+          </div>
+        </div>
+        <div class="home-actions">
+          <button id="pullHome" class="primary" type="button">PULL THE TRIGGER</button>
+          <button id="showChoices" class="choices-link" type="button">VIEW THE 6 CHOICES ›</button>
+        </div>
+        <div id="status" class="home-status">Loading six restaurants…</div>
+      </div>
+    </section>
+
+    <section id="view-filters" class="view screen">
+      <div class="screen-head"><button class="back" data-go="home" type="button">‹</button><h2>FILTERS</h2><span></span></div>
+      <div id="filterList" class="filter-list">
+        <button class="filter-row" data-mood="" type="button"><span class="filter-icon">🎲</span><span class="filter-copy"><b>Anything</b><small>All restaurants</small></span><span class="filter-check">✓</span></button>
+        <button class="filter-row active" data-mood="dinner" type="button"><span class="filter-icon">🍴</span><span class="filter-copy"><b>Dinner</b><small>Good for lunch or dinner</small></span><span class="filter-check">✓</span></button>
+        <button class="filter-row" data-mood="cafe" type="button"><span class="filter-icon">☕</span><span class="filter-copy"><b>Cafe</b><small>Coffee, tea & bites</small></span><span class="filter-check">✓</span></button>
+        <button class="filter-row" data-mood="burger" type="button"><span class="filter-icon">🍔</span><span class="filter-copy"><b>Burgers</b><small>Burgers & sandwiches</small></span><span class="filter-check">✓</span></button>
+        <button class="filter-row" data-mood="asian" type="button"><span class="filter-icon">🍜</span><span class="filter-copy"><b>Asian</b><small>Asian food</small></span><span class="filter-check">✓</span></button>
+        <button class="filter-row" data-mood="fastfood" type="button"><span class="filter-icon">🍟</span><span class="filter-copy"><b>Fast Food</b><small>Quick & easy</small></span><span class="filter-check">✓</span></button>
+        <button class="filter-row" data-mood="filipino" type="button"><span class="filter-icon">🍗</span><span class="filter-copy"><b>Filipino</b><small>Local favorites</small></span><span class="filter-check">✓</span></button>
+        <button class="filter-row" data-mood="inasal" type="button"><span class="filter-icon">🍢</span><span class="filter-copy"><b>Inasal & BBQ</b><small>Chicken inasal & grilled food</small></span><span class="filter-check">✓</span></button>
+        <button class="filter-row" data-mood="pizza" type="button"><span class="filter-icon">🍕</span><span class="filter-copy"><b>Pizza</b><small>Pizza & pasta</small></span><span class="filter-check">✓</span></button>
+        <button class="filter-row" data-mood="dessert" type="button"><span class="filter-icon">🍰</span><span class="filter-copy"><b>Dessert</b><small>Sweet treats</small></span><span class="filter-check">✓</span></button>
+        <button class="filter-row" data-mood="breakfast" type="button"><span class="filter-icon">🍳</span><span class="filter-copy"><b>Breakfast / Brunch</b><small>Morning favorites</small></span><span class="filter-check">✓</span></button>
+      </div>
+
+      <div class="more">
+        <div class="more-title">MORE FILTERS</div>
+        <div class="grid2">
+          <div class="field"><label>Area</label><select id="area"><option value="">Anywhere</option></select></div>
+          <div class="field"><label>Distance</label><select id="proximity"><option value="nearby">My area + nearby</option><option value="same">My area only</option><option value="all">All Bacolod</option></select></div>
+          <div class="field"><label>Budget</label><select id="price"><option value="">Any</option><option value="1">₱ budget</option><option value="2">₱₱ mid</option><option value="3">₱₱₱ treat</option></select></div>
+          <div class="field hidden"><label>Mood</label><select id="mood"><option value="dinner" selected>Dinner</option></select></div>
+        </div>
+        <div class="gps-row"><div id="locationLabel" class="location">📍 Anywhere in Bacolod</div><button id="gpsBtn" class="gps" type="button">USE GPS</button></div>
+        <div class="checks"><label class="check-pill"><input id="openOnly" type="checkbox"> Open now</label><label class="check-pill"><input id="allowUnknown" type="checkbox" checked> Unknown hours OK</label></div>
+        <button id="filtersDone" class="primary" style="width:100%;margin-top:11px" type="button">DONE</button>
+      </div>
+    </section>
+
+    <section id="view-choices" class="view screen">
+      <div class="screen-head"><button class="back" data-go="home" type="button">‹</button><h2>6 CHOICES</h2><span>🔒</span></div>
+      <p class="helper">Pull the trigger or tap<br><b>NEW SIX</b> to refresh</p>
+      <div id="choices" class="choices"></div>
+      <div class="choice-actions">
+        <button id="newSix" class="primary" type="button">↻ &nbsp; NEW SIX</button>
+        <button id="pullChoices" class="outline" type="button">PULL THE TRIGGER</button>
+      </div>
+      <label class="repeat-row"><span>Avoid recent wins ⓘ</span><input id="noRepeats" type="checkbox" checked></label>
+    </section>
+
+    <section id="view-recent" class="view screen">
+      <div class="screen-head"><span></span><h2>RECENT WINS</h2><button id="clearHistory" class="top-icon" type="button">⌫</button></div>
+      <div id="recentList" class="list"></div>
+    </section>
+
+    <section id="view-favorites" class="view screen">
+      <div class="screen-head"><span></span><h2>FAVORITES</h2><span></span></div>
+      <div id="favoritesList" class="list"></div>
+    </section>
+
+    <section id="view-browse" class="view screen">
+      <div class="screen-head"><span></span><h2>BROWSE</h2><span>⌕</span></div>
+      <div class="library-meta"><strong>Restaurant database</strong><span><b id="dbCount">0</b> saved</span></div>
+      <div class="search-wrap"><input id="search" class="text-input" type="search" placeholder="Search restaurants…"><button id="browseAll" type="button">ALL</button></div>
+      <div id="browseList" class="list" style="margin-top:8px"></div>
+
+      <div class="import">
+        <h3>Add from Google Maps</h3>
+        <p>Paste a restaurant link. It will be saved on this phone.</p>
+        <input id="mapsLink" class="text-input" type="url" placeholder="Google Maps link">
+        <div class="import-grid">
+          <div class="field"><label>Name</label><input id="customName" class="text-input" type="text" placeholder="Restaurant name"></div>
+          <div class="field"><label>Area</label><select id="customArea"><option value="Unknown">Not sure</option></select></div>
+          <div class="field"><label>Cuisine</label><input id="customCuisine" class="text-input" type="text" placeholder="e.g. Korean"></div>
+          <div class="field"><label>Budget</label><select id="customPrice"><option value="">Not sure</option><option value="1">₱</option><option value="2">₱₱</option><option value="3">₱₱₱</option></select></div>
+        </div>
+        <button id="saveCustom" class="primary" style="width:100%;margin-top:10px" type="button">SAVE TO Dibs4u</button>
+        <p id="importHelp" style="margin-top:8px">Short maps.app.goo.gl links may need the restaurant name typed once.</p>
+      </div>
+    </section>
+
+    <section id="view-settings" class="view screen">
+      <div class="screen-head"><span></span><h2>SETTINGS</h2><span></span></div>
+      <div class="setting-group">
+        <div class="setting-title">GENERAL</div>
+        <div class="setting-row"><span>🔊</span><span>Sound & Music</span><button id="settingsSound" type="button">ENABLE</button></div>
+        <div class="setting-row"><span>◷</span><span>Avoid Recent Wins</span><button id="settingsRecent" type="button">ON</button></div>
+        <div class="setting-row"><span>◉</span><span>Open Only</span><button id="settingsOpen" type="button">OFF</button></div>
+        <div class="setting-row"><span>⌖</span><span>Use My Location</span><button id="settingsGPS" type="button">USE</button></div>
+      </div>
+      <div class="setting-group">
+        <div class="setting-title">DATA</div>
+        <div class="setting-row"><span>🗺</span><span>Import from Google Maps</span><button data-go="browse" type="button">›</button></div>
+        <div class="setting-row"><span>🍽</span><span>Manage Restaurants</span><button data-go="browse" type="button">›</button></div>
+        <div class="setting-row"><span>⌫</span><span>Restore Deleted</span><button id="restoreDeleted" type="button">RESTORE</button></div>
+      </div>
+      <div class="setting-group">
+        <div class="setting-title">ABOUT</div>
+        <div class="setting-row one"><span>🍣</span><span>Dibs4u · 363+ Bacolod spots</span><span></span></div>
+      </div>
+    </section>
+  </main>
+
+  <nav class="nav">
+    <button class="nav-btn active" data-go="home" type="button"><b>⌂</b><span>Home</span></button>
+    <button class="nav-btn" data-go="browse" type="button"><b>▧</b><span>Browse</span></button>
+    <button class="nav-btn" data-go="recent" type="button"><b>◷</b><span>Recent</span></button>
+    <button class="nav-btn" data-go="favorites" type="button"><b>♡</b><span>Favorites</span></button>
+    <button class="nav-btn" data-go="settings" type="button"><b>⚙</b><span>Settings</span></button>
+  </nav>
+</div>
+
+<div id="winnerOverlay" class="winner-overlay">
+  <div id="confettiLayer"></div>
+  <div class="winner-inner">
+    <div class="match">IT’S A MATCH!</div>
+    <div id="winnerName" class="winner-name"></div>
+    <img class="winner-art" src="sushi-winner.png" alt="Dibs4u sushi celebrating">
+    <div class="winner-actions">
+      <button id="winnerMaps" class="win-btn primary" type="button">📍 OPEN IN MAPS</button>
+      <button id="winnerFavorite" class="win-btn secondary" type="button">♡ SAVE TO FAVORITES</button>
+      <button id="winnerClose" class="win-btn secondary" type="button">YAY!</button>
+    </div>
   </div>
-
-  <div class="mascot-row">
-    <div class="sushi">
-      <div class="fish"></div>
-      <div class="rice"></div>
-      <div class="eye a"></div>
-      <div class="eye b"></div>
-      <div class="cheek a"></div>
-      <div class="cheek b"></div>
-      <div class="mouth"></div>
-      <div class="arm"></div>
-    </div>
-    <div id="speech" class="speech">I picked six. You just have to be brave. 🍣</div>
-  </div>
-
-  <section class="filters">
-    <div class="filters-grid">
-      <div class="field">
-        <label>Area</label>
-        <select id="area"><option value="">Anywhere</option></select>
-      </div>
-      <div class="field">
-        <label>How near?</label>
-        <select id="proximity">
-          <option value="nearby">My area + nearby</option>
-          <option value="same">My area only</option>
-          <option value="all">All Bacolod</option>
-        </select>
-      </div>
-      <div class="field">
-        <label>What are we feeling?</label>
-        <select id="mood">
-          <option value="dinner" selected>🍽️ Dinner</option>
-          <option value="">🎲 Anything</option>
-          <option value="cafe">☕ Cafe</option>
-          <option value="burger">🍔 Burgers</option>
-          <option value="inasal">🐔 Inasal & BBQ</option>
-          <option value="asian">🍜 Asian</option>
-          <option value="fastfood">🍟 Fast food</option>
-          <option value="filipino">🇵🇭 Filipino</option>
-          <option value="pizza">🍕 Pizza</option>
-          <option value="dessert">🍰 Dessert</option>
-          <option value="breakfast">🍳 Breakfast / brunch</option>
-        </select>
-      </div>
-      <div class="field">
-        <label>Budget</label>
-        <select id="price">
-          <option value="">Any</option>
-          <option value="1">₱ budget</option>
-          <option value="2">₱₱ mid</option>
-          <option value="3">₱₱₱ treat yourself</option>
-        </select>
-      </div>
-    </div>
-
-    <div class="filter-bottom">
-      <div class="location-row">
-        <div id="locationLabel" class="location-label">📍 Anywhere in Bacolod</div>
-        <button id="gpsBtn" class="location-btn" type="button">Use GPS</button>
-      </div>
-      <label class="pill"><input id="openOnly" type="checkbox"> Open now</label>
-      <label class="pill"><input id="allowUnknown" type="checkbox" checked> Unknown hours OK</label>
-    </div>
-  </section>
-
-  <section class="game">
-    <div class="game-head">
-      <strong>💚 Restaurant roulette</strong>
-      <span id="eligibleLabel">0 eligible</span>
-    </div>
-
-    <div class="gun-wrap">
-      <div class="hammer" id="hammer"></div>
-      <div class="barrel"><div class="front-sight"></div></div>
-      <div class="frame"></div>
-      <div class="grip"></div>
-      <div class="trigger-guard"></div>
-      <div class="trigger" id="trigger"></div>
-      <div class="spark" id="spark"></div>
-
-      <div class="cylinder" id="cylinder">
-        <div class="pointer"></div>
-        <div class="chamber" style="--a:0deg"><span class="number">1</span><span class="restaurant"></span></div>
-        <div class="chamber" style="--a:60deg"><span class="number">2</span><span class="restaurant"></span></div>
-        <div class="chamber" style="--a:120deg"><span class="number">3</span><span class="restaurant"></span></div>
-        <div class="chamber" style="--a:180deg"><span class="number">4</span><span class="restaurant"></span></div>
-        <div class="chamber" style="--a:240deg"><span class="number">5</span><span class="restaurant"></span></div>
-        <div class="chamber" style="--a:300deg"><span class="number">6</span><span class="restaurant"></span></div>
-        <div class="center"></div>
-      </div>
-    </div>
-
-    <div class="cards-title">
-      <strong>Your six 🍽️</strong>
-      <span>tap a card to replace it</span>
-    </div>
-    <div class="cards" id="cards"></div>
-
-    <div class="actions">
-      <button id="new-six" class="btn new" type="button">🎲 NEW SIX</button>
-      <button id="shoot" class="btn shoot" type="button">💥 PULL THE TRIGGER</button>
-    </div>
-
-    <div class="status" id="status" aria-live="polite">Loading your six…</div>
-
-    <div class="winner" id="winner" aria-live="polite">
-      <div class="eyebrow">♡ dibs called it</div>
-      <h2 id="winner-name"></h2>
-      <p id="winner-meta"></p>
-
-      <div class="winner-actions">
-        <button id="maps" class="small-btn maps" type="button">📍 OPEN IN GOOGLE MAPS</button>
-        <button id="again" class="small-btn" type="button">Pew again 😭</button>
-      </div>
-      <div class="secondary-actions">
-        <button id="love" class="small-btn good" type="button">❤️ Would go again</button>
-        <button id="skip" class="small-btn skip" type="button">🙅 Skip next time</button>
-      </div>
-    </div>
-  </section>
-
-  <section class="library">
-    <div class="library-head">
-      <strong>🍜 Local stash</strong>
-      <div class="library-tools">
-        <span><b id="dbCount">0</b> saved Bacolod spots</span>
-        <button id="restoreDeleted" class="restore-deleted" type="button" hidden>RESTORE DELETED</button>
-      </div>
-    </div>
-
-    <div class="browse-row">
-      <input id="search" class="search" type="search" placeholder="Search Odaegam, Calea, Korean, ramen…">
-      <button id="browseAll" class="add-btn" type="button">BROWSE ALL</button>
-    </div>
-    <div id="list" class="list"></div>
-
-    <div class="import-box">
-      <div class="import-title">
-        <strong>📍 Add from Google Maps</strong>
-        <span>saved only on this phone</span>
-      </div>
-
-      <input id="mapsLink" class="search" type="url" inputmode="url" placeholder="Paste Google Maps restaurant link">
-
-      <div class="import-grid">
-        <div>
-          <label class="tiny-label" for="customName">Restaurant name</label>
-          <input id="customName" class="search" type="text" placeholder="Auto-filled when possible">
-        </div>
-        <div>
-          <label class="tiny-label" for="customArea">Area</label>
-          <select id="customArea" class="search"><option value="Unknown">Not sure</option></select>
-        </div>
-        <div>
-          <label class="tiny-label" for="customCuisine">Cuisine</label>
-          <input id="customCuisine" class="search" type="text" placeholder="e.g. Korean, Cafe">
-        </div>
-        <div>
-          <label class="tiny-label" for="customPrice">Budget</label>
-          <select id="customPrice" class="search">
-            <option value="">Not sure</option>
-            <option value="1">₱ budget</option>
-            <option value="2">₱₱ mid</option>
-            <option value="3">₱₱₱ treat yourself</option>
-          </select>
-        </div>
-      </div>
-
-      <button id="addCustom" class="import-save" type="button">💚 SAVE TO DIBS</button>
-      <div id="importHelp" class="import-help">
-        Normal Google Maps links can auto-fill the name. Short <b>maps.app.goo.gl</b> links hide the name, so paste the link and type the restaurant name once.
-      </div>
-    </div>
-  </section>
-
-  <div class="note">
-    Restaurant details are stored locally in this app and can become outdated. This expanded build combines verified current listings with a broad Bacolod discovery pass, but small businesses can still open, move, or close. Google Maps is opened only when you tap it, so you can verify current hours, reviews, photos and directions.
-  </div>
-</main>
+</div>
 
 <script>
 const BASE_DB=[{"name":"ODAEGAM Ramen Station","area":"Lacson","cuisine":"Korean · Ramen","price":2,"address":"27 BS Aquino Dr","rating":4.3,"reviews":75,"hours":"11:00-21:00"},{"name":"Daebak Korean Restaurant","area":"Mandalagan","cuisine":"Korean","price":2,"address":"Mandalagan","rating":4.7,"reviews":78,"hours":"11:00-22:00"},{"name":"Furai Contemporary Japanese","area":"Lacson","cuisine":"Japanese","price":1,"address":"The Row, Lacson St","rating":4.8,"reviews":143,"hours":"11:00-14:00|16:30-21:00"},{"name":"Gerry's SM Bacolod","area":"SM City Bacolod","cuisine":"Filipino · Grill","price":3,"address":"SM City Bacolod","rating":4.9,"reviews":2312,"hours":"10:00-22:00"},{"name":"Studio Cafe","area":"Downtown","cuisine":"Cafe · Casual","price":1,"address":"Bacolod City","rating":4.6,"reviews":385,"hours":"06:30-22:00"},{"name":"Golden Fortune Seafood Restaurant","area":"South","cuisine":"Chinese · Seafood","price":3,"address":"Magsaysay Ave","rating":4.3,"reviews":455,"hours":"09:30-14:00|16:30-21:00"},{"name":"Pzza PH","area":"Villamonte","cuisine":"Pizza","price":2,"address":"Burgos Ext., Villamonte","rating":4.5,"reviews":130,"hours":"12:00-21:30"},{"name":"Modern Shang","area":"Ayala Capitol Central","cuisine":"Chinese","price":2,"address":"Ayala Malls Capitol Central","rating":4.7,"reviews":219,"hours":null},{"name":"KitcheNamit Buffet Restaurant","area":"Downtown","cuisine":"Buffet · Filipino","price":1,"address":"San Sebastian St","rating":4.1,"reviews":8,"hours":"10:30-22:30"},{"name":"Fuego Bar & Lounge","area":"Lacson","cuisine":"Bar · International","price":3,"address":"Lacson St","rating":4.8,"reviews":52,"hours":"16:00-22:00"},{"name":"Vikings Luxury Buffet","area":"SM City Bacolod","cuisine":"Buffet · International","price":3,"address":"SM City Bacolod","rating":4.9,"reviews":16034,"hours":"11:00-14:30|17:30-22:00"},{"name":"Hanok Authentic Korean Restaurant","area":"Singcang / Goldenfield","cuisine":"Korean","price":2,"address":"Goldenfield Commercial Complex","rating":4.5,"reviews":361,"hours":"11:00-20:30"},{"name":"Ikkoryu Ramen","area":"Downtown","cuisine":"Japanese · Ramen","price":1,"address":"Bacolod City","rating":4.7,"reviews":387,"hours":"10:00-22:00"},{"name":"IMAY'S","area":"Lacson","cuisine":"Filipino","price":2,"address":"6th Lacson St","rating":4.3,"reviews":591,"hours":"10:30-21:00"},{"name":"Coffee Culture ROASTERY","area":"Alijis","cuisine":"Cafe · Coffee","price":1,"address":"Alijis Rd","rating":4.7,"reviews":381,"hours":"09:00-18:00"},{"name":"Rojo's Beach Resort and Floating Restaurant","area":"South","cuisine":"Seafood · Filipino","price":1,"address":"Bacolod City","rating":4.2,"reviews":433,"hours":"08:00-21:30"},{"name":"Johnny's Pizza","area":"Upper East","cuisine":"Pizza · American","price":1,"address":"C.L. Montelibano Ave","rating":4.5,"reviews":125,"hours":"11:00-21:00"},{"name":"Chino's WOK 6100","area":"Tangub","cuisine":"Thai","price":1,"address":"Gardenville Subdivision, Tangub","rating":4.9,"reviews":110,"hours":"12:00-21:00"},{"name":"Yukimix Buffet International","area":"Downtown","cuisine":"Buffet · International","price":1,"address":"Lopez Jaena St","rating":4.6,"reviews":311,"hours":"06:00-22:00"},{"name":"Kristin's Akasya Grill & Steakhouse","area":"Lacson","cuisine":"Steak · Grill","price":2,"address":"17th St","rating":4.3,"reviews":168,"hours":"11:00-22:00"},{"name":"Inasal & co!","area":"Downtown","cuisine":"Filipino · Inasal","price":1,"address":"Bacolod City","rating":4.5,"reviews":237,"hours":"14:00-22:00"},{"name":"Calea Pastries & Coffee","area":"Lacson","cuisine":"Cafe · Dessert","price":1,"address":"15th St","rating":4.6,"reviews":1923,"hours":"09:00-22:00"},{"name":"GUNNY'S ALL AMERICAN BURGERHOUSE","area":"Villamonte","cuisine":"Burger · American","price":1,"address":"Villamonte","rating":4.6,"reviews":337,"hours":"10:00-22:00"},{"name":"Rau-Ram Restaurant","area":"Bata","cuisine":"Vietnamese","price":1,"address":"Brgy. Bata","rating":4.5,"reviews":704,"hours":"11:00-21:00"},{"name":"Italianni's SM City Bacolod","area":"SM City Bacolod","cuisine":"Italian","price":3,"address":"SM City Bacolod","rating":4.9,"reviews":983,"hours":"10:00-22:00"},{"name":"Mimi's Cafe & Restaurant","area":"Lacson","cuisine":"Cafe · Casual","price":1,"address":"25th St. corner Lacson","rating":4.4,"reviews":233,"hours":"07:30-20:00"},{"name":"The Samgyup 31","area":"Downtown","cuisine":"Korean · BBQ","price":2,"address":"Bacolod City","rating":4.5,"reviews":201,"hours":"10:00-22:00"},{"name":"Sugaree Gelato, Bakery, Pizza and Cafe","area":"Upper East","cuisine":"Cafe · Dessert · Pizza","price":2,"address":"Bacolod City","rating":4.7,"reviews":143,"hours":"09:00-22:00"},{"name":"Sprout Burger - Villamonte","area":"Villamonte","cuisine":"Burger · American","price":1,"address":"BS Aquino Dr., Villamonte","rating":4.7,"reviews":33,"hours":"10:00-21:00"},{"name":"Bánh Mì Kitchen - Shell Lacson","area":"Mandalagan","cuisine":"Vietnamese · Sandwich","price":1,"address":"Shell Lacson, Mandalagan","rating":4.6,"reviews":27,"hours":"07:00-19:00"},{"name":"BAAN THAI HOMM","area":"Mandalagan","cuisine":"Thai","price":1,"address":"GM Cordova Ave","rating":4.7,"reviews":44,"hours":"11:00-15:00|17:00-20:30"},{"name":"Italia Restaurant","area":"Mandalagan","cuisine":"Italian","price":2,"address":"Paseo Verde","rating":4.4,"reviews":389,"hours":"11:00-22:00"},{"name":"Ishan's Coffee and Diner","area":"Lacson","cuisine":"Cafe · Diner","price":1,"address":"La Salle Ave","rating":4.5,"reviews":134,"hours":"06:30-20:30"},{"name":"Muhan Samgyeopsal Grill","area":"Villamonte","cuisine":"Korean · BBQ","price":2,"address":"Villa Angela Marketplace","rating":3.2,"reviews":35,"hours":"10:00-22:00"},{"name":"Mang Inasal - New City Mall","area":"Downtown","cuisine":"Filipino · Inasal","price":1,"address":"Luzuriaga St","rating":4.3,"reviews":121,"hours":"09:00-21:00"},{"name":"GLACIERS Bar & Restaurant","area":"Villamonte","cuisine":"Cafe · Casual","price":1,"address":"C.L. Montelibano Ave","rating":4.8,"reviews":37,"hours":"07:00-19:00"},{"name":"Veego","area":"Downtown","cuisine":"Vegan · Healthy","price":1,"address":"Hilado St","rating":4.9,"reviews":72,"hours":"11:00-20:00"},{"name":"Sian Tian Food Center","area":"Downtown","cuisine":"Chinese","price":1,"address":"Burgos Ave","rating":4.7,"reviews":29,"hours":"08:00-17:00"},{"name":"Ciano's Seafood Grill & Bar - NGC","area":"Villamonte","cuisine":"Seafood · Grill","price":1,"address":"Villa Angela, Villamonte","rating":3.9,"reviews":100,"hours":"06:00-21:00"},{"name":"nolew's kitchen","area":"Villamonte","cuisine":"Casual · Family","price":1,"address":"Margarita St","rating":4.7,"reviews":21,"hours":"17:00-21:00"},{"name":"Taverna Bacolod","area":"Pahanocoy / Sum-ag","cuisine":"International · Casual","price":2,"address":"May's Organic Garden, Pahanocoy","rating":4.8,"reviews":94,"hours":null},{"name":"Good Coffee Bacolod","area":"Lacson","cuisine":"Cafe · Coffee","price":1,"address":"11th St., Lacson","rating":4.9,"reviews":20,"hours":"10:00-22:00"},{"name":"Tippy's Bistro","area":"Lacson","cuisine":"Bistro · Bar","price":1,"address":"Lacson St","rating":4.5,"reviews":424,"hours":"16:00-23:00"},{"name":"Natural Garden Cafe","area":"Villamonte","cuisine":"Cafe · Healthy","price":1,"address":"Kametal Rd","rating":4.7,"reviews":55,"hours":"09:00-17:00"},{"name":"Scarborough Seafoods","area":"South","cuisine":"Seafood","price":2,"address":"Bacolod City","rating":4.4,"reviews":159,"hours":"11:00-14:00|17:00-21:00"},{"name":"Delicioso","area":"Mandalagan","cuisine":"European · International","price":2,"address":"Lacson St","rating":4.4,"reviews":661,"hours":"07:30-22:00"},{"name":"Juliana's Cafe & Resto","area":"Lacson","cuisine":"Cafe · Filipino","price":3,"address":"7th St","rating":4.4,"reviews":70,"hours":"11:00-21:00"},{"name":"Bob's Restaurant Main Northdrive","area":"Lacson","cuisine":"Filipino · International","price":2,"address":"BS Aquino Dr","rating":4.4,"reviews":1257,"hours":"07:30-21:30"},{"name":"21 Restaurant","area":"Lacson","cuisine":"Filipino · International","price":1,"address":"21 Lacson St","rating":4.4,"reviews":451,"hours":"10:00-22:00"},{"name":"Aboy's Restaurant","area":"Singcang / Goldenfield","cuisine":"Filipino · Seafood","price":2,"address":"Liroville Subd., Singcang","rating":4.4,"reviews":778,"hours":"10:00-22:00"},{"name":"Chicken House - Main Branch","area":"Lacson","cuisine":"Filipino · Inasal","price":1,"address":"24th Lacson St","rating":4.4,"reviews":513,"hours":"11:00-22:00"},{"name":"Aida's Chicken - Manokan Country","area":"Downtown","cuisine":"Filipino · Inasal","price":1,"address":"Manokan Country","rating":4.2,"reviews":276,"hours":"09:00-23:30"},{"name":"Masskara Chicken","area":"Lacson","cuisine":"Filipino · Inasal","price":1,"address":"BS Aquino Dr","rating":4.1,"reviews":628,"hours":"10:00-21:00"},{"name":"Palawud","area":"Bata / Banago","cuisine":"Filipino · Seafood · Grill","price":3,"address":"San Patricio, Banago","rating":4.3,"reviews":1032,"hours":"11:00-00:00"},{"name":"Cafe Uma","area":"Mandalagan","cuisine":"Asian Fusion","price":2,"address":"Paseo Verde","rating":4.5,"reviews":100,"hours":"11:00-21:00"},{"name":"Quedan","area":"Mandalagan","cuisine":"Spanish · Filipino","price":2,"address":"Paseo Verde","rating":4.4,"reviews":202,"hours":"16:00-00:00"},{"name":"Kinoboy Restaurant and Bar","area":"Lacson","cuisine":"Filipino · Bar","price":1,"address":"26 Lacson St","rating":4.4,"reviews":77,"hours":"00:00-24:00"},{"name":"Chicken House - Shopping Branch","area":"Downtown","cuisine":"Filipino · Inasal","price":1,"address":"Hilado St","rating":4.4,"reviews":434,"hours":"11:00-22:00"},{"name":"Aida's Chicken Inasal - Art District","area":"Mandalagan","cuisine":"Filipino · Inasal","price":1,"address":"Art District, Mandalagan","rating":4.1,"reviews":50,"hours":"10:00-21:30"},{"name":"Masskara Chicken Inasal Buri Rd","area":"Mandalagan","cuisine":"Filipino · Inasal","price":1,"address":"Buri Road","rating":3.8,"reviews":52,"hours":null},{"name":"Chicken House - Alunan Branch","area":"Singcang / Goldenfield","cuisine":"Filipino · Inasal","price":1,"address":"Araneta Ave","rating":4.3,"reviews":328,"hours":"11:00-22:00"},{"name":"Aida's Chicken San Juan Branch","area":"Downtown","cuisine":"Filipino · Inasal","price":1,"address":"San Juan St","rating":4.3,"reviews":125,"hours":"09:00-23:00"},{"name":"Masskara Chicken Inasal East NGC","area":"Villamonte","cuisine":"Filipino · Inasal","price":1,"address":"Circumferential Rd., Villamonte","rating":4.1,"reviews":113,"hours":"11:00-22:00"},{"name":"Chicken House - Homesite Branch","area":"Villamonte","cuisine":"Filipino · Inasal","price":1,"address":"Homesite, Circumferential Rd","rating":4.3,"reviews":19,"hours":"11:00-22:00"},{"name":"Masskara Chicken Inasal - La Salle Ave","area":"Lacson","cuisine":"Filipino · Inasal","price":1,"address":"La Salle Ave","rating":5.0,"reviews":2,"hours":null},{"name":"Chicken House - San Juan Branch","area":"Downtown","cuisine":"Filipino · Inasal","price":1,"address":"San Juan / San Sebastian","rating":4.3,"reviews":74,"hours":"11:00-22:00"},{"name":"Jin Long Hotpot","area":"Downtown","cuisine":"Chinese · Hotpot","price":2,"address":"Anahaw Arcade","rating":4.3,"reviews":42,"hours":"11:00-22:00"},{"name":"Coffee Culture On Lacson","area":"Lacson","cuisine":"Cafe · Coffee","price":1,"address":"20th St. corner Lacson","rating":4.7,"reviews":49,"hours":"09:00-21:00"},{"name":"74 Cafe - Bacolod","area":"Upper East","cuisine":"Cafe · Casual","price":1,"address":"One Regis Tower, Upper East","rating":4.4,"reviews":67,"hours":"08:00-22:00"},{"name":"Buttery Bacolod","area":"Mandalagan","cuisine":"Cafe · Dessert","price":2,"address":"Lacson / C.L. Montelibano","rating":4.6,"reviews":74,"hours":"09:00-22:00"},{"name":"Ribshack - SM City Bacolod","area":"SM City Bacolod","cuisine":"Ribs · Grill","price":1,"address":"SM City Bacolod","rating":4.2,"reviews":327,"hours":"10:00-21:00"},{"name":"Uncle Rick's Pizza","area":"Villamonte","cuisine":"Pizza","price":1,"address":"Victorina Drive","rating":4.8,"reviews":37,"hours":"11:30-20:00"},{"name":"Subarashii","area":"Mandalagan","cuisine":"Japanese","price":1,"address":"GM Cordova Ave","rating":4.7,"reviews":71,"hours":"11:00-20:00"},{"name":"NEW NATURE'S HOTPOT RESTAURANT","area":"Villamonte","cuisine":"Chinese · Hotpot","price":1,"address":"BS Aquino Dr","rating":4.3,"reviews":66,"hours":"08:00-20:00"},{"name":"Angel's Pizza Bacolod","area":"Mandalagan","cuisine":"Pizza","price":1,"address":"Lacson St","rating":4.0,"reviews":157,"hours":"09:00-21:00"},{"name":"SEOUL BLACK SM CITY BACOLOD","area":"SM City Bacolod","cuisine":"Korean · BBQ","price":2,"address":"SM City Bacolod","rating":4.3,"reviews":36,"hours":"10:00-22:00"},{"name":"Lola Grill & Restaurant","area":"Mandalagan","cuisine":"Filipino · Grill","price":2,"address":"Carmenville Subdivision, Bacolod","rating":4.9,"reviews":566,"hours":"11:00-21:00"},{"name":"Botejyu Ayala Malls Capitol Central","area":"Ayala Capitol Central","cuisine":"Japanese","price":2,"address":"Ayala Malls Capitol Central, Gatuslao St","rating":4.8,"reviews":495,"hours":"10:00-22:00"},{"name":"Kuya J Restaurant","area":"Downtown","cuisine":"Filipino","price":2,"address":"Father M. Ferrero St","rating":4.0,"reviews":391,"hours":"10:00-21:00"},{"name":"UNCLE GER'S","area":"Downtown","cuisine":"Seafood · Filipino","price":2,"address":"Bacolod City","rating":4.4,"reviews":134,"hours":"11:00-22:00"},{"name":"Cafe Bobs Flagship","area":"Lacson","cuisine":"Cafe · Filipino","price":1,"address":"21 Lacson St","rating":4.3,"reviews":924,"hours":"08:00-22:00"},{"name":"Ted’s Old Timer La Paz Batchoy - San Juan St","area":"Downtown","cuisine":"Filipino · Batchoy","price":1,"address":"San Juan St","rating":5.0,"reviews":1,"hours":"00:00-24:00"},{"name":"Gina's Seafoods Restaurant","area":"Downtown","cuisine":"Seafood · Filipino","price":2,"address":"San Juan St","rating":4.6,"reviews":1115,"hours":"10:00-22:00"},{"name":"GG Korean Food House","area":"Downtown","cuisine":"Korean","price":1,"address":"Bacolod City","rating":4.9,"reviews":34,"hours":"10:00-20:00"},{"name":"UMAMI JAPANESE RESTAURANT","area":"Lacson","cuisine":"Japanese","price":2,"address":"15th Street, Lacson St","rating":4.7,"reviews":63,"hours":"11:30-21:30"},{"name":"BRUNCH OUT CAFE","area":"Downtown","cuisine":"Cafe · Brunch","price":1,"address":"Bacolod City","rating":4.4,"reviews":54,"hours":"10:30-22:00"},{"name":"EME's Food Hall Bacolod","area":"Downtown","cuisine":"Food Hall · Fast Food","price":1,"address":"San Sebastian St","rating":4.7,"reviews":23,"hours":"10:00-00:00"},{"name":"The Dhaba Authentic Indian Restaurant","area":"Villamonte","cuisine":"Indian","price":1,"address":"The Shophouse Heritage, B.S. Aquino Drive","rating":3.4,"reviews":32,"hours":"09:00-19:00"},{"name":"Ramen & Sushi","area":"Mandalagan","cuisine":"Japanese · Ramen · Sushi","price":1,"address":"GM Cordova Ave (Buri Road), Mandalagan","rating":null,"reviews":0,"hours":null},{"name":"Carinderia by Galilee","area":"Singcang / Goldenfield","cuisine":"Filipino · Carinderia","price":1,"address":"Magsaysay Ave, Singcang-Airport","rating":5.0,"reviews":2,"hours":null},{"name":"2 STORY KITCHEN","area":"Villamonte","cuisine":"Casual · Family","price":1,"address":"Villa Angela, Circumferential Rd, Villamonte","rating":4.3,"reviews":294,"hours":"10:30-22:30"},{"name":"Pretty Baked Bacolod","area":"Villamonte","cuisine":"Cafe · Dessert · Bakery","price":1,"address":"Capitol Heights, Sambag St","rating":5.0,"reviews":22,"hours":"09:00-19:00"},{"name":"Jollibee SM City Bacolod","area":"SM City Bacolod","cuisine":"Fast Food · Filipino","price":1,"address":"SM City Bacolod","rating":4.4,"reviews":138,"hours":"10:00-22:00"},{"name":"Indian Foods Bacolod","area":"Downtown","cuisine":"Indian","price":1,"address":"Bacolod City","rating":3.8,"reviews":9,"hours":null},{"name":"Bascon Cakes 888","area":"888 Chinatown","cuisine":"Cafe · Dessert · Bakery","price":2,"address":"888 Gatuslao St","rating":5.0,"reviews":75,"hours":"08:00-20:00"},{"name":"24 Chicken San Juan Downtown Bacolod","area":"Downtown","cuisine":"Korean · Chicken · Fast Food","price":1,"address":"78 San Juan St","rating":4.9,"reviews":81,"hours":"10:00-21:00"},{"name":"Kuppa Coffee & Tea","area":"Villamonte","cuisine":"Cafe · Breakfast · Coffee","price":1,"address":"Capitol Shopping Center, Tindalo Ave, Villamonte","rating":4.4,"reviews":557,"hours":"07:00-22:00"},{"name":"Parrilla Negrense Kitchen","area":"Lacson","cuisine":"Filipino · Grill","price":2,"address":"23rd & 24th, Lacson St","rating":4.2,"reviews":36,"hours":"11:00-15:00|18:00-21:00"},{"name":"TGI Fridays - Ayala Malls Capitol Central","area":"Ayala Capitol Central","cuisine":"American · Grill","price":2,"address":"Ayala Malls Capitol Central","rating":4.7,"reviews":422,"hours":"10:00-21:00"},{"name":"Botejyu SM City Bacolod","area":"SM City Bacolod","cuisine":"Japanese","price":2,"address":"SM City Bacolod","rating":4.9,"reviews":1479,"hours":"10:00-21:00"},{"name":"Inasal de Ilonggo","area":"Lacson","cuisine":"Filipino · Inasal","price":1,"address":"27th Street, Lacson St","rating":4.5,"reviews":19,"hours":null},{"name":"Tong Yang, Capitol Central Bacolod","area":"Ayala Capitol Central","cuisine":"Buffet · Hotpot · Grill","price":2,"address":"Ayala Malls Capitol Central","rating":4.9,"reviews":3648,"hours":"11:00-14:30|17:30-21:00"},{"name":"Tong Yang, SM City Bacolod","area":"SM City Bacolod","cuisine":"Buffet · Hotpot · Grill","price":2,"address":"SM City Bacolod","rating":4.9,"reviews":2199,"hours":"11:00-14:30|17:30-22:00"},{"name":"Sandok Comfort Food","area":"Villamonte","cuisine":"Filipino · Comfort Food","price":1,"address":"Capitol Shopping Center, Narra Ave, Villamonte","rating":4.5,"reviews":273,"hours":"10:00-21:00"},{"name":"Pizza Hut - SM City Bacolod","area":"SM City Bacolod","cuisine":"Pizza · Fast Food","price":1,"address":"SM City Bacolod, Rizal St","rating":null,"reviews":0,"hours":"10:00-22:00"},{"name":"But First, Coffee - SM City Bacolod","area":"SM City Bacolod","cuisine":"Cafe · Coffee","price":1,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":null},{"name":"PICKUP COFFEE - SM City Bacolod","area":"SM City Bacolod","cuisine":"Cafe · Coffee","price":1,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Waffle Time - SM City Bacolod","area":"SM City Bacolod","cuisine":"Snack · Waffle","price":1,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Shakey's Pizza - SM City Bacolod","area":"SM City Bacolod","cuisine":"Pizza · American","price":2,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Buchiton Tonkotsu Ramen - SM City Bacolod","area":"SM City Bacolod","cuisine":"Japanese · Ramen","price":1,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":null},{"name":"KUPPA - SM City Bacolod","area":"SM City Bacolod","cuisine":"Cafe · Coffee","price":1,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Chooks-to-Go - SM City Bacolod","area":"SM City Bacolod","cuisine":"Filipino · Chicken","price":1,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":null},{"name":"J.CO Donuts & Coffee - SM City Bacolod","area":"SM City Bacolod","cuisine":"Cafe · Donuts · Coffee","price":1,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":null},{"name":"McDonald's - SM City Bacolod","area":"SM City Bacolod","cuisine":"Fast Food · Burger","price":1,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Sumo Niku - SM City Bacolod","area":"SM City Bacolod","cuisine":"Japanese · Grill","price":2,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Seattle's Best Coffee - SM City Bacolod","area":"SM City Bacolod","cuisine":"Cafe · Coffee","price":1,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Burger King - SM City Bacolod","area":"SM City Bacolod","cuisine":"Fast Food · Burger","price":1,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":null},{"name":"The Maki Project - SM City Bacolod","area":"SM City Bacolod","cuisine":"Japanese · Sushi","price":1,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Dairy Queen - SM City Bacolod","area":"SM City Bacolod","cuisine":"Dessert · Ice Cream","price":1,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Red Ribbon - SM City Bacolod","area":"SM City Bacolod","cuisine":"Bakery · Dessert","price":1,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Picole - SM City Bacolod","area":"SM City Bacolod","cuisine":"Dessert · Ice Cream","price":1,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Ooze Taiwan Wheel Cake - SM City Bacolod","area":"SM City Bacolod","cuisine":"Dessert · Snack","price":1,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Gong Cha - SM City Bacolod","area":"SM City Bacolod","cuisine":"Milk Tea · Drinks","price":1,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":null},{"name":"KFC - SM City Bacolod","area":"SM City Bacolod","cuisine":"Fast Food · Chicken","price":1,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Chowking - SM City Bacolod","area":"SM City Bacolod","cuisine":"Chinese · Fast Food","price":1,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Greenwich - SM City Bacolod","area":"SM City Bacolod","cuisine":"Pizza · Fast Food","price":1,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Mang Inasal - SM City Bacolod","area":"SM City Bacolod","cuisine":"Filipino · Inasal · Fast Food","price":1,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Kenny Rogers Roasters - SM City Bacolod","area":"SM City Bacolod","cuisine":"Chicken · American","price":2,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Dunkin' - SM City Bacolod","area":"SM City Bacolod","cuisine":"Cafe · Donuts · Coffee","price":1,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Bo's Coffee - SM City Bacolod","area":"SM City Bacolod","cuisine":"Cafe · Coffee","price":1,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Giligan's Island Restaurant & Bar - SM City Bacolod","area":"SM City Bacolod","cuisine":"Filipino · Grill","price":2,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Max's Restaurant - SM City Bacolod","area":"SM City Bacolod","cuisine":"Filipino · Chicken","price":2,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Mister Donut Cafe - SM City Bacolod","area":"SM City Bacolod","cuisine":"Cafe · Donuts","price":1,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Kuya J - SM City Bacolod","area":"SM City Bacolod","cuisine":"Filipino","price":2,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Mr. Kimbob - SM City Bacolod","area":"SM City Bacolod","cuisine":"Korean · Fast Food","price":1,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Pepper Lunch - SM City Bacolod","area":"SM City Bacolod","cuisine":"Japanese · Steak","price":2,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":null},{"name":"L'Kaisei Japanese Restaurant - SM City Bacolod","area":"SM City Bacolod","cuisine":"Japanese · Buffet","price":2,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":"10:00-22:00"},{"name":"Yellow Cab Pizza - SM City Bacolod","area":"SM City Bacolod","cuisine":"Pizza · American","price":2,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Lechon H - SM City Bacolod","area":"SM City Bacolod","cuisine":"Filipino · Lechon","price":1,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Quino's Cafe - SM City Bacolod","area":"SM City Bacolod","cuisine":"Cafe · Casual","price":1,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Bigby's Cafe & Restaurant - Ayala Capitol Central","area":"Ayala Capitol Central","cuisine":"American · Filipino · Cafe","price":2,"address":"Ayala Malls Capitol Central","rating":null,"reviews":0,"hours":null},{"name":"Potato Corner - Ayala Capitol Central","area":"Ayala Capitol Central","cuisine":"Snack · Fries","price":1,"address":"Ayala Malls Capitol Central","rating":null,"reviews":0,"hours":null},{"name":"Starbucks - Ayala Capitol Central","area":"Ayala Capitol Central","cuisine":"Cafe · Coffee","price":2,"address":"Ayala Malls Capitol Central","rating":null,"reviews":0,"hours":null},{"name":"Red Ribbon - Ayala Capitol Central","area":"Ayala Capitol Central","cuisine":"Bakery · Dessert","price":1,"address":"Ayala Malls Capitol Central","rating":null,"reviews":0,"hours":null},{"name":"Avocadoria.ph - Ayala Capitol Central","area":"Ayala Capitol Central","cuisine":"Dessert · Healthy","price":1,"address":"Ayala Malls Capitol Central","rating":null,"reviews":0,"hours":null},{"name":"Chatime - Ayala Capitol Central","area":"Ayala Capitol Central","cuisine":"Milk Tea · Drinks","price":1,"address":"Ayala Malls Capitol Central","rating":null,"reviews":0,"hours":null},{"name":"Yellow Cab Pizza - Ayala Capitol Central","area":"Ayala Capitol Central","cuisine":"Pizza · American","price":2,"address":"Ayala Malls Capitol Central","rating":null,"reviews":0,"hours":null},{"name":"Mang Inasal - Ayala Capitol Central","area":"Ayala Capitol Central","cuisine":"Filipino · Inasal · Fast Food","price":1,"address":"Ayala Malls Capitol Central","rating":null,"reviews":0,"hours":null},{"name":"Leylam - Ayala Capitol Central","area":"Ayala Capitol Central","cuisine":"Shawarma · Fast Food","price":1,"address":"Ayala Malls Capitol Central","rating":null,"reviews":0,"hours":null},{"name":"Pan de Manila - Ayala Capitol Central","area":"Ayala Capitol Central","cuisine":"Bakery · Cafe","price":1,"address":"Ayala Malls Capitol Central","rating":null,"reviews":0,"hours":null},{"name":"Pancake House - Ayala Capitol Central","area":"Ayala Capitol Central","cuisine":"American · Breakfast","price":2,"address":"Ayala Malls Capitol Central","rating":null,"reviews":0,"hours":null},{"name":"Turks - Ayala Capitol Central","area":"Ayala Capitol Central","cuisine":"Shawarma · Fast Food","price":1,"address":"Ayala Malls Capitol Central","rating":null,"reviews":0,"hours":null},{"name":"Little Farmers Coffee - Ayala Capitol Central","area":"Ayala Capitol Central","cuisine":"Cafe · Coffee","price":1,"address":"Ayala Malls Capitol Central","rating":null,"reviews":0,"hours":null},{"name":"BreadTalk - Ayala Capitol Central","area":"Ayala Capitol Central","cuisine":"Bakery · Cafe","price":1,"address":"Ayala Malls Capitol Central","rating":null,"reviews":0,"hours":null},{"name":"The Coffee Bean & Tea Leaf - Ayala Capitol Central","area":"Ayala Capitol Central","cuisine":"Cafe · Coffee","price":2,"address":"Ayala Malls Capitol Central","rating":null,"reviews":0,"hours":null},{"name":"Tater's - Ayala Capitol Central","area":"Ayala Capitol Central","cuisine":"Snack · Cinema Food","price":1,"address":"Ayala Malls Capitol Central","rating":null,"reviews":0,"hours":null},{"name":"Watami Grill & Sushi Bar - Ayala Capitol Central","area":"Ayala Capitol Central","cuisine":"Japanese · Sushi · Grill","price":2,"address":"Ayala Malls Capitol Central","rating":null,"reviews":0,"hours":null},{"name":"Siomai House - Ayala Capitol Central","area":"Ayala Capitol Central","cuisine":"Chinese · Dim Sum · Snack","price":1,"address":"Ayala Malls Capitol Central","rating":null,"reviews":0,"hours":null},{"name":"BongBong's Delicacies - Ayala Capitol Central","area":"Ayala Capitol Central","cuisine":"Bakery · Pasalubong","price":1,"address":"Ayala Malls Capitol Central","rating":null,"reviews":0,"hours":null},{"name":"Tokyo Tokyo - Ayala Capitol Central","area":"Ayala Capitol Central","cuisine":"Japanese · Fast Food","price":1,"address":"Ayala Malls Capitol Central","rating":null,"reviews":0,"hours":null},{"name":"Omotenashi Ramen - Ayala Capitol Central","area":"Ayala Capitol Central","cuisine":"Japanese · Ramen","price":2,"address":"Ayala Malls Capitol Central","rating":null,"reviews":0,"hours":null},{"name":"Riannes Churreria - Ayala Capitol Central","area":"Ayala Capitol Central","cuisine":"Dessert · Churros","price":1,"address":"Ayala Malls Capitol Central","rating":null,"reviews":0,"hours":null},{"name":"Jollibee - Ayala Capitol Central","area":"Ayala Capitol Central","cuisine":"Fast Food · Filipino","price":1,"address":"Ayala Malls Capitol Central","rating":null,"reviews":0,"hours":null},{"name":"Lantien - Ayala Capitol Central","area":"Ayala Capitol Central","cuisine":"Chinese","price":2,"address":"Ayala Malls Capitol Central","rating":null,"reviews":0,"hours":null},{"name":"PICKUP COFFEE - Ayala Capitol Central","area":"Ayala Capitol Central","cuisine":"Cafe · Coffee","price":1,"address":"Ayala Malls Capitol Central","rating":null,"reviews":0,"hours":null},{"name":"Yappari Steak - Ayala Capitol Central","area":"Ayala Capitol Central","cuisine":"Japanese · Steak","price":2,"address":"Ayala Malls Capitol Central","rating":null,"reviews":0,"hours":null},{"name":"Chowking - Ayala Capitol Central","area":"Ayala Capitol Central","cuisine":"Chinese · Fast Food","price":1,"address":"Ayala Malls Capitol Central","rating":null,"reviews":0,"hours":null},{"name":"Dunkin' - Ayala Capitol Central","area":"Ayala Capitol Central","cuisine":"Cafe · Donuts · Coffee","price":1,"address":"Ayala Malls Capitol Central","rating":null,"reviews":0,"hours":null},{"name":"Biscocho Haus - Robinsons Bacolod","area":"Robinsons Bacolod","cuisine":"Bakery · Pasalubong","price":1,"address":"Robinsons Bacolod, Lacson St, Mandalagan","rating":null,"reviews":0,"hours":"10:00-21:00"},{"name":"BreadTalk - Robinsons Bacolod","area":"Robinsons Bacolod","cuisine":"Bakery · Cafe","price":1,"address":"Robinsons Bacolod, Lacson St, Mandalagan","rating":null,"reviews":0,"hours":"10:00-21:00"},{"name":"Chatime - Robinsons Bacolod","area":"Robinsons Bacolod","cuisine":"Milk Tea · Drinks","price":1,"address":"Robinsons Bacolod, Lacson St, Mandalagan","rating":null,"reviews":0,"hours":"10:00-21:00"},{"name":"Greenwich - Robinsons Bacolod","area":"Robinsons Bacolod","cuisine":"Pizza · Fast Food","price":1,"address":"Robinsons Bacolod, Lacson St, Mandalagan","rating":4.6,"reviews":99,"hours":"10:00-21:00"},{"name":"Hong Kong Kitchen - Robinsons Bacolod","area":"Robinsons Bacolod","cuisine":"Chinese","price":1,"address":"Robinsons Bacolod, Lacson St, Mandalagan","rating":null,"reviews":0,"hours":"10:00-21:00"},{"name":"KFC - Robinsons Bacolod","area":"Robinsons Bacolod","cuisine":"Fast Food · Chicken","price":1,"address":"Robinsons Bacolod, Lacson St, Mandalagan","rating":null,"reviews":0,"hours":"10:00-21:00"},{"name":"Leylam - Robinsons Bacolod","area":"Robinsons Bacolod","cuisine":"Shawarma · Fast Food","price":1,"address":"Robinsons Bacolod, Lacson St, Mandalagan","rating":null,"reviews":0,"hours":"10:00-21:00"},{"name":"The Pastry Shop of Bob's - Robinsons Bacolod","area":"Robinsons Bacolod","cuisine":"Bakery · Dessert · Cafe","price":1,"address":"Robinsons Bacolod, Lacson St, Mandalagan","rating":null,"reviews":0,"hours":"10:00-21:00"},{"name":"Expresse Cafe - Robinsons Bacolod","area":"Robinsons Bacolod","cuisine":"Cafe · Coffee","price":1,"address":"Robinsons Bacolod, Lacson St, Mandalagan","rating":null,"reviews":0,"hours":"10:00-21:00"},{"name":"Potato Corner - Robinsons Bacolod","area":"Robinsons Bacolod","cuisine":"Snack · Fries","price":1,"address":"Robinsons Bacolod, Lacson St, Mandalagan","rating":null,"reviews":0,"hours":"10:00-21:00"},{"name":"Thirsty - Robinsons Bacolod","area":"Robinsons Bacolod","cuisine":"Drinks · Juice","price":1,"address":"Robinsons Bacolod, Lacson St, Mandalagan","rating":null,"reviews":0,"hours":"10:00-21:00"},{"name":"Fruits To Go - Robinsons Bacolod","area":"Robinsons Bacolod","cuisine":"Drinks · Fruit","price":1,"address":"Robinsons Bacolod Citywalk","rating":null,"reviews":0,"hours":"10:00-21:00"},{"name":"Maisy's Coffee Cut - Robinsons Bacolod","area":"Robinsons Bacolod","cuisine":"Cafe · Coffee","price":1,"address":"Robinsons Bacolod Citywalk","rating":null,"reviews":0,"hours":"10:00-21:00"},{"name":"Tienda Street Food - Robinsons Bacolod","area":"Robinsons Bacolod","cuisine":"Street Food · Filipino","price":1,"address":"Robinsons Bacolod Citywalk","rating":null,"reviews":0,"hours":"10:00-21:00"},{"name":"Squeeze It Lemon - Robinsons Bacolod","area":"Robinsons Bacolod","cuisine":"Drinks · Lemonade","price":1,"address":"Robinsons Bacolod Citywalk","rating":null,"reviews":0,"hours":"10:00-21:00"},{"name":"Grill Central - Robinsons Bacolod","area":"Robinsons Bacolod","cuisine":"Grill · Filipino","price":1,"address":"Robinsons Bacolod Citywalk","rating":null,"reviews":0,"hours":"10:00-21:00"},{"name":"El Rincon - Robinsons Bacolod","area":"Robinsons Bacolod","cuisine":"Filipino","price":2,"address":"Level 3, Robinsons Bacolod, Lacson St","rating":null,"reviews":0,"hours":"10:00-21:00"},{"name":"PICKUP COFFEE - 888 Chinatown","area":"888 Chinatown","cuisine":"Cafe · Coffee","price":1,"address":"888 Chinatown Square, Gatuslao St","rating":null,"reviews":0,"hours":null},{"name":"Chigue House of Kimchi - 888 Premier","area":"888 Chinatown","cuisine":"Korean","price":1,"address":"Chopsticks Zone 2, 2F 888 Chinatown Premier","rating":null,"reviews":0,"hours":null},{"name":"Mr. Kokio - 888 Chinatown","area":"888 Chinatown","cuisine":"Korean · Chicken","price":1,"address":"888 Chinatown Square","rating":null,"reviews":0,"hours":null},{"name":"Glizzy Hotdogs - 888 Chinatown","area":"888 Chinatown","cuisine":"Hotdog · Fast Food","price":1,"address":"GT 888 Mall","rating":null,"reviews":0,"hours":null},{"name":"Little Farmers Coffee Brim - 888 Premier","area":"888 Chinatown","cuisine":"Cafe · Coffee","price":1,"address":"888 Chinatown Premier","rating":null,"reviews":0,"hours":null},{"name":"Famous Belgian Waffles - 888 Chinatown","area":"888 Chinatown","cuisine":"Dessert · Waffle","price":1,"address":"888 Chinatown Square","rating":null,"reviews":0,"hours":null},{"name":"Popoy's Batchoy - 888 Chinatown","area":"888 Chinatown","cuisine":"Filipino · Batchoy","price":1,"address":"888 Chinatown Mall","rating":null,"reviews":0,"hours":null},{"name":"Leylam - 888 Chinatown","area":"888 Chinatown","cuisine":"Shawarma · Fast Food","price":1,"address":"888 Chinatown Premier","rating":null,"reviews":0,"hours":null},{"name":"Lay Tea - 888 Chinatown","area":"888 Chinatown","cuisine":"Milk Tea · Drinks","price":1,"address":"888 Chinatown Premier","rating":null,"reviews":0,"hours":null},{"name":"Totong's - 888 Chinatown","area":"888 Chinatown","cuisine":"Filipino · Fast Food","price":1,"address":"888 Chinatown Premier","rating":null,"reviews":0,"hours":null},{"name":"Hungry-Army Food Stall - 888 Chinatown","area":"888 Chinatown","cuisine":"Fast Food · Snack","price":1,"address":"888 Chinatown","rating":null,"reviews":0,"hours":null},{"name":"El's Takobites And Brews - 888 Chinatown","area":"888 Chinatown","cuisine":"Japanese · Takoyaki · Drinks","price":1,"address":"888 Chinatown","rating":null,"reviews":0,"hours":null},{"name":"Turks - 888 Chinatown","area":"888 Chinatown","cuisine":"Shawarma · Fast Food","price":1,"address":"888 Chinatown Premier","rating":null,"reviews":0,"hours":null},{"name":"Sio-Yummy Premium Siomai - 888 Chinatown","area":"888 Chinatown","cuisine":"Chinese · Siomai","price":1,"address":"888 Chinatown Premier","rating":null,"reviews":0,"hours":null},{"name":"Quickher Cafe - 888 Chinatown","area":"888 Chinatown","cuisine":"Cafe · Coffee","price":1,"address":"888 Chinatown","rating":null,"reviews":0,"hours":null},{"name":"Rainbowl - 888 Chinatown","area":"888 Chinatown","cuisine":"Rice Bowl · Fast Food","price":1,"address":"888 Chinatown Food Court","rating":null,"reviews":0,"hours":null},{"name":"Ribshack - 888 Chinatown","area":"888 Chinatown","cuisine":"Ribs · Grill","price":1,"address":"GT 888 Mall","rating":4.5,"reviews":4,"hours":"10:00-20:00"},{"name":"Ted's Old Timer La Paz Batchoy - 888 Chinatown","area":"888 Chinatown","cuisine":"Filipino · Batchoy","price":1,"address":"888 Chinatown","rating":null,"reviews":0,"hours":null},{"name":"Inaka Restaurant and Sushi Bar","area":"Lacson","cuisine":"Japanese · Sushi","price":2,"address":"21st St corner Lacson St, Bacolod","rating":4.5,"reviews":220,"hours":"11:00-14:00"},{"name":"Apollo Restaurant - Goldenfield","area":"Singcang / Goldenfield","cuisine":"Filipino · Chinese","price":1,"address":"Araneta Ave, Goldenfield area","rating":4.1,"reviews":161,"hours":"10:00-20:30"},{"name":"Lord Byron's BackRibs Bacolod","area":"Singcang / Goldenfield","cuisine":"Ribs · Grill","price":1,"address":"Teleperformance, Magsaysay Ave","rating":4.3,"reviews":213,"hours":"10:00-22:00"},{"name":"Lugaw Avenue Restaurant Bacolod","area":"Villamonte","cuisine":"Filipino · Lugaw","price":1,"address":"Villa Angela HI-STRIP, Circumferential Rd, Villamonte","rating":4.4,"reviews":10,"hours":null},{"name":"Bodega Grill and Restaurant","area":"Mandalagan","cuisine":"Grill · Continental","price":2,"address":"Buri Road, Mandalagan","rating":4.5,"reviews":122,"hours":"11:00-14:30|17:00-21:00"},{"name":"Sanders Coffee and Sausages Downtown","area":"Downtown","cuisine":"Cafe · Sausage · Casual","price":1,"address":"6 Locsin St","rating":4.6,"reviews":84,"hours":"08:00-22:00"},{"name":"Kyle's Eatery","area":"Downtown","cuisine":"Filipino · Eatery","price":1,"address":"43 E.J. Garcia St","rating":4.5,"reviews":343,"hours":"10:00-19:30"},{"name":"Kape CONTI","area":"Granada","cuisine":"Cafe · Filipino","price":1,"address":"Purok 2 Rivera Street, Brgy. Granada","rating":4.5,"reviews":104,"hours":"05:30-21:00"},{"name":"Yummy Chikboi Inasal - Villamonte","area":"Villamonte","cuisine":"Filipino · Inasal","price":1,"address":"L N Agustin Dr, Villamonte","rating":5.0,"reviews":1,"hours":null},{"name":"Sucré by Liz and Mom","area":"Upper East","cuisine":"Cafe · Dessert · Bakery","price":2,"address":"Upper East, Bacolod City","rating":null,"reviews":0,"hours":null},{"name":"Mango's Tree Resto & Bar","area":"Mansilingan","cuisine":"Filipino · Bar","price":1,"address":"Mansilingan, Bacolod City","rating":null,"reviews":0,"hours":null},{"name":"Carmen's Cafe - Go Hotels Bacolod","area":"Robinsons Bacolod","cuisine":"Cafe · Breakfast","price":1,"address":"Go Hotels Bacolod, Robinsons area","rating":null,"reviews":0,"hours":null},{"name":"Edibowl_Bcd","area":"Mandalagan","cuisine":"Asian · Rice Bowl","price":1,"address":"Ani Residences, Buri Road, Mandalagan","rating":null,"reviews":0,"hours":null},{"name":"Ribshack - Lacson","area":"Lacson","cuisine":"Ribs · Grill","price":1,"address":"Lacson St, Bacolod City","rating":null,"reviews":0,"hours":null},{"name":"Arabesques Middle Eastern Restaurant","area":"Villamonte","cuisine":"Middle Eastern","price":2,"address":"C.L. Montelibano Ave, Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Mezcla Mexican Cocina & Bar","area":"Lacson","cuisine":"Mexican · Bar","price":2,"address":"Lacson St, Bacolod City","rating":null,"reviews":0,"hours":null},{"name":"Al Satwa Shawarma","area":"Lacson","cuisine":"Middle Eastern · Shawarma","price":1,"address":"La Salle Ave, Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Sharyn's Cansi House","area":"Villamonte","cuisine":"Filipino · Cansi","price":1,"address":"Capitol Shopping Center, Narra Ave, Villamonte","rating":null,"reviews":0,"hours":null},{"name":"Byron's Backribs - Homesite","area":"Villamonte","cuisine":"Ribs · Grill","price":1,"address":"Homesite, Bacolod City","rating":null,"reviews":0,"hours":null},{"name":"DONOL'S Lechon","area":"Singcang / Goldenfield","cuisine":"Filipino · Lechon","price":1,"address":"Araneta St, Singcang","rating":null,"reviews":0,"hours":null},{"name":"Consing's Carinderia","area":"Downtown","cuisine":"Filipino · Carinderia","price":1,"address":"Bonifacio St, Bacolod City","rating":null,"reviews":0,"hours":null},{"name":"19th Street Coffee","area":"Lacson","cuisine":"Cafe · Coffee","price":1,"address":"19th St, Lacson, Bacolod","rating":null,"reviews":0,"hours":null},{"name":"The Local Cafe Bacolod","area":"Mandalagan","cuisine":"Cafe · Coffee","price":1,"address":"Ani Building, Buri Road, Mandalagan","rating":null,"reviews":0,"hours":null},{"name":"Sofia Bread & Pastries","area":"Villamonte","cuisine":"Bakery · Cafe","price":1,"address":"Narra Ave, Villamonte","rating":null,"reviews":0,"hours":null},{"name":"Dan Eric's Grand Ice Cream - Sum-ag","area":"Pahanocoy / Sum-ag","cuisine":"Dessert · Ice Cream","price":1,"address":"Sum-ag, Bacolod City","rating":null,"reviews":0,"hours":null},{"name":"Got Tea? - 20th Lacson","area":"Lacson","cuisine":"Milk Tea · Drinks","price":1,"address":"20th St, Lacson, Bacolod","rating":null,"reviews":0,"hours":null},{"name":"TUS Restaurant","area":"Villamonte","cuisine":"Filipino · International","price":2,"address":"LOC Residences, 11th St corner Tops Rd, Villamonte","rating":null,"reviews":0,"hours":null},{"name":"Cafe Joint - Art District","area":"Mandalagan","cuisine":"Cafe · Coffee","price":1,"address":"Art District, Mandalagan","rating":null,"reviews":0,"hours":null},{"name":"Cafe Lim - Upper East","area":"Upper East","cuisine":"Cafe · Coffee","price":1,"address":"Upper East Foodpark, Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Cafe Oscar","area":"Downtown","cuisine":"Cafe · Casual","price":1,"address":"Galo St, Bacolod City","rating":null,"reviews":0,"hours":null},{"name":"Hello Halo Dessert Shop","area":"Downtown","cuisine":"Dessert · Halo-halo","price":1,"address":"Hernaez St, Bacolod City","rating":null,"reviews":0,"hours":null},{"name":"Maria Kucina Familia","area":"Lacson","cuisine":"Filipino","price":2,"address":"La Salle Ave, Bacolod City","rating":null,"reviews":0,"hours":null},{"name":"Margie's","area":"Downtown","cuisine":"Cafe · Dessert · Bakery","price":1,"address":"Burgos / Lopez Jaena, Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Manoy's Eastblock","area":"Villamonte","cuisine":"Filipino · Casual","price":1,"address":"East Block, Villamonte, Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Buri Rd Coffee and Cocktails","area":"Mandalagan","cuisine":"Cafe · Bar · Coffee","price":2,"address":"Buri Road, Mandalagan","rating":null,"reviews":0,"hours":null},{"name":"Quan Native Delicacies - La Salle","area":"Lacson","cuisine":"Filipino · Native Delicacies","price":1,"address":"La Salle Ave, Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Food Trip - Tangub","area":"Tangub","cuisine":"Filipino · Casual","price":1,"address":"Chapel Village, Tangub, Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Jollibee - Gatuslao","area":"Downtown","cuisine":"Fast Food · Filipino","price":1,"address":"Gatuslao St, Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Starbucks - SM City Bacolod","area":"SM City Bacolod","cuisine":"Cafe · Coffee","price":2,"address":"SM City Bacolod, Rizal St","rating":4.4,"reviews":239,"hours":"08:00-22:00"},{"name":"The Coffee Bean & Tea Leaf - SM City Bacolod","area":"SM City Bacolod","cuisine":"Cafe · Coffee","price":2,"address":"SM City Bacolod North Wing","rating":4.5,"reviews":2,"hours":null},{"name":"Krispy Kreme - SM City Bacolod","area":"SM City Bacolod","cuisine":"Cafe · Donuts · Coffee","price":1,"address":"SMX Center, SM City Bacolod North Wing","rating":4.4,"reviews":100,"hours":"10:00-22:00"},{"name":"Cafe Bobs - Ayala Capitol Central","area":"Ayala Capitol Central","cuisine":"Cafe · Bakery","price":1,"address":"Ayala Malls Capitol Central","rating":4.5,"reviews":30,"hours":"10:00-22:00"},{"name":"Quino's Cafe - Ayala Capitol Central","area":"Ayala Capitol Central","cuisine":"Cafe · Casual","price":1,"address":"3rd Floor, Ayala Malls Capitol Central","rating":4.3,"reviews":4,"hours":null},{"name":"Takoyaki Sensei - Robinsons Bacolod","area":"Robinsons Bacolod","cuisine":"Japanese · Takoyaki","price":1,"address":"Robinsons Place Central Citywalk","rating":4.0,"reviews":7,"hours":"11:00-20:00"},{"name":"SITTING DUCK","area":"Lacson","cuisine":"Filipino · International","price":2,"address":"Paseo Verde Complex, Lacson St","rating":4.4,"reviews":139,"hours":"11:00-14:00|17:00-21:00"},{"name":"Charlie's Burger","area":"Villamonte","cuisine":"Burgers · American","price":1,"address":"Corner Kamunsil St, C.L. Montelibano Ave / La Salle Ave","rating":4.2,"reviews":39,"hours":"11:00-20:00"},{"name":"Pamahao by CommisCo","area":"Villamonte","cuisine":"Asian · Noodles","price":1,"address":"St. Francis Avenue, Doña Juliana Dr","rating":5.0,"reviews":1,"hours":"12:00-21:00"},{"name":"Mansion De Bacolod","area":"Downtown","cuisine":"Filipino · International","price":2,"address":"111 South Lacson St, Brgy. 40","rating":4.1,"reviews":22,"hours":"10:30-14:30|17:30-21:30"},{"name":"Menma","area":"Villamonte","cuisine":"Japanese · Ramen","price":1,"address":"Dahlia St, Circumferential Road","rating":4.2,"reviews":13,"hours":"11:30-21:00"},{"name":"Balai1430","area":"Helvetia Heights","cuisine":"Filipino · Comfort Food","price":2,"address":"1430 Zurich St, Helvetia Heights","rating":4.8,"reviews":62,"hours":"11:00-15:00|18:00-21:00"},{"name":"Cafe Avo","area":"Villamonte","cuisine":"Cafe · Pizza","price":1,"address":"Diola St","rating":4.4,"reviews":47,"hours":"10:00-20:30"},{"name":"Keeka Poke Bar","area":"Mandalagan","cuisine":"Japanese · Poke · Healthy","price":2,"address":"Ani Residences, GM Cordova Ave (Buri Road)","rating":4.8,"reviews":34,"hours":"11:00-20:00"},{"name":"Boodie's Bistro","area":"Mandalagan","cuisine":"Filipino · American · Spanish","price":2,"address":"Food Central Compound, Lacson St, Mandalagan","rating":4.6,"reviews":73,"hours":"11:00-22:00"},{"name":"Rumah Makan Kampung","area":"Villamonte","cuisine":"Indonesian · Thai · Malay","price":1,"address":"The Shophouse Heritage, BS Aquino cor Narra Ave","rating":5.0,"reviews":45,"hours":"11:00-18:30"},{"name":"Twist Restaurant - Sugarland Hotel","area":"Singcang / Goldenfield","cuisine":"Filipino · International","price":2,"address":"Sugarland Hotel, Araneta Ave","rating":3.7,"reviews":6,"hours":"06:00-23:00"},{"name":"Cafe Gorda","area":"Villamonte","cuisine":"Cafe · Filipino","price":1,"address":"The Hub, La Salle Ave, Brgy. Villamonte","rating":4.4,"reviews":138,"hours":"08:00-20:00"},{"name":"El Gato","area":"Mandalagan","cuisine":"International · Bar","price":2,"address":"GM Cordova Ave (Buri Road)","rating":5.0,"reviews":2,"hours":"11:00-23:00"},{"name":"MuShu","area":"Lacson","cuisine":"Asian Fusion","price":3,"address":"20th St, Lacson","rating":4.4,"reviews":214,"hours":"11:00-21:30"},{"name":"NOOMA Kitchen+Bar","area":"Lacson","cuisine":"Filipino · Kapampangan · Bar","price":2,"address":"Lacson St","rating":4.4,"reviews":43,"hours":"11:00-01:00"},{"name":"Tita Ping's Restaurant","area":"Villamonte","cuisine":"Chinese · Filipino","price":1,"address":"Capitol Shopping Center, Hilado St","rating":4.0,"reviews":71,"hours":"09:00-21:00"},{"name":"Salgado's Kitchen","area":"Villamonte","cuisine":"Filipino · Home Cooking","price":1,"address":"Doña Juliana and Sebastian Sts, Brgy. 33","rating":4.5,"reviews":45,"hours":"10:30-14:00"},{"name":"Nezu Modern Japanese","area":"Lacson","cuisine":"Japanese","price":1,"address":"19th-20th St, Lacson","rating":4.6,"reviews":406,"hours":"11:00-14:00|16:30-20:30"},{"name":"Bangaw Keeng Bacolod","area":"Villamonte","cuisine":"Asian · Casual","price":1,"address":"C.L. Montelibano Ave cor Bugnay Road","rating":4.7,"reviews":25,"hours":"11:00-22:00"},{"name":"Azalea Cucina","area":"Homesite / Montevista","cuisine":"Filipino · Family","price":1,"address":"Blk 9 Oriole St, Homesite, Brgy. Montevista","rating":5.0,"reviews":2,"hours":"10:30-19:30"},{"name":"LANAI by FreshStart","area":"Pahanocoy / Sum-ag","cuisine":"Filipino · Healthy · International","price":2,"address":"Sitio Aning, Araneta Highway, Brgy. Pahanocoy","rating":4.5,"reviews":226,"hours":"11:00-21:00"},{"name":"Bascon Cafe Sumag","area":"Pahanocoy / Sum-ag","cuisine":"Cafe · Filipino","price":1,"address":"Adveniat Building, Negros South Road, Brgy. Sum-ag","rating":4.2,"reviews":5,"hours":"06:00-21:00"},{"name":"Sarah's Diner","area":"Tangub","cuisine":"Filipino · Diner","price":1,"address":"Ramylu Dr, Brgy. Tangub","rating":4.6,"reviews":5,"hours":"08:00-21:00"},{"name":"Casablanca Restaurant","area":"Mandalagan","cuisine":"International · Filipino","price":1,"address":"Bacolod City","rating":4.6,"reviews":62,"hours":"10:00-21:00"},{"name":"Apna Punjab Indian Grocery and Restaurant","area":"Villamonte","cuisine":"Indian","price":1,"address":"Narra Ext","rating":4.8,"reviews":17,"hours":"08:15-19:30"},{"name":"Hardwood Cafe","area":"Upper East","cuisine":"Cafe · Coffee","price":1,"address":"Lopue's East Center Annex","rating":4.6,"reviews":29,"hours":"09:00-19:00"},{"name":"Got Tea? Kitchen & Beverage Studio","area":"Lacson","cuisine":"Milk Tea · Cafe","price":1,"address":"20th St, Lacson","rating":4.6,"reviews":150,"hours":"10:00-22:00"},{"name":"Eron's Cansi House","area":"Villamonte","cuisine":"Filipino · Cansi","price":1,"address":"62 Narra Ave, Capitol Shopping","rating":4.5,"reviews":388,"hours":"06:00-21:00"},{"name":"Super Batchoy","area":"Downtown","cuisine":"Filipino · Batchoy","price":1,"address":"Bacolod City","rating":4.3,"reviews":235,"hours":"10:00-20:00"},{"name":"Coffee Culture Roastery Capitol Shopping","area":"Villamonte","cuisine":"Cafe · Coffee","price":1,"address":"2687 Narra Ave, Capitol Shopping Center","rating":4.9,"reviews":101,"hours":"09:00-18:00"},{"name":"also coffee","area":"Villamonte","cuisine":"Cafe · Coffee","price":1,"address":"Corner C.L. Montelibano, La Salle Ave","rating":4.8,"reviews":101,"hours":"08:00-17:30"},{"name":"Lazy Hound Cafe","area":"Villamonte","cuisine":"Cafe · Coffee","price":1,"address":"2380 C.L. Montelibano Ave","rating":4.7,"reviews":41,"hours":"08:00-20:00"},{"name":"19th Street Coffee Lacson","area":"Lacson","cuisine":"Cafe · Coffee","price":1,"address":"14 19th St, Lacson","rating":4.8,"reviews":54,"hours":"07:00-18:30"},{"name":"Origami Café","area":"Upper East","cuisine":"Cafe · Coffee","price":1,"address":"Marketplace NGC, Circumferential Rd","rating":4.7,"reviews":55,"hours":"08:00-20:00"},{"name":"Dozy Coffee","area":"Villamonte","cuisine":"Cafe · Coffee","price":1,"address":"Pearl Manor Building, BS Aquino Dr","rating":4.9,"reviews":48,"hours":"09:00-18:00"},{"name":"Coffee by NOM","area":"Lacson","cuisine":"Cafe · Coffee","price":1,"address":"Pohang Badminton Center, 23rd St","rating":4.9,"reviews":53,"hours":"08:30-17:00"},{"name":"Shop Samahan + Tiempo Cafe - The Row","area":"Bata / Banago","cuisine":"Cafe · Coffee","price":1,"address":"The Row, Lacson St, Brgy. Bata","rating":4.6,"reviews":58,"hours":"08:00-19:00"},{"name":"Cafe Mera","area":"Mandalagan","cuisine":"Cafe · Coffee","price":1,"address":"The Gardens, Lacson-Mandalagan Extension","rating":4.8,"reviews":36,"hours":"09:00-18:00"},{"name":"Brew Crew Coffee & Dessert Shop","area":"Downtown","cuisine":"Cafe · Dessert","price":1,"address":"P. Hernaez St Ext","rating":4.7,"reviews":43,"hours":"09:00-20:00"},{"name":"UCC Clockwork","area":"Lacson","cuisine":"Cafe · Japanese","price":2,"address":"PNB Park, 10th St","rating":4.5,"reviews":238,"hours":"07:00-21:00"},{"name":"Artisan Rooftop Cafe","area":"Villamonte","cuisine":"Cafe · Coffee","price":1,"address":"Celine Homes","rating":4.3,"reviews":41,"hours":"06:30-20:30"},{"name":"Tago Cafe","area":"Villamonte","cuisine":"Cafe · Coffee","price":1,"address":"676 4th Road","rating":4.6,"reviews":36,"hours":"08:00-21:00"},{"name":"Wayside Coffee","area":"Mandalagan","cuisine":"Cafe · Coffee","price":1,"address":"MEX Building, Lopue's Mandalagan Compound","rating":5.0,"reviews":30,"hours":"10:00-20:00"},{"name":"Calle Catorce Bacolod","area":"Lacson","cuisine":"Filipino · Bar","price":1,"address":"52 corner 14th St, Lacson","rating":4.5,"reviews":91,"hours":"15:00-00:00"},{"name":"KSL","area":"Downtown","cuisine":"Filipino · Casual","price":1,"address":"2 P. Hernaez St Ext","rating":4.4,"reviews":216,"hours":"11:00-23:00"},{"name":"LA ARTE","area":"Villamonte","cuisine":"Filipino · Casual","price":1,"address":"23 C.L. Montelibano Ave, Estefania","rating":4.3,"reviews":89,"hours":"11:00-00:00"},{"name":"Sugba Sugba Inasal & Seafood Lacson Capitol","area":"Lacson","cuisine":"Filipino · Inasal · Seafood","price":2,"address":"115 4th St","rating":4.4,"reviews":202,"hours":"10:30-14:30|17:30-21:30"},{"name":"Pink Porch Cafe","area":"Villamonte","cuisine":"Cafe · Matcha · Coffee","price":1,"address":"C.L. Montelibano Ave, Kamunsil St","rating":4.6,"reviews":18,"hours":"09:00-20:00"},{"name":"Sweet Siesta Cafe + Bistro","area":"Villamonte","cuisine":"Cafe · Matcha · Bistro","price":1,"address":"BS Aquino Dr cor Acacia St, Brgy. Villamonte","rating":4.8,"reviews":128,"hours":"09:00-20:00"},{"name":"KapiPat Café","area":"Mansilingan","cuisine":"Cafe · Coffee","price":1,"address":"Mansilingan, Bacolod City","rating":4.8,"reviews":56,"hours":"15:00-23:00"},{"name":"POB Library Cafe","area":"Mansilingan","cuisine":"Cafe · Coffee","price":1,"address":"Victorina Heights, P. Hernaez Ave","rating":4.6,"reviews":7,"hours":"09:00-18:00"},{"name":"North Roast Coffee","area":"Villamonte","cuisine":"Cafe · Coffee","price":1,"address":"Room 102 H.O. Building, BS Aquino Dr","rating":5.0,"reviews":10,"hours":"08:00-20:00"},{"name":"Kohi Majikku","area":"Lacson","cuisine":"Cafe · Coffee","price":1,"address":"19th cor Lacson St","rating":4.7,"reviews":22,"hours":"10:00-22:00"},{"name":"Balay Barista by the Beki-ry","area":"Mansilingan","cuisine":"Cafe · Coffee","price":1,"address":"Greenplains Subdivision","rating":5.0,"reviews":7,"hours":"11:00-01:00"},{"name":"The Chewbox","area":"Villamonte","cuisine":"Bakery · Dessert","price":1,"address":"105 San Agustin Dr","rating":4.5,"reviews":6,"hours":"09:00-19:00"},{"name":"Double Happiness","area":"Upper East","cuisine":"Chinese · Asian","price":1,"address":"In front of Government Center, Circumferential Rd","rating":5.0,"reviews":2,"hours":"11:00-21:00"},{"name":"Fat Choi","area":"Ayala Capitol Central","cuisine":"Chinese · Noodles","price":1,"address":"4th Floor, Ayala Malls Capitol Central","rating":4.0,"reviews":5,"hours":null},{"name":"Sienna Sourdough","area":"Pahanocoy / Sum-ag","cuisine":"Bakery · Cafe","price":2,"address":"South Bacolod","rating":5.0,"reviews":17,"hours":"09:00-18:30"},{"name":"Talaita's Pizza House","area":"Villamonte","cuisine":"Pizza · Italian","price":1,"address":"Triangle Island Plaza, Brgy. Villamonte","rating":4.9,"reviews":39,"hours":"11:00-20:00"},{"name":"KUSHIYA","area":"Villamonte","cuisine":"Japanese · Grill","price":2,"address":"Bacolod City","rating":4.0,"reviews":110,"hours":"11:00-22:00"},{"name":"Azucarera","area":"Villamonte","cuisine":"Steakhouse · International","price":2,"address":"89 C.L. Montelibano Ave","rating":4.5,"reviews":205,"hours":"11:00-14:00|16:00-21:00"},{"name":"Portiko Café • Lounge","area":"Lacson","cuisine":"Filipino · Cafe · Bar","price":2,"address":"23rd Lacson St","rating":4.5,"reviews":232,"hours":"11:00-01:00"},{"name":"Acaya Coffee House","area":"Taculing","cuisine":"Cafe · Coffee","price":1,"address":"Fuentebella St, Puentebella Subdivision","rating":4.8,"reviews":37,"hours":"18:00-00:00"},{"name":"V&W Bakery Cafe & Restaurant at The Row","area":"Bata / Banago","cuisine":"Bakery · Cafe · Restaurant","price":2,"address":"The Row, Lacson St","rating":4.3,"reviews":77,"hours":"07:30-21:30"},{"name":"Miren Desserts Cafe","area":"Mandalagan","cuisine":"Dessert · Cafe · Ice Cream","price":1,"address":"Lacson St, Mandalagan","rating":3.8,"reviews":21,"hours":"09:00-21:30"},{"name":"Commis & Co","area":"Villamonte","cuisine":"Asian · International","price":1,"address":"St. Francis Building, Doña Juliana Dr","rating":4.8,"reviews":26,"hours":"12:00-21:00"},{"name":"The Turf PH","area":"Downtown","cuisine":"Filipino · Casual","price":1,"address":"San Juan St","rating":4.9,"reviews":10,"hours":"10:00-21:00"},{"name":"Luisa's Fried Chicken","area":"Villamonte","cuisine":"Filipino · Fried Chicken","price":1,"address":"Capitol Shopping Center, Narra Ave","rating":4.5,"reviews":147,"hours":"10:30-14:00|17:00-19:30"},{"name":"X Bar.Cafe.Grill","area":"Villamonte","cuisine":"Filipino · Grill · Cafe","price":1,"address":"C.L. Montelibano Ave","rating":4.4,"reviews":54,"hours":"11:00-21:00"},{"name":"KRAMGEN GRILL","area":"Villamonte","cuisine":"Filipino · Grill","price":1,"address":"Bacolod City","rating":4.3,"reviews":8,"hours":"00:00-23:59"},{"name":"Maricor","area":"Villamonte","cuisine":"Filipino · Inasal","price":1,"address":"20 Narra Ave","rating":null,"reviews":0,"hours":null},{"name":"Lechoneria Bacolod","area":"SM City Bacolod","cuisine":"Filipino · Lechon","price":2,"address":"SM City Bacolod, Reclamation Area","rating":3.8,"reviews":32,"hours":null},{"name":"Nena's Beth The Row","area":"Mandalagan","cuisine":"Filipino · Chicken Inasal · Barbecue","price":2,"address":"The Row, Lacson St, Bacolod","rating":3.5,"reviews":15,"hours":"10:00-14:00|17:00-22:00"},{"name":"Nena's Beth Chicken Inasal - Bredco","area":"Downtown","cuisine":"Filipino · Chicken Inasal · Barbecue","price":1,"address":"Palanca St, Bredco area, Bacolod","rating":4.8,"reviews":35,"hours":"09:00-23:00"},{"name":"Nena's Beth (The Forth)","area":"Villamonte","cuisine":"Filipino · Chicken Inasal · Barbecue","price":1,"address":"BS Aquino Dr, Bacolod","rating":5.0,"reviews":2,"hours":"11:00-01:00"},{"name":"Nena's Beth - Manokan Country","area":"SM City Bacolod","cuisine":"Filipino · Chicken Inasal · Barbecue","price":1,"address":"Brgy. 12 / Manokan Country area, Bacolod","rating":4.2,"reviews":5,"hours":"11:00-23:00"},{"name":"NENA'S BETH Shopping","area":"Villamonte","cuisine":"Filipino · Chicken Inasal · Barbecue","price":1,"address":"Hervias 1 Rd, Bacolod","rating":5.0,"reviews":1,"hours":null},{"name":"Nena's Beth Chicken Inasal - Lacson","area":"Mandalagan","cuisine":"Filipino · Chicken Inasal · Barbecue","price":1,"address":"Lacson St / Food Central area, Bacolod","rating":4.8,"reviews":5,"hours":"10:00-23:00"},{"name":"Nena's Rose - 14th Street","area":"Lacson","cuisine":"Filipino · Chicken Inasal · Barbecue","price":1,"address":"14th St, Bacolod","rating":4.4,"reviews":133,"hours":"11:00-21:00"},{"name":"Nena's Rose Shopping","area":"Villamonte","cuisine":"Filipino · Chicken Inasal · Barbecue","price":1,"address":"6th St, Capitol Shopping area, Bacolod","rating":4.3,"reviews":223,"hours":"10:00-22:00"},{"name":"Nena's Rose Chicken Inasal - Manokan Country","area":"SM City Bacolod","cuisine":"Filipino · Chicken Inasal · Barbecue","price":1,"address":"Manokan Country / Reclamation Area, Bacolod","rating":4.2,"reviews":47,"hours":null},{"name":"Nena's Rose Tutor Chicken Inasal","area":"Downtown","cuisine":"Filipino · Chicken Inasal · Barbecue","price":1,"address":"Burgos Ave, Bacolod","rating":4.1,"reviews":19,"hours":"10:00-22:00"},{"name":"Original Nena's Chicken Barbecue","area":"Upper East","cuisine":"Filipino · Chicken Inasal · Barbecue","price":1,"address":"The Market Place, Villa Angela, Bacolod","rating":4.2,"reviews":81,"hours":"10:30-00:00"},{"name":"Nenas Chicken Barbeque","area":"Singcang / Goldenfield","cuisine":"Filipino · Chicken Inasal · Barbecue","price":1,"address":"P. Hernaez St Ext, Bacolod","rating":5.0,"reviews":4,"hours":"10:00-22:00"},{"name":"Nena's 1 The Original Chicken Inasal Bacolod","area":"SM City Bacolod","cuisine":"Filipino · Chicken Inasal · Barbecue","price":1,"address":"Reclamation Area / Manokan Country area, Bacolod","rating":3.0,"reviews":1,"hours":"09:00-23:00"},{"name":"Lion's Park - Manokan Country","area":"SM City Bacolod","cuisine":"Filipino · Chicken Inasal · Barbecue","price":1,"address":"Reclamation area, San Juan St, Brgy. 12, Bacolod","rating":4.4,"reviews":257,"hours":"10:00-22:00"},{"name":"Lions Park Chicken Inasal - Lizares","area":"Downtown","cuisine":"Filipino · Chicken Inasal · Barbecue","price":1,"address":"Lizares St, Bacolod","rating":4.4,"reviews":37,"hours":"11:00-14:30|17:30-22:00"},{"name":"Bernadette Chicken Inasal - Manokan Country","area":"SM City Bacolod","cuisine":"Filipino · Chicken Inasal · Barbecue","price":1,"address":"Manokan Country, Reclamation Area, Bacolod","rating":4.2,"reviews":24,"hours":"09:00-23:00"},{"name":"Velez Chicken Inasal - Manokan Country","area":"SM City Bacolod","cuisine":"Filipino · Chicken Inasal · Barbecue","price":1,"address":"Father M. Ferrero St, Manokan Country, Bacolod","rating":4.6,"reviews":5,"hours":"08:00-23:00"},{"name":"Twilight Native Chicken Barbeque - Manokan Country","area":"SM City Bacolod","cuisine":"Filipino · Native Chicken · Chicken Inasal · Barbecue","price":1,"address":"Reclamation area, San Juan St, Brgy. 12, Bacolod","rating":4.5,"reviews":28,"hours":"09:00-20:00"},{"name":"Umbao Chicken Inasal - Manokan Country","area":"SM City Bacolod","cuisine":"Filipino · Chicken Inasal · Barbecue","price":1,"address":"Father M. Ferrero St, Reclamation area, Bacolod","rating":4.5,"reviews":20,"hours":"10:00-23:00"},{"name":"Malaspina Inasalan","area":"Villamonte","cuisine":"Filipino · Chicken Inasal · Barbecue","price":1,"address":"L. N. Agustin Dr, Bacolod","rating":4.5,"reviews":189,"hours":"16:00-21:00"},{"name":"COYOCA BBQ-HAN","area":"Villamonte","cuisine":"Filipino · Chicken Inasal · Barbecue","price":1,"address":"San Agustin Dr, Bacolod","rating":3.0,"reviews":3,"hours":null},{"name":"Chai Rose Barbecue","area":"Villamonte","cuisine":"Filipino · Chicken Inasal · Barbecue","price":1,"address":"1686 Paglaum St, Bacolod","rating":4.4,"reviews":161,"hours":"10:30-19:30"},{"name":"Jonanz Native Chicken Inasal","area":"Villamonte","cuisine":"Filipino · Native Chicken · Chicken Inasal","price":1,"address":"Tindalo, Lopez Jaena St, Bacolod","rating":4.8,"reviews":11,"hours":null},{"name":"Lola's LCC Barbeque House","area":"Villamonte","cuisine":"Filipino · Chicken Inasal · Barbecue","price":1,"address":"Capitol Shopping Center, Narra Ave, Bacolod","rating":4.3,"reviews":38,"hours":"08:00-21:00"},{"name":"MARBY PLAZA","area":"Villamonte","cuisine":"Filipino · Chicken Inasal · Barbecue · Food Court","price":1,"address":"San Agustin Dr, Bacolod","rating":4.3,"reviews":342,"hours":"10:00-21:00"},{"name":"MAN PLAZA","area":"Villamonte","cuisine":"Filipino · Chicken Inasal · Barbecue","price":1,"address":"San Agustin Dr area, Bacolod","rating":3.9,"reviews":9,"hours":"00:00-23:59"},{"name":"Vinoy's Super Diner","area":"Villamonte","cuisine":"Filipino · Chicken Inasal · Diner","price":1,"address":"22 Gallardo St, BS Aquino Dr, Villamonte, Bacolod","rating":null,"reviews":0,"hours":"06:00-22:00"},{"name":"Paul's Inasal","area":"Taculing","cuisine":"Filipino · Chicken Inasal · Barbecue","price":1,"address":"St. Francis Ave, Bacolod","rating":4.5,"reviews":40,"hours":"09:30-19:00"},{"name":"St. Peter Inasal and Lechon Manok","area":"Mandalagan","cuisine":"Filipino · Chicken Inasal · Lechon Manok","price":1,"address":"Purok Luhod / Magdalene Ville area, Bacolod","rating":4.3,"reviews":66,"hours":"16:30-23:00"},{"name":"Velez Grill and Restobar","area":"Upper East","cuisine":"Filipino · Chicken Inasal · Barbecue · Grill","price":1,"address":"East Homes 6, Bacolod","rating":null,"reviews":0,"hours":"16:00-00:00"},{"name":"Jordano's Inasal Alijis","area":"Alijis","cuisine":"Filipino · Chicken Inasal · Barbecue","price":1,"address":"ECCE Villas, Alijis, Bacolod","rating":4.6,"reviews":5,"hours":"10:00-21:00"},{"name":"Chepo's Chicken Inasal and Palapala","area":"Mansilingan","cuisine":"Filipino · Chicken Inasal · Seafood","price":1,"address":"Hillside area, Bacolod","rating":5.0,"reviews":5,"hours":"10:10-22:00"},{"name":"Chay Letty's Lechon Bisaya Manok","area":"Punta Taytay","cuisine":"Filipino · Native Chicken · Lechon Manok · Barbecue","price":1,"address":"Punta Taytay, Bacolod","rating":5.0,"reviews":1,"hours":null},{"name":"Pitching's Native Kitchen","area":"Pahanocoy / Sum-ag","cuisine":"Filipino · Native Chicken · Grill","price":1,"address":"Araneta Ave / Pahanocoy area, Bacolod","rating":4.9,"reviews":9,"hours":"08:00-14:00|17:00-20:00"},{"name":"Gardo's","area":"Villamonte","cuisine":"Filipino · Chicken Inasal · Lutong Bahay","price":1,"address":"BS Aquino Dr, Bacolod","rating":4.3,"reviews":67,"hours":"10:00-20:00"},{"name":"Happy Grill","area":"Taculing","cuisine":"Filipino · Barbecue · Grill","price":1,"address":"Eufemia Townhouse, Circumferential Rd, Taculing, Bacolod","rating":4.0,"reviews":11,"hours":"08:00-21:00"},{"name":"Goldenfield Chicken Alley","area":"Singcang / Goldenfield","cuisine":"Filipino · Chicken Inasal · Barbecue","price":1,"address":"Goldenfield Commercial Complex, Singcang, Bacolod","rating":4.2,"reviews":193,"hours":"10:00-02:00"},{"name":"BBQ King Grill and Oyster","area":"Upper East","cuisine":"Filipino · Barbecue · Seafood · Grill","price":1,"address":"Hi-Strip Park, Circumferential Rd, Villamonte, Bacolod","rating":4.2,"reviews":30,"hours":"11:00-00:00"},{"name":"Chicken Deli Lacson Capitol","area":"Lacson","cuisine":"Filipino · Chicken Inasal · Fast Food","price":1,"address":"Lourdes C. Building, 8th St, Lacson St, Bacolod","rating":3.9,"reviews":170,"hours":"09:00-22:00"},{"name":"Chicken Deli - SM City Bacolod","area":"SM City Bacolod","cuisine":"Filipino · Chicken Inasal · Fast Food","price":1,"address":"Ground Floor, SM City North Wing, Bacolod","rating":2.0,"reviews":57,"hours":"10:00-22:00"},{"name":"Chicken Deli - Gaisano Grand Mall Bacolod","area":"Singcang / Goldenfield","cuisine":"Filipino · Chicken Inasal · Fast Food","price":1,"address":"Gaisano Grand Mall, Araneta Ave, Singcang, Bacolod","rating":4.5,"reviews":2,"hours":"10:00-21:00"},{"name":"Mang Inasal Libertad","area":"Downtown","cuisine":"Filipino · Chicken Inasal · Fast Food","price":1,"address":"Mabini St / P. Hernaez St Ext, Bacolod","rating":4.2,"reviews":133,"hours":"08:00-21:00"},{"name":"Mang Inasal CityMall Goldenfields","area":"Singcang / Goldenfield","cuisine":"Filipino · Chicken Inasal · Fast Food","price":1,"address":"Level 1 CityMall Goldenfields, Araneta Ave, Bacolod","rating":3.6,"reviews":15,"hours":"09:00-21:00"},{"name":"Mang Inasal Centroplex","area":"Downtown","cuisine":"Filipino · Chicken Inasal · Fast Food","price":1,"address":"Centroplex, Gonzaga cor Locsin St, Bacolod","rating":4.2,"reviews":78,"hours":"08:00-19:00"}];
+
 const ZONES={
   "Downtown":{lat:10.6712,lon:122.9505},
   "Lacson":{lat:10.6835,lon:122.9560},
@@ -585,33 +774,16 @@ const ZONES={
   "Tangub":{lat:10.6230,lon:122.9690},
   "Granada":{lat:10.7080,lon:123.0280},
   "Taculing":{lat:10.6540,lon:122.9650},
-  "Helvetia Heights":{lat:10.6605,lon:122.9715},
   "Homesite / Montevista":{lat:10.6870,lon:122.9740}
 };
 const AREA_ZONE={
-  "SM City Bacolod":"Downtown",
-  "Ayala Capitol Central":"Downtown",
-  "888 Chinatown":"Downtown",
-  "Downtown":"Downtown",
-  "Robinsons Bacolod":"Mandalagan",
-  "Mandalagan":"Mandalagan",
-  "Lacson":"Lacson",
-  "Upper East":"Villamonte",
-  "Villamonte":"Villamonte",
-  "Singcang":"Singcang / Goldenfield",
-  "Singcang / Goldenfield":"Singcang / Goldenfield",
-  "Bata":"Bata / Banago",
-  "Bata / Banago":"Bata / Banago",
-  "Alijis":"South",
-  "Mansilingan":"South",
-  "Pahanocoy / Sum-ag":"South",
-  "Punta Taytay":"South",
-  "South":"South",
-  "Tangub":"Tangub",
-  "Granada":"Granada",
-  "Taculing":"South",
-  "Helvetia Heights":"South",
-  "Homesite / Montevista":"Villamonte"
+  "SM City Bacolod":"Downtown","Ayala Capitol Central":"Downtown","888 Chinatown":"Downtown","Downtown":"Downtown",
+  "Robinsons Bacolod":"Mandalagan","Mandalagan":"Mandalagan","Lacson":"Lacson",
+  "Upper East":"Villamonte","Villamonte":"Villamonte","Homesite / Montevista":"Villamonte",
+  "Singcang":"Singcang / Goldenfield","Singcang / Goldenfield":"Singcang / Goldenfield",
+  "Bata":"Bata / Banago","Bata / Banago":"Bata / Banago",
+  "Alijis":"South","Mansilingan":"South","Pahanocoy / Sum-ag":"South","Punta Taytay":"South",
+  "Taculing":"South","South":"South","Tangub":"Tangub","Granada":"Granada"
 };
 const NEAR={
   "Downtown":["Lacson","Villamonte","Singcang / Goldenfield"],
@@ -626,302 +798,216 @@ const NEAR={
 };
 const AREA_PRIORITY=[
   "SM City Bacolod","Ayala Capitol Central","888 Chinatown","Robinsons Bacolod",
-  "Downtown","Lacson","Villamonte","Upper East","Mandalagan",
-  "Singcang / Goldenfield","Bata / Banago","Alijis","Mansilingan",
-  "Tangub","Granada","Taculing","Helvetia Heights","Homesite / Montevista","Pahanocoy / Sum-ag","Punta Taytay","South"
+  "Downtown","Lacson","Villamonte","Upper East","Mandalagan","Singcang / Goldenfield",
+  "Bata / Banago","Alijis","Mansilingan","Taculing","Tangub","Granada","Homesite / Montevista",
+  "Pahanocoy / Sum-ag","Punta Taytay","South"
 ];
 
 const $=id=>document.getElementById(id);
-const chambers=[...document.querySelectorAll('.chamber')];
-const cylinder=$('cylinder');
-const cards=$('cards');
-const hammer=$('hammer');
-const trigger=$('trigger');
-const spark=$('spark');
-const speech=$('speech');
+const safeStorage={
+  getItem(k){try{return window.localStorage?localStorage.getItem(k):null}catch(e){return null}},
+  setItem(k,v){try{if(window.localStorage)localStorage.setItem(k,v)}catch(e){}}
+};
+
+let custom=JSON.parse(safeStorage.getItem('dibs_custom')||'[]');
+let favorites=new Set(JSON.parse(safeStorage.getItem('dibs_favorites')||'[]'));
+let skipped=new Set(JSON.parse(safeStorage.getItem('dibs_skipped')||'[]'));
+let deleted=new Set(JSON.parse(safeStorage.getItem('dibs_deleted')||'[]'));
+let history=JSON.parse(safeStorage.getItem('dibs_pick_history')||'[]');
 
 let loaded=[];
+let locked=new Set();
 let winner=null;
-let sound=true;
 let rotation=0;
 let busy=false;
-let browseAll=false;
+let sound=true;
 let audioCtx=null;
 let audioUnlocked=false;
+let browseMode=false;
 
-let favorites=new Set(JSON.parse(localStorage.getItem('dibs_favorites')||'[]'));
-let skipped=new Set(JSON.parse(localStorage.getItem('dibs_skipped')||'[]'));
-let deleted=new Set(JSON.parse(localStorage.getItem('dibs_deleted')||'[]'));
-let custom=JSON.parse(localStorage.getItem('dibs_custom')||'[]');
+const foodSlots=[...document.querySelectorAll('.food-slot')];
 
-const allRestaurants=()=>[
-  ...BASE_DB.filter(r=>!deleted.has(r.name)),
-  ...custom.map(x=>({
-    name:x.name,
-    area:x.area||'Unknown',
-    cuisine:x.cuisine||'Custom',
-    price:x.price||null,
-    address:x.address||'Bacolod City',
-    rating:null,
-    reviews:0,
-    hours:null,
-    mapsUrl:x.mapsUrl||null,
-    custom:true
-  }))
-];
-
-function safeText(v){return String(v??'')}
-function priceText(p){return p===1?'₱':p===2?'₱₱':p===3?'₱₱₱':'₱?'}
-function mins(s){
-  const [h,m]=String(s).split(':').map(Number);
-  return h*60+m;
+function allRestaurants(){
+  return [
+    ...BASE_DB.filter(r=>!deleted.has(r.name)),
+    ...custom.map(x=>({
+      name:x.name,area:x.area||'Unknown',cuisine:x.cuisine||'Custom',
+      price:x.price||null,address:x.address||'Bacolod City',
+      rating:null,reviews:0,hours:null,mapsUrl:x.mapsUrl||null,custom:true
+    }))
+  ];
 }
+function saveSets(){
+  safeStorage.setItem('dibs_favorites',JSON.stringify([...favorites]));
+  safeStorage.setItem('dibs_skipped',JSON.stringify([...skipped]));
+}
+function saveHistory(){
+  safeStorage.setItem('dibs_pick_history',JSON.stringify(history.slice(0,20)));
+}
+function priceText(p){return p===1?'₱':p===2?'₱₱':p===3?'₱₱₱':'₱?'}
+function mins(s){const [h,m]=String(s).split(':').map(Number);return h*60+m}
 function isOpenNow(r){
   if(!r.hours)return null;
-  const nowD=new Date();
-  const now=nowD.getHours()*60+nowD.getMinutes();
-  const slots=String(r.hours).split('|');
-  for(const slot of slots){
-    const parts=slot.split('-');
-    if(parts.length!==2)continue;
-    let a=mins(parts[0]);
-    let b=mins(parts[1]);
-    if(Number.isNaN(a)||Number.isNaN(b))continue;
+  const d=new Date(),now=d.getHours()*60+d.getMinutes();
+  for(const slot of String(r.hours).split('|')){
+    const [a0,b0]=slot.split('-');
+    if(!a0||!b0)continue;
+    let a=mins(a0),b=mins(b0),t=now;
     if(b<=a)b+=1440;
-    let t=now;
-    if(b>1440 && now<360)t+=1440;
-    if(t>=a && t<b)return true;
+    if(b>1440&&now<360)t+=1440;
+    if(t>=a&&t<b)return true;
   }
   return false;
 }
 function openText(r){
   const o=isOpenNow(r);
-  if(o===true)return 'Open now';
-  if(o===false)return 'Closed now';
-  return 'Hours unknown';
+  return o===true?'Open now':o===false?'Closed now':'Hours unknown';
 }
-function areaZone(area){
-  return AREA_ZONE[area]||area;
-}
+function areaZone(a){return AREA_ZONE[a]||a}
+
 function moodTags(r){
-  const text=`${r.name||''} ${r.cuisine||''}`.toLowerCase();
+  const t=`${r.name||''} ${r.cuisine||''}`.toLowerCase();
+  const has=arr=>arr.some(x=>t.includes(x));
   const tags=new Set();
-
-  const has=(words)=>words.some(w=>text.includes(w));
-
-  const cafe=has([
-    'cafe','café','coffee','espresso','roastery','tea','milk tea','milktea',
-    'boba','beverage','juice','smoothie','matcha'
-  ]);
-  const dessert=has([
-    'dessert','cake','pastry','bakery','bakeshop','gelato','ice cream',
-    'donut','doughnut','waffle','crepe','cookie','chocolate','sweet'
-  ]);
+  const cafe=has(['cafe','café','coffee','espresso','roastery','tea','milk tea','milktea','boba','juice','smoothie','matcha']);
+  const dessert=has(['dessert','cake','pastry','bakery','bakeshop','gelato','ice cream','donut','doughnut','waffle','crepe','cookie','sweet']);
   const burger=has(['burger','burgerhouse','hamburger','smash burger']);
-  const inasal=has([
-    'inasal','barbecue','barbeque','bbq','native chicken','lechon manok',
-    "chicken house","nena's","nenas ","aida's","aidas ","masskara chicken",
-    "chicken deli","lion's park","lions park","bernadette","malaspina",
-    "chai rose","velez chicken","marby","paul's inasal","st. peter inasal",
-    "twilight native","umbao","coyoca"
-  ]);
-  const asian=has([
-    'asian','japanese','korean','chinese','thai','vietnamese','indian',
-    'ramen','sushi','samgyup','samgyeop','hotpot','dim sum','dimsum',
-    'teriyaki','tempura','yakitori','biryani','curry','bao','siomai'
-  ]);
-  const fastfood=has([
-    'fast food','jollibee','mcdonald','mcdo','kfc','burger king','chowking',
-    'greenwich','mang inasal','popeyes','bonchon','wendy','kenny rogers',
-    '24 chicken','potato corner','turks','ley lam','leylam'
-  ]);
-  const filipino=has([
-    'filipino','inasal','batchoy','silog','lutong bahay','native',
-    'bacolodnon','negrense','kansi','cansi'
-  ]);
+  const inasal=has(['inasal','barbecue','barbeque','bbq','native chicken','lechon manok',"nena's",'nenas ','aida','chicken house','chicken deli','malaspina','lion']);
+  const asian=has(['asian','japanese','korean','chinese','thai','vietnamese','indian','ramen','sushi','samgyup','samgyeop','hotpot','dim sum','dimsum','biryani','curry']);
+  const fast=has(['fast food','jollibee','mcdonald','mcdo','kfc','burger king','chowking','greenwich','mang inasal','popeyes','bonchon','24 chicken','potato corner','turks','leylam']);
+  const fil=has(['filipino','inasal','batchoy','silog','native','bacolodnon','negrense','kansi','cansi']);
   const pizza=has(['pizza','pizzeria','yellow cab']);
-  const breakfast=has([
-    'breakfast','brunch','silog','pancake','waffle','tapsilog',
-    'longsilog','tocilog'
-  ]);
-  const snackOnly=has([
-    'potato corner','waffle','milk tea','milktea','boba','juice','smoothie',
-    'donut','doughnut','gelato','ice cream','dessert kiosk'
-  ]);
-
-  if(cafe)tags.add('cafe');
-  if(dessert)tags.add('dessert');
-  if(burger)tags.add('burger');
-  if(inasal)tags.add('inasal');
-  if(asian)tags.add('asian');
-  if(fastfood)tags.add('fastfood');
-  if(filipino)tags.add('filipino');
-  if(pizza)tags.add('pizza');
-  if(breakfast)tags.add('breakfast');
-
-  // "Dinner" means somewhere that reasonably serves a proper meal.
-  // Coffee/dessert/snack-only places are intentionally excluded.
-  const mealSignal=has([
-    'restaurant','resto','bistro','grill','steak','seafood','buffet',
-    'ramen','sushi','samgyup','samgyeop','hotpot','barbecue','bbq',
-    'chicken','pizza','burger','filipino','korean','japanese','chinese',
-    'thai','vietnamese','indian','italian','mexican','mediterranean',
-    'american','asian','pasta','noodle','rice','food hall','diner',
-    'wings','lechon','kansi','cansi','batchoy'
-  ]);
-
-  const cafeOrDessertOnly=(cafe||dessert||snackOnly) && !mealSignal;
-  if(!cafeOrDessertOnly)tags.add('dinner');
-
+  const breakfast=has(['breakfast','brunch','silog','pancake','waffle','tapsilog']);
+  const snackOnly=has(['potato corner','milk tea','milktea','boba','juice','smoothie','donut','gelato','ice cream','dessert kiosk']);
+  if(cafe)tags.add('cafe');if(dessert)tags.add('dessert');if(burger)tags.add('burger');
+  if(inasal)tags.add('inasal');if(asian)tags.add('asian');if(fast)tags.add('fastfood');
+  if(fil)tags.add('filipino');if(pizza)tags.add('pizza');if(breakfast)tags.add('breakfast');
+  const meal=has(['restaurant','resto','bistro','grill','steak','seafood','buffet','ramen','sushi','samgyup','hotpot','barbecue','bbq','chicken','pizza','burger','filipino','korean','japanese','chinese','thai','vietnamese','indian','italian','mexican','asian','pasta','noodle','rice','food hall','diner','wings','lechon','kansi','batchoy']);
+  if(!((cafe||dessert||snackOnly)&&!meal))tags.add('dinner');
   return tags;
 }
-function filterPool(){
+
+function flatFoodIcon(key){
+  const common='class="food-svg" viewBox="0 0 64 64" aria-hidden="true"';
+  const c={ink:'#24412b',green:'#55784a',sage:'#cbd79e',cream:'#fff9ec',orange:'#ed8c5d',yellow:'#e4bc60',red:'#b95f4d',brown:'#9a5c34'};
+  if(key==='burger')return `<svg ${common}><path fill="${c.yellow}" d="M10 28c1-9 9-15 22-15s21 6 22 15H10z"/><rect x="9" y="29" width="46" height="7" rx="3.5" fill="${c.green}"/><rect x="12" y="36" width="40" height="8" rx="4" fill="${c.brown}"/><path fill="${c.yellow}" d="M10 45h44c-1 7-8 10-22 10S11 52 10 45z"/></svg>`;
+  if(key==='coffee')return `<svg ${common}><path fill="${c.cream}" stroke="${c.ink}" stroke-width="3" d="M15 20h30v22c0 7-5 11-15 11s-15-4-15-11V20z"/><path fill="none" stroke="${c.ink}" stroke-width="3" d="M45 25h5c8 0 8 14 0 14h-5"/><path stroke="${c.brown}" stroke-width="3" stroke-linecap="round" d="M23 13c-4-5 4-6 0-11M33 13c-4-5 4-6 0-11"/></svg>`;
+  if(key==='pizza')return `<svg ${common}><path fill="${c.yellow}" stroke="${c.brown}" stroke-width="3" d="M13 51 28 10c1-3 5-4 8-2l20 14-43 29z"/><circle cx="31" cy="28" r="5" fill="${c.red}"/><circle cx="23" cy="42" r="4" fill="${c.red}"/><circle cx="42" cy="34" r="4" fill="${c.red}"/></svg>`;
+  if(key==='chicken')return `<svg ${common}><path fill="${c.orange}" stroke="${c.brown}" stroke-width="3" d="M14 42c0-10 7-19 17-22 7-2 13 1 16 7 4 8-2 19-13 23-9 4-20 1-20-8z"/><path stroke="${c.brown}" stroke-width="5" stroke-linecap="round" d="M42 23 52 13"/><circle cx="55" cy="10" r="5" fill="${c.cream}" stroke="${c.brown}" stroke-width="3"/></svg>`;
+  if(key==='bowl')return `<svg ${common}><path fill="${c.cream}" stroke="${c.ink}" stroke-width="3" d="M10 30h44c-2 15-10 23-22 23S12 45 10 30z"/><path stroke="${c.green}" stroke-width="3" stroke-linecap="round" d="M18 25c7-8 19 7 27-2"/><path stroke="${c.brown}" stroke-width="3" stroke-linecap="round" d="M42 9 55 28M48 7 60 24"/></svg>`;
+  if(key==='cake')return `<svg ${common}><path fill="${c.cream}" stroke="${c.brown}" stroke-width="3" d="M13 49 22 18h27l4 31H13z"/><path fill="${c.brown}" d="M18 40h33v8H16z"/><path fill="${c.yellow}" d="M21 25h29l1 8H19z"/><path fill="${c.red}" d="M30 13c0-5 7-5 7 0 0 5-7 5-7 0z"/></svg>`;
+  if(key==='egg')return `<svg ${common}><path fill="${c.cream}" stroke="${c.yellow}" stroke-width="3" d="M12 33c0-12 8-22 20-22 14 0 20 10 20 22s-9 20-20 20-20-8-20-20z"/><circle cx="32" cy="33" r="9" fill="${c.yellow}"/></svg>`;
+  if(key==='sushi')return `<svg ${common}><path fill="${c.ink}" d="M14 28h36v23H14z"/><rect x="17" y="31" width="30" height="18" rx="8" fill="${c.cream}"/><path fill="${c.orange}" d="M10 29c2-13 11-20 22-20s20 7 22 20H10z"/><path stroke="#f7c3a1" stroke-width="3" d="M20 14c5 4 7 8 7 14M32 10c5 5 7 10 7 18"/></svg>`;
+  if(key==='fries')return `<svg ${common}><path fill="${c.red}" d="M17 26h30l-4 29H21l-4-29z"/><path fill="${c.yellow}" d="M20 8h5v24h-5zM28 5h5v27h-5zM36 8h5v24h-5zM44 12h5v20h-5z"/></svg>`;
+  if(key==='rice')return `<svg ${common}><path fill="${c.cream}" stroke="${c.ink}" stroke-width="3" d="M10 31h44c-2 14-9 22-22 22S12 45 10 31z"/><path fill="${c.sage}" d="M16 29c4-11 12-17 16-17s12 6 16 17H16z"/></svg>`;
+  return `<svg ${common}><circle cx="32" cy="32" r="21" fill="${c.cream}" stroke="${c.green}" stroke-width="3"/><circle cx="32" cy="32" r="8" fill="${c.orange}"/></svg>`;
+}
+function restaurantIconKey(r){
+  const tags=moodTags(r),t=(r.name+' '+(r.cuisine||'')).toLowerCase();
+  if(tags.has('inasal'))return 'chicken';
+  if(tags.has('burger'))return 'burger';
+  if(tags.has('pizza'))return 'pizza';
+  if(tags.has('cafe'))return 'coffee';
+  if(tags.has('dessert'))return 'cake';
+  if(tags.has('asian'))return t.includes('sushi')||t.includes('japanese')?'sushi':'bowl';
+  if(tags.has('fastfood'))return 'fries';
+  if(tags.has('filipino'))return 'rice';
+  if(tags.has('breakfast'))return 'egg';
+  return 'plate';
+}
+
+function restaurantIcon(r){return restaurantIconKey(r)}
+function currentPool(){
   const area=$('area').value;
-  const proximity=$('proximity').value;
+  const prox=$('proximity').value;
   const mood=$('mood').value;
   const price=$('price').value;
-
-  const selectedZone=area ? areaZone(area) : null;
-  const allowedZones=(selectedZone && proximity==='nearby')
-    ? [selectedZone,...(NEAR[selectedZone]||[])]
-    : null;
-
-  return allRestaurants().filter(r=>{
+  const zone=area?areaZone(area):null;
+  const near=zone&&prox==='nearby'?[zone,...(NEAR[zone]||[])]:null;
+  let pool=allRestaurants().filter(r=>{
     if(skipped.has(r.name))return false;
-
-    if(area && r.area!=='Unknown'){
-      if(proximity==='same' && r.area!==area)return false;
-      if(proximity==='nearby' && !allowedZones.includes(areaZone(r.area)))return false;
+    if(area&&r.area!=='Unknown'){
+      if(prox==='same'&&r.area!==area)return false;
+      if(prox==='nearby'&&!near.includes(areaZone(r.area)))return false;
     }
-
-    if(mood && !moodTags(r).has(mood))return false;
-    if(price && String(r.price||'')!==price)return false;
-
+    if(mood&&!moodTags(r).has(mood))return false;
+    if(price&&String(r.price||'')!==price)return false;
     if($('openOnly').checked){
-      const state=isOpenNow(r);
-      if(state===false)return false;
-      if(state===null && !$('allowUnknown').checked)return false;
+      const o=isOpenNow(r);
+      if(o===false)return false;
+      if(o===null&&!$('allowUnknown').checked)return false;
     }
     return true;
   });
+  if($('noRepeats').checked){
+    const recent=new Set(history.slice(0,6).map(x=>x.name));
+    const fresh=pool.filter(r=>!recent.has(r.name));
+    if(fresh.length>=6)pool=fresh;
+  }
+  return pool;
 }
-function shuffle(arr){
-  const a=[...arr];
-  for(let i=a.length-1;i>0;i--){
+function shuffle(a){
+  const b=[...a];
+  for(let i=b.length-1;i>0;i--){
     const j=Math.floor(Math.random()*(i+1));
-    [a[i],a[j]]=[a[j],a[i]];
+    [b[i],b[j]]=[b[j],b[i]];
   }
-  return a;
+  return b;
 }
-function updateAreaOptions(){
-  const current=$('area').value;
-  const customCurrent=$('customArea').value;
-  const vals=[...new Set(allRestaurants().map(r=>r.area).filter(a=>a&&a!=='Unknown'))];
-  vals.sort((a,b)=>{
-    const ia=AREA_PRIORITY.indexOf(a),ib=AREA_PRIORITY.indexOf(b);
-    if(ia!==-1||ib!==-1){
-      if(ia===-1)return 1;
-      if(ib===-1)return -1;
-      return ia-ib;
-    }
-    return a.localeCompare(b);
+function renderWheel(){
+  foodSlots.forEach((slot,i)=>{
+    slot.innerHTML=loaded[i]?flatFoodIcon(restaurantIconKey(loaded[i])):'';
+    slot.classList.remove('win');
   });
-
-  $('area').innerHTML='<option value="">Anywhere</option>';
-  $('customArea').innerHTML='<option value="Unknown">Not sure</option>';
-
-  for(const v of vals){
-    const a=document.createElement('option');
-    a.value=v;a.textContent=v;
-    $('area').appendChild(a);
-
-    const c=document.createElement('option');
-    c.value=v;c.textContent=v;
-    $('customArea').appendChild(c);
-  }
-
-  if(vals.includes(current))$('area').value=current;
-  if(vals.includes(customCurrent)||customCurrent==='Unknown')$('customArea').value=customCurrent||'Unknown';
 }
-function updateCuisineOptions(){ return; }
-function updateCounts(){
-  $('eligibleLabel').textContent=`${filterPool().length} eligible`;
-  $('dbCount').textContent=allRestaurants().length;
-  const restore=$('restoreDeleted');
-  restore.hidden=deleted.size===0;
-  restore.textContent=deleted.size ? `RESTORE ${deleted.size} DELETED` : 'RESTORE DELETED';
-}
-function shortName(name){
-  if(name.length<=22)return name;
-  const words=name.split(' ');
-  let out='';
-  for(const w of words){
-    if((out+' '+w).trim().length>22)break;
-    out=(out+' '+w).trim();
-  }
-  return out||name.slice(0,21)+'…';
-}
-function renderLoaded(){
-  chambers.forEach((c,i)=>{
-    c.classList.remove('win');
-    c.querySelector('.restaurant').textContent=loaded[i] ? shortName(loaded[i].name) : 'EMPTY';
-  });
-
-  cards.innerHTML='';
+function renderChoices(){
+  const host=$('choices');host.innerHTML='';
   loaded.forEach((r,i)=>{
-    const card=document.createElement('button');
-    card.type='button';
-    card.className='card';
-    const review = r.rating ? `★ ${r.rating}` : 'No rating';
-    const tags=[...moodTags(r)];
-    const broad=tags.includes('inasal')?'Inasal / BBQ':tags.includes('cafe')?'Cafe':tags.includes('burger')?'Burger':tags.includes('asian')?'Asian':tags.includes('fastfood')?'Fast food':tags.includes('filipino')?'Filipino':'Dinner';
-    card.innerHTML=`<b>${i+1}</b><strong>${safeText(r.name)}</strong><span>${broad} · ${priceText(r.price)} · ${review}</span>`;
-    card.addEventListener('click',()=>replaceOne(i));
-    cards.appendChild(card);
+    const card=document.createElement('div');
+    card.className='choice'+(locked.has(i)?' locked':'');
+    card.innerHTML=`<button class="lock" type="button">${locked.has(i)?'🔒':'🔓'}</button><div class="choice-icon">${flatFoodIcon(restaurantIconKey(r))}</div><strong>${r.name}</strong><small>${r.area||'Bacolod'} · ${priceText(r.price)}</small>`;
+    card.querySelector('.lock').addEventListener('click',e=>{
+      e.stopPropagation();
+      if(locked.has(i))locked.delete(i);else locked.add(i);
+      renderChoices();
+    });
+    card.addEventListener('click',()=>{
+      if(locked.has(i))return;
+      replaceOne(i);
+    });
+    host.appendChild(card);
   });
 }
-function replaceOne(index){
-  if(busy)return;
-  const pool=shuffle(filterPool()).filter(r=>!loaded.some((x,i)=>i!==index && x.name===r.name));
-  const replacement=pool.find(r=>r.name!==loaded[index]?.name);
-  if(!replacement){
-    $('status').textContent='No different match available with these filters.';
-    return;
-  }
-  loaded[index]=replacement;
-  winner=null;
-  $('winner').classList.remove('show');
-  renderLoaded();
-  tone(430,.05);
-  speech.textContent='Changed your mind? Fine. I swapped that one. 😒🍣';
+function replaceOne(i){
+  const candidates=shuffle(currentPool()).filter(r=>!loaded.some((x,j)=>j!==i&&x.name===r.name));
+  const next=candidates.find(r=>r.name!==loaded[i]?.name);
+  if(next){loaded[i]=next;renderWheel();renderChoices();}
 }
 function loadSix(){
-  const pool=filterPool();
-  loaded=shuffle(pool).slice(0,6);
-  winner=null;
-  $('winner').classList.remove('show');
-  updateCounts();
-  renderLoaded();
-
-  if(loaded.length<2){
-    $('status').textContent='Not enough matches. Loosen a filter.';
-    speech.textContent='You filtered me into a corner. Give me more options. 🥲';
-    return;
+  const pool=shuffle(currentPool());
+  const prev=[...loaded];
+  const keep=new Map();
+  for(const i of locked)if(prev[i])keep.set(i,prev[i]);
+  const used=new Set([...keep.values()].map(x=>x.name));
+  const candidates=pool.filter(r=>!used.has(r.name));
+  const next=[];let c=0;
+  for(let i=0;i<6;i++){
+    if(keep.has(i))next[i]=keep.get(i);
+    else if(candidates[c])next[i]=candidates[c++];
   }
-
-  $('status').textContent=`${loaded.length} restaurants loaded. Sushi has no regrets.`;
-  speech.textContent=[
-    'I picked six. You just have to be brave. 🍣',
-    'These six passed my very serious sushi inspection. 🫡',
-    'If Odaegam appears, that is between you and fate. 🍜',
-    'No spreadsheets. No overthinking. Just pew. 💚',
-    'Your dinner committee has exactly one member: me. 😌'
-  ][Math.floor(Math.random()*5)];
-
-  tone(470,.05);
-  setTimeout(()=>tone(610,.05),65);
-  setTimeout(()=>tone(760,.06),130);
+  loaded=next.filter(Boolean);
+  renderWheel();renderChoices();updateCount();
+  $('status').textContent=loaded.length>=2?`${loaded.length} tasty options ready.`:'Not enough matches. Loosen a filter.';
 }
+function updateCount(){
+  $('dbCount').textContent=allRestaurants().length;
+}
+function openMaps(r){
+  if(!r)return;
+  if(r.mapsUrl){window.open(r.mapsUrl,'_blank');return}
+  window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(r.name+', Bacolod City')}`,'_blank');
+}
+
 function ensureAudio(){
   try{
     const A=window.AudioContext||window.webkitAudioContext;
@@ -929,414 +1015,249 @@ function ensureAudio(){
     if(!audioCtx)audioCtx=new A();
     if(audioCtx.state==='suspended')audioCtx.resume();
     audioUnlocked=true;
-    $('sound').textContent=sound?'🔊 SOUND + MUSIC ON':'🔇 MUTED';
     return true;
-  }catch(e){
-    $('sound').textContent='🔇 SOUND UNAVAILABLE';
-    return false;
+  }catch(e){return false}
+}
+function tone(freq,dur=.06,type='triangle',gain=.045,delay=0){
+  if(!sound||!audioUnlocked||!audioCtx)return;
+  try{
+    const n=audioCtx.currentTime+delay,o=audioCtx.createOscillator(),g=audioCtx.createGain();
+    o.type=type;o.frequency.setValueAtTime(freq,n);
+    g.gain.setValueAtTime(gain,n);g.gain.exponentialRampToValueAtTime(.001,n+dur);
+    o.connect(g);g.connect(audioCtx.destination);o.start(n);o.stop(n+dur);
+  }catch(e){}
+}
+function startMusic(){
+  if(!sound)return;
+  const a=$('bgMusic');a.volume=.14;
+  const p=a.play();if(p&&p.catch)p.catch(()=>{});
+}
+function stopMusic(){$('bgMusic').pause()}
+function soundTap(){
+  if(!audioUnlocked){
+    sound=true;ensureAudio();startMusic();
+    tone(620,.08,'triangle',.06);tone(820,.12,'sine',.065,.09);
+    return;
   }
-}
-function tone(freq,duration=.05,type='triangle',gain=.05,delay=0){
-  if(!sound||!audioUnlocked||!audioCtx)return;
-  try{
-    const now=audioCtx.currentTime+delay;
-    const o=audioCtx.createOscillator();
-    const g=audioCtx.createGain();
-    o.type=type;
-    o.frequency.setValueAtTime(freq,now);
-    g.gain.setValueAtTime(gain,now);
-    g.gain.exponentialRampToValueAtTime(.001,now+duration);
-    o.connect(g);g.connect(audioCtx.destination);
-    o.start(now);o.stop(now+duration);
-  }catch(e){}
-}
-function noiseBurst(duration=.08,gain=.07){
-  if(!sound||!audioUnlocked||!audioCtx)return;
-  try{
-    const length=Math.max(1,Math.floor(audioCtx.sampleRate*duration));
-    const buffer=audioCtx.createBuffer(1,length,audioCtx.sampleRate);
-    const data=buffer.getChannelData(0);
-    for(let i=0;i<length;i++)data[i]=(Math.random()*2-1)*(1-i/length);
-    const src=audioCtx.createBufferSource();
-    const g=audioCtx.createGain();
-    src.buffer=buffer;
-    g.gain.setValueAtTime(gain,audioCtx.currentTime);
-    g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+duration);
-    src.connect(g);g.connect(audioCtx.destination);
-    src.start();
-  }catch(e){}
-}
-function pew(){
-  if(!sound||!audioUnlocked||!audioCtx)return;
-  try{
-    const now=audioCtx.currentTime;
-    const o=audioCtx.createOscillator();
-    const g=audioCtx.createGain();
-    o.type='square';
-    o.frequency.setValueAtTime(520,now);
-    o.frequency.exponentialRampToValueAtTime(105,now+.20);
-    g.gain.setValueAtTime(.09,now);
-    g.gain.exponentialRampToValueAtTime(.001,now+.22);
-    o.connect(g);g.connect(audioCtx.destination);
-    o.start(now);o.stop(now+.22);
-    noiseBurst(.09,.06);
-  }catch(e){}
+  sound=!sound;
+  if(sound){ensureAudio();startMusic();tone(700,.07)}else stopMusic();
 }
 function winnerJingle(){
-  if(!sound||!audioUnlocked||!audioCtx)return;
-  tone(659.25,.18,'triangle',.07,0);
-  tone(783.99,.18,'triangle',.075,.12);
-  tone(987.77,.22,'triangle',.08,.24);
-  tone(1318.51,.42,'sine',.075,.38);
-}
-function danceSushi(){
-  const s=document.querySelector('.sushi');
-  if(!s)return;
-  s.classList.remove('dance');
-  void s.offsetWidth;
-  s.classList.add('dance');
-  setTimeout(()=>s.classList.remove('dance'),2850);
-}
-function startCuteMusic(){
-  if(!sound)return;
-  const music=$('bgMusic');
-  music.volume=.16;
-  const p=music.play();
-  if(p&&p.catch)p.catch(()=>{});
-}
-function stopCuteMusic(){
-  const music=$('bgMusic');
-  music.pause();
-}
-function animateGun(){
-  hammer.classList.add('cocked');
-  setTimeout(()=>trigger.classList.add('pulled'),120);
-  setTimeout(()=>{
-    hammer.classList.remove('cocked');
-    spark.classList.add('show');
-    pew();
-  },350);
-  setTimeout(()=>trigger.classList.remove('pulled'),430);
-  setTimeout(()=>spark.classList.remove('show'),560);
+  tone(659,.18,'triangle',.07,0);
+  tone(784,.18,'triangle',.075,.12);
+  tone(988,.22,'triangle',.08,.24);
+  tone(1318,.4,'sine',.07,.39);
 }
 function shoot(){
-  if(sound){
-    ensureAudio();
-    startCuteMusic();
-  }
   if(busy||loaded.length<2)return;
   busy=true;
-  chambers.forEach(x=>x.classList.remove('win'));
-  [...cards.children].forEach(x=>x.classList.remove('hit'));
-  $('winner').classList.remove('show');
-
-  const index=Math.floor(Math.random()*loaded.length);
-  const target=index*60;
-  rotation += 360*(4+Math.floor(Math.random()*3)) - target;
-
-  speech.textContent='PEW INCOMING. I take no responsibility. 😳';
-  $('status').textContent='click · click · click · click…';
-
-  animateGun();
-  cylinder.style.transform=`rotate(${rotation}deg)`;
-
-  let tick=0;
-  const clicker=setInterval(()=>{
-    tone(285+tick*13,.035,'square',.018);
-    tick++;
-    if(tick>12)clearInterval(clicker);
-  },130);
-
+  if(sound){ensureAudio();startMusic();}
+  foodSlots.forEach(s=>s.classList.remove('win'));
+  const idx=Math.floor(Math.random()*loaded.length);
+  rotation+=360*(5+Math.floor(Math.random()*2))-idx*60;
+  $('wheelRotor').style.transform=`rotate(${rotation}deg)`;
+  let n=0;
+  const clicks=setInterval(()=>{tone(290+n*13,.035,'square',.018);if(++n>12)clearInterval(clicks)},130);
+  setTimeout(()=>{$('pew').classList.add('show');tone(420,.18,'square',.075)},350);
+  setTimeout(()=>$('pew').classList.remove('show'),620);
   setTimeout(()=>{
-    winner=loaded[index];
-    chambers[index].classList.add('win');
-    if(cards.children[index])cards.children[index].classList.add('hit');
-
-    const rating=winner.rating ? `★ ${winner.rating} · ${Number(winner.reviews||0).toLocaleString()} reviews snapshot` : 'No rating snapshot';
-    $('winner-name').textContent=winner.name;
-    $('winner-meta').innerHTML=
-      `${safeText(winner.cuisine||'Cuisine unknown')} · ${priceText(winner.price)} · ${safeText(winner.area||'Bacolod')}<br>`+
-      `${rating}<br>${openText(winner)}${winner.hours?' · '+safeText(winner.hours):''}<br>${safeText(winner.address||'Bacolod City')}`;
-    $('winner').classList.add('show');
-    $('status').textContent=`Dibs on ${winner.name}. Dinner has been decided.`;
-    speech.textContent='Direct hit. Go eat before you change your mind. 😌🍣';
-
+    winner=loaded[idx];
+    foodSlots[idx].classList.add('win');
+    document.querySelectorAll('.choice').forEach((c,i)=>c.classList.toggle('win',i===idx));
+    history.unshift({name:winner.name,area:winner.area||'Bacolod',mapsUrl:winner.mapsUrl||null,time:Date.now()});
+    history=history.slice(0,20);saveHistory();renderRecent();
+    $('winnerName').textContent=winner.name.toUpperCase();
+    showWinner();
     winnerJingle();
-    danceSushi();
     busy=false;
   },2500);
 }
-function openMaps(name, exactUrl=null){
-  if(exactUrl){
-    window.open(exactUrl,'_blank');
-    return;
-  }
-  const q=encodeURIComponent(`${name}, Bacolod City`);
-  window.open(`https://www.google.com/maps/search/?api=1&query=${q}`,'_blank');
-}
-function saveSets(){
-  localStorage.setItem('dibs_favorites',JSON.stringify([...favorites]));
-  localStorage.setItem('dibs_skipped',JSON.stringify([...skipped]));
-}
-function loveWinner(){
-  if(!winner)return;
-  favorites.add(winner.name);
-  skipped.delete(winner.name);
-  saveSets();
-  speech.textContent='Added to the favorites. Good taste. 💚';
-  $('status').textContent=`Saved ${winner.name} to your favorites.`;
-}
-function skipWinner(){
-  if(!winner)return;
-  skipped.add(winner.name);
-  favorites.delete(winner.name);
-  saveSets();
-  speech.textContent='Blocked from future chaos. I will remember. 🙅';
-  loadSix();
-}
-function renderSearch(){
-  const q=$('search').value.trim().toLowerCase();
-  const source=q
-    ? allRestaurants().filter(r=>(`${r.name} ${r.cuisine||''} ${r.area||''} ${r.address||''}`).toLowerCase().includes(q))
-    : (browseAll ? allRestaurants() : []);
-
-  $('list').innerHTML='';
-  for(const r of source.slice(0,500)){
-    const row=document.createElement('div');
-    row.className='row';
-
-    const info=document.createElement('div');
-    const title=document.createElement('strong');
-    title.textContent=(favorites.has(r.name)?'❤️ ':'')+(skipped.has(r.name)?'🙅 ':'')+r.name;
-    const meta=document.createElement('span');
-    meta.textContent=`${r.cuisine||'Cuisine ?'} · ${priceText(r.price)} · ${r.area||'Bacolod'} · ${openText(r)}${r.address?' · '+r.address:''}`;
-    info.appendChild(title);info.appendChild(meta);
-
-    const actions=document.createElement('div');
-    const mapBtn=document.createElement('button');
-    mapBtn.type='button';mapBtn.className='row-map';mapBtn.textContent='MAPS';
-    mapBtn.addEventListener('click',()=>openMaps(r.name,r.mapsUrl));
-    actions.appendChild(mapBtn);
-
-    const del=document.createElement('button');
-    del.type='button';del.className='delete-custom';del.textContent='DELETE';
-    del.addEventListener('click',()=>deleteRestaurant(r));
-    actions.appendChild(del);
-
-    row.appendChild(info);row.appendChild(actions);
-    $('list').appendChild(row);
-  }
-
-  if(!source.length && (q||browseAll)){
-    const empty=document.createElement('div');
-    empty.className='row';
-    empty.innerHTML='<div><strong>No matches</strong><span>Paste a Google Maps link below to add it.</span></div>';
-    $('list').appendChild(empty);
+function confetti(){
+  const host=$('confettiLayer');host.innerHTML='';
+  const cols=['#ed8c5d','#e4bc60','#6e8a5f','#cbd79e','#fffdf5'];
+  for(let i=0;i<62;i++){
+    const p=document.createElement('i');p.className='confetti';
+    p.style.left=Math.random()*100+'vw';p.style.background=cols[i%cols.length];
+    p.style.setProperty('--dur',(2.2+Math.random()*2)+'s');
+    p.style.setProperty('--drift',(-70+Math.random()*140)+'px');
+    p.style.animationDelay=(Math.random()*.45)+'s';
+    host.appendChild(p);
   }
 }
-function extractNameFromGoogleMapsUrl(raw){
-  try{
-    const url=new URL(raw.trim());
-    const path=decodeURIComponent(url.pathname.replace(/\+/g,' '));
-    let m=path.match(/\/maps\/place\/([^/]+)/i);
-    if(m&&m[1])return m[1].replace(/\+/g,' ').trim();
-    const q=url.searchParams.get('query')||url.searchParams.get('q');
-    if(q)return decodeURIComponent(q).replace(/,\s*Bacolod.*$/i,'').trim();
-    return '';
-  }catch(e){
-    return '';
-  }
+function showWinner(){
+  $('winnerOverlay').classList.add('show');confetti();
 }
-function handleMapsLinkPaste(){
-  const raw=$('mapsLink').value.trim();
-  if(!raw)return;
-  const name=extractNameFromGoogleMapsUrl(raw);
-  if(name && !$('customName').value.trim()){
-    $('customName').value=name;
-    $('importHelp').textContent='Nice. I found the restaurant name from that Google Maps link.';
-  }else if(/maps\.app\.goo\.gl/i.test(raw)){
-    $('importHelp').innerHTML='This is a short Google Maps link, so the restaurant name is hidden. Type the restaurant name once, then tap <b>SAVE TO DIBS</b>. The exact link will still be saved.';
-  }else{
-    $('importHelp').textContent='Link saved. If the name did not auto-fill, type the restaurant name once.';
-  }
+function hideWinner(){
+  $('winnerOverlay').classList.remove('show');$('confettiLayer').innerHTML='';
 }
-function addCustom(){
-  const mapsUrl=$('mapsLink').value.trim();
-  let name=$('customName').value.trim();
-  if(!name && mapsUrl)name=extractNameFromGoogleMapsUrl(mapsUrl);
-
-  if(!name){
-    $('status').textContent='Add the restaurant name so Dibs knows what to call it.';
-    speech.textContent='I need a name. Short Google links are mysterious little things. 🥲';
-    return;
-  }
-
-  const existing=allRestaurants().find(r=>r.name.toLowerCase()===name.toLowerCase());
-  if(existing){
-    $('status').textContent='That restaurant is already in the stash.';
-    speech.textContent='Already got that one. My memory is better than it looks. 🍣';
-    return;
-  }
-
-  custom.push({
-    name,
-    mapsUrl: mapsUrl || null,
-    area:$('customArea').value||'Unknown',
-    cuisine:$('customCuisine').value.trim()||'Custom',
-    price:$('customPrice').value ? Number($('customPrice').value) : null,
-    address:'Bacolod City'
+function saveFavorite(r){
+  if(!r)return;favorites.add(r.name);skipped.delete(r.name);saveSets();renderFavorites();
+}
+function renderRecent(){
+  const host=$('recentList');host.innerHTML='';
+  if(!history.length){host.innerHTML='<div class="empty"><img src="sushi-icon-source.png"><strong>No winners yet</strong><span>Your roulette history will appear here.</span></div>';return}
+  history.slice(0,12).forEach(p=>{
+    const r=allRestaurants().find(x=>x.name===p.name)||p;
+    const row=document.createElement('div');row.className='list-row';
+    const d=new Date(p.time);
+    row.innerHTML=`<div class="row-icon">${flatFoodIcon(restaurantIconKey(r))}</div><div><strong>${p.name}</strong><small>${p.area||'Bacolod'} · ${d.toLocaleDateString([], {month:'short',day:'numeric'})}</small></div><div class="row-actions"><button class="mini-btn dark">MAPS</button></div>`;
+    row.querySelector('button').addEventListener('click',()=>openMaps(r));
+    host.appendChild(row);
   });
-  localStorage.setItem('dibs_custom',JSON.stringify(custom));
-
-  $('mapsLink').value='';
-  $('customName').value='';
-  $('customCuisine').value='';
-  $('customPrice').value='';
-  $('customArea').value='Unknown';
-
-  updateAreaOptions();
-  updateCuisineOptions();
-  updateCounts();
-  renderSearch();
-  loadSix();
-  $('importHelp').textContent='Saved! It is now part of your local Dibs database on this phone.';
-  speech.textContent=`Added ${name}. It can now get picked. 🍣`;
+}
+function renderFavorites(){
+  const host=$('favoritesList');host.innerHTML='';
+  const favs=allRestaurants().filter(r=>favorites.has(r.name));
+  if(!favs.length){host.innerHTML='<div class="empty"><img src="sushi-icon-source.png"><strong>No favorites yet!</strong><span>Save a winner or restaurant you love.</span></div>';return}
+  favs.forEach(r=>{
+    const row=document.createElement('div');row.className='list-row';
+    row.innerHTML=`<div class="row-icon">${flatFoodIcon(restaurantIconKey(r))}</div><div><strong>${r.name}</strong><small>${r.area||'Bacolod'} · ${r.cuisine||''}</small></div><div class="row-actions"><button class="mini-btn dark">MAPS</button><button class="mini-btn">REMOVE</button></div>`;
+    const bs=row.querySelectorAll('button');
+    bs[0].addEventListener('click',()=>openMaps(r));
+    bs[1].addEventListener('click',()=>{favorites.delete(r.name);saveSets();renderFavorites()});
+    host.appendChild(row);
+  });
+}
+function renderBrowse(){
+  const q=$('search').value.trim().toLowerCase();
+  const all=allRestaurants();
+  const arr=q?all.filter(r=>(`${r.name} ${r.area||''} ${r.cuisine||''} ${r.address||''}`).toLowerCase().includes(q)):(browseMode?all:[]);
+  const host=$('browseList');host.innerHTML='';
+  arr.slice(0,500).forEach(r=>{
+    const row=document.createElement('div');row.className='list-row';
+    row.innerHTML=`<div class="row-icon">${flatFoodIcon(restaurantIconKey(r))}</div><div><strong>${r.name}</strong><small>${r.area||'Bacolod'} · ${priceText(r.price)} · ${openText(r)}</small></div><div class="row-actions"><button class="mini-btn dark">MAPS</button><button class="mini-btn">♡</button><button class="mini-btn">DELETE</button></div>`;
+    const bs=row.querySelectorAll('button');
+    bs[0].addEventListener('click',()=>openMaps(r));
+    bs[1].addEventListener('click',()=>{saveFavorite(r);bs[1].textContent='♥'});
+    bs[2].addEventListener('click',()=>deleteRestaurant(r));
+    host.appendChild(row);
+  });
 }
 function deleteRestaurant(r){
-  if(!r||!r.name)return;
-  const ok=window.confirm(`Delete ${r.name} from Dibs on this phone?`);
-  if(!ok)return;
-
+  if(!confirm(`Delete ${r.name} from Dibs4u on this phone?`))return;
   if(r.custom){
-    custom=custom.filter(x=>x.name!==r.name);
-    localStorage.setItem('dibs_custom',JSON.stringify(custom));
+    custom=custom.filter(x=>x.name!==r.name);safeStorage.setItem('dibs_custom',JSON.stringify(custom));
   }else{
-    deleted.add(r.name);
-    localStorage.setItem('dibs_deleted',JSON.stringify([...deleted]));
+    deleted.add(r.name);safeStorage.setItem('dibs_deleted',JSON.stringify([...deleted]));
   }
-
-  favorites.delete(r.name);
-  skipped.delete(r.name);
-  saveSets();
-  updateAreaOptions();
-  updateCuisineOptions();
-  updateCounts();
-  renderSearch();
-  loadSix();
-  $('status').textContent=`Deleted ${r.name} from your local Dibs database.`;
-  speech.textContent='Gone. I will stop putting that one in the chamber. 🫡🍣';
+  favorites.delete(r.name);skipped.delete(r.name);saveSets();
+  populateAreas();renderBrowse();loadSix();updateCount();
 }
-function restoreDeletedRestaurants(){
-  if(!deleted.size)return;
-  deleted.clear();
-  localStorage.setItem('dibs_deleted','[]');
-  updateAreaOptions();
-  updateCuisineOptions();
-  updateCounts();
-  renderSearch();
-  loadSix();
-  $('status').textContent='Restored all built-in restaurants you deleted.';
-  speech.textContent='The deleted restaurants have returned from the dead. 👻🍣';
+function restoreDeleted(){
+  deleted.clear();safeStorage.setItem('dibs_deleted','[]');
+  populateAreas();renderBrowse();loadSix();updateCount();
+}
+function parseMapsName(url){
+  try{
+    const u=new URL(url);
+    const p=decodeURIComponent(u.pathname);
+    let m=p.match(/\/place\/([^/]+)/i);
+    if(m)return m[1].replace(/\+/g,' ').trim();
+    const q=u.searchParams.get('query')||u.searchParams.get('q');
+    if(q)return q.replace(/,\s*Bacolod.*$/i,'').trim();
+  }catch(e){}
+  return '';
+}
+function saveCustom(){
+  const link=$('mapsLink').value.trim(),name=$('customName').value.trim();
+  if(!name){$('importHelp').textContent='Please add the restaurant name.';return}
+  if(allRestaurants().some(r=>r.name.toLowerCase()===name.toLowerCase())){$('importHelp').textContent='That restaurant is already in Dibs4u.';return}
+  custom.push({
+    name,area:$('customArea').value||'Unknown',
+    cuisine:$('customCuisine').value.trim()||'Custom',
+    price:$('customPrice').value?Number($('customPrice').value):null,
+    address:'Bacolod City',mapsUrl:link||null
+  });
+  safeStorage.setItem('dibs_custom',JSON.stringify(custom));
+  $('mapsLink').value='';$('customName').value='';$('customCuisine').value='';$('customPrice').value='';
+  $('importHelp').textContent='Saved! It is now in your local Dibs4u database.';
+  populateAreas();renderBrowse();loadSix();updateCount();
 }
 function hav(a,b,c,d){
-  const R=6371,t=x=>x*Math.PI/180;
-  const dp=t(c-a),dl=t(d-b);
+  const R=6371,t=x=>x*Math.PI/180,dp=t(c-a),dl=t(d-b);
   const q=Math.sin(dp/2)**2+Math.cos(t(a))*Math.cos(t(c))*Math.sin(dl/2)**2;
   return R*2*Math.atan2(Math.sqrt(q),Math.sqrt(1-q));
 }
 function nearestZone(lat,lon){
-  return Object.entries(ZONES).sort((a,b)=>
-    hav(lat,lon,a[1].lat,a[1].lon)-hav(lat,lon,b[1].lat,b[1].lon)
-  )[0][0];
+  return Object.entries(ZONES).sort((a,b)=>hav(lat,lon,a[1].lat,a[1].lon)-hav(lat,lon,b[1].lat,b[1].lon))[0][0];
 }
 function useGPS(){
-  $('locationLabel').textContent='📍 Finding your Bacolod area…';
-  navigator.geolocation.getCurrentPosition(
-    pos=>{
-      const zone=nearestZone(pos.coords.latitude,pos.coords.longitude);
-      if([...$('area').options].some(o=>o.value===zone))$('area').value=zone;
-      else $('area').value='';
-      $('proximity').value='nearby';
-      $('locationLabel').textContent=`📍 ${zone} + nearby`;
-      loadSix();
-    },
-    ()=>{
-      $('locationLabel').textContent='📍 GPS unavailable. Pick an area.';
-      $('status').textContent='Could not access GPS. You can still choose an area manually.';
-    },
-    {enableHighAccuracy:true,timeout:10000}
-  );
+  $('locationLabel').textContent='📍 Finding your area…';
+  if(!navigator.geolocation){$('locationLabel').textContent='📍 GPS unavailable';return}
+  navigator.geolocation.getCurrentPosition(p=>{
+    const z=nearestZone(p.coords.latitude,p.coords.longitude);
+    if([...$('area').options].some(o=>o.value===z))$('area').value=z;
+    $('proximity').value='nearby';$('locationLabel').textContent=`📍 ${z} + nearby`;loadSix();
+  },()=>{$('locationLabel').textContent='📍 GPS unavailable. Choose an area.'},{enableHighAccuracy:true,timeout:10000});
+}
+function populateAreas(){
+  const cur=$('area').value,cc=$('customArea').value;
+  const vals=[...new Set(allRestaurants().map(r=>r.area).filter(a=>a&&a!=='Unknown'))];
+  vals.sort((a,b)=>{
+    let ia=AREA_PRIORITY.indexOf(a),ib=AREA_PRIORITY.indexOf(b);
+    if(ia<0)ia=999;if(ib<0)ib=999;
+    return ia-ib||a.localeCompare(b);
+  });
+  $('area').innerHTML='<option value="">Anywhere</option>';
+  $('customArea').innerHTML='<option value="Unknown">Not sure</option>';
+  vals.forEach(v=>{
+    const a=document.createElement('option');a.value=v;a.textContent=v;$('area').appendChild(a);
+    const c=document.createElement('option');c.value=v;c.textContent=v;$('customArea').appendChild(c);
+  });
+  if(vals.includes(cur))$('area').value=cur;
+  if(vals.includes(cc))$('customArea').value=cc;
+}
+function syncFilters(){
+  const mood=$('mood').value;
+  document.querySelectorAll('.filter-row').forEach(b=>b.classList.toggle('active',b.dataset.mood===mood));
+}
+function show(name){
+  document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id===`view-${name}`));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active',b.dataset.go===name));
+  $('backTop').style.visibility=name==='home'?'hidden':'visible';
+  if(name==='recent')renderRecent();
+  if(name==='favorites')renderFavorites();
+  if(name==='browse')renderBrowse();
+  window.scrollTo(0,0);
 }
 
-$('sound').addEventListener('click',()=>{
-  if(!audioUnlocked){
-    sound=true;
-    ensureAudio();
-
-    // Starting a media element directly from this tap is the most reliable
-    // iPhone/Safari way to unlock the background music.
-    startCuteMusic();
-
-    // This is the same v2 test chime/SFX approach that worked before.
-    tone(620,.07,'triangle',.06);
-    setTimeout(()=>tone(820,.12,'sine',.07),80);
-
-    $('status').textContent='Sound unlocked. Cute music + roulette SFX are on.';
-    speech.textContent='Sound check! If you heard that, we are back in business. 🔊🍣';
-    return;
-  }
-
-  sound=!sound;
-  $('sound').textContent=sound?'🔊 SOUND + MUSIC ON':'🔇 MUTED';
-
-  if(sound){
-    ensureAudio();
-    startCuteMusic();
-    tone(700,.07);
-  }else{
-    stopCuteMusic();
-  }
-});
-$('new-six').addEventListener('click',()=>{if(sound)ensureAudio();if(sound)startCuteMusic();loadSix();});
-$('shoot').addEventListener('click',shoot);
-$('again').addEventListener('click',()=>{
-  if(sound){ensureAudio();startCuteMusic();}
-  loadSix();
-  setTimeout(shoot,220);
-});
-$('maps').addEventListener('click',()=>winner&&openMaps(winner.name,winner.mapsUrl));
-$('love').addEventListener('click',loveWinner);
-$('skip').addEventListener('click',skipWinner);
+/* Events */
+document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>show(b.dataset.go)));
+$('backTop').addEventListener('click',()=>show('home'));
+$('soundBtn').addEventListener('click',()=>show('settings'));
+$('pullHome').addEventListener('click',shoot);
+$('pullChoices').addEventListener('click',shoot);
+$('showChoices').addEventListener('click',()=>show('choices'));
+$('newSix').addEventListener('click',loadSix);
+$('filtersDone').addEventListener('click',()=>{loadSix();show('home')});
+document.querySelectorAll('.filter-row').forEach(b=>b.addEventListener('click',()=>{$('mood').value=b.dataset.mood;syncFilters();loadSix()}));
+['area','proximity','price','openOnly','allowUnknown'].forEach(id=>$(id).addEventListener('change',loadSix));
 $('gpsBtn').addEventListener('click',useGPS);
-$('search').addEventListener('input',renderSearch);
-$('restoreDeleted').addEventListener('click',restoreDeletedRestaurants);
-$('browseAll').addEventListener('click',()=>{
-  browseAll=!browseAll;
-  $('browseAll').textContent=browseAll?'HIDE':'BROWSE ALL';
-  renderSearch();
-});
-$('mapsLink').addEventListener('input',handleMapsLinkPaste);
-$('addCustom').addEventListener('click',addCustom);
-$('customName').addEventListener('keydown',e=>{
-  if(e.key==='Enter')addCustom();
-});
+$('search').addEventListener('input',renderBrowse);
+$('browseAll').addEventListener('click',()=>{browseMode=!browseMode;$('browseAll').textContent=browseMode?'HIDE':'ALL';renderBrowse()});
+$('mapsLink').addEventListener('input',()=>{const n=parseMapsName($('mapsLink').value.trim());if(n&&!$('customName').value.trim())$('customName').value=n});
+$('saveCustom').addEventListener('click',saveCustom);
+$('customName').addEventListener('keydown',e=>{if(e.key==='Enter')saveCustom()});
+$('clearHistory').addEventListener('click',()=>{history=[];saveHistory();renderRecent()});
+$('restoreDeleted').addEventListener('click',restoreDeleted);
+$('winnerMaps').addEventListener('click',()=>openMaps(winner));
+$('winnerFavorite').addEventListener('click',()=>{saveFavorite(winner);$('winnerFavorite').textContent='♥ SAVED'});
+$('winnerClose').addEventListener('click',()=>{hideWinner();show('home')});
+$('settingsSound').addEventListener('click',soundTap);
+$('settingsRecent').addEventListener('click',()=>{$('noRepeats').checked=!$('noRepeats').checked;$('settingsRecent').textContent=$('noRepeats').checked?'ON':'OFF';loadSix()});
+$('settingsOpen').addEventListener('click',()=>{$('openOnly').checked=!$('openOnly').checked;$('settingsOpen').textContent=$('openOnly').checked?'ON':'OFF';loadSix()});
+$('settingsGPS').addEventListener('click',useGPS);
 
-['area','proximity','mood','price','openOnly','allowUnknown'].forEach(id=>{
-  $(id).addEventListener('change',()=>{
-    if(sound)ensureAudio();
-    if(id==='area'){
-      $('locationLabel').textContent=$('area').value ? `📍 ${$('area').value}` : '📍 Anywhere in Bacolod';
-    }
-    loadSix();
-  });
-});
-
-updateAreaOptions();
-updateCuisineOptions();
-updateCounts();
+/* Init */
+populateAreas();
+syncFilters();
+renderRecent();
+renderFavorites();
+updateCount();
 loadSix();
+show('home');
 
-if('serviceWorker' in navigator){
+if('serviceWorker' in navigator&&location.protocol.startsWith('http')){
   navigator.serviceWorker.register('./service-worker.js').catch(()=>{});
 }
 </script>

@@ -1,12 +1,12 @@
 {
-  "name": "Dibs for you",
-  "short_name": "Dibs",
-  "description": "Cute Bacolod restaurant roulette.",
+  "name": "Dibs4u Food Roulette",
+  "short_name": "Dibs4u",
+  "description": "Bacolod food roulette with a cute sushi mascot.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#dff6d4",
-  "theme_color": "#dff6d4",
+  "background_color": "#f7f4e8",
+  "theme_color": "#f7f4e8",
   "icons": [
     {
       "src": "icon-192.png",

@@ -1,22 +1,32 @@
-# Dibs for you v4 - Maximum Bacolod Pass
+# Dibs for you
 
-Built-in places: **319**
+Cute Bacolod restaurant roulette for GitHub Pages.
 
-## New in v4
-- SITTING DUCK added
-- Charlie's Burger added
-- Expanded neighborhood restaurant and cafe coverage
-- Existing SM, Ayala, Robinsons and 888 coverage retained
-- Google Maps link importer retained
-- Delete + Restore Deleted retained
-- iPhone-friendly persistent Web Audio engine
-- Original synthesized looping cute background music
-- Separate Music and SFX controls
-- Roulette click sounds, cute pew, and winner jingle
-- Sushi mascot dances when a winner is picked
-- Cache version bumped for GitHub Pages updates
+## Included
+- 76 Bacolod restaurant/eatery records embedded directly in the app
+- Cute green 2D revolver roulette
+- Six restaurant names inside the cylinder
+- Tap any of the six cards to replace just that choice
+- Animated sushi mascot
+- Sound effects with mute toggle
+- Area, nearby-area, cuisine, budget and open-now filters
+- GPS used only to estimate your nearest Bacolod area cluster
+- Favorites and skips saved in the browser
+- Add missing restaurants locally
+- Google Maps button for winner and searched restaurants
+- Offline-capable PWA after first successful load
 
-## Update GitHub Pages
-Replace the files in your existing repository root and commit them to `main`. GitHub Pages does not need to be configured again.
+## Update your existing GitHub Pages site
+Upload these files into the root of your existing repository and replace the old versions:
 
-If the Home Screen version still shows the old build, open the Pages URL in Safari and refresh it. If needed, remove and re-add the Home Screen shortcut after the new deployment is live.
+- index.html
+- manifest.json
+- service-worker.js
+- icon-192.png
+- icon-512.png
+- apple-touch-icon.png
+
+Then commit to `main`. GitHub Pages should redeploy automatically.
+
+## Notes
+The restaurant information is a local snapshot and can become outdated. Google Maps is opened only when the user chooses to verify a restaurant.

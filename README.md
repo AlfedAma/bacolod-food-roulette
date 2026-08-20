@@ -1,33 +1,21 @@
-# Dibs for you v5
+# Dibs for you v6 - Inasal expansion
 
-This build keeps the 319-place Bacolod database and changes two major things:
+Built-in Bacolod food database: 363 places.
 
-## General meal filters
-The old detailed cuisine picker is replaced with:
-- Dinner
-- Anything
-- Cafe
-- Burgers
-- Asian
-- Fast food
-- Filipino
-- Pizza
-- Dessert
-- Breakfast / brunch
+This pass adds 44 additional inasal / barbecue / native-chicken places,
+including multiple Nena's Beth and Nena's Rose branches, Nena's 1, Lion's Park,
+Bernadette, Velez, Twilight, Umbao, Malaspina, Chai Rose, Lola's LCC,
+Marby Plaza, St. Peter, Paul's, Chicken Deli branches and more.
 
-Dinner intentionally filters out coffee/dessert/snack-only places such as Starbucks,
-milk-tea shops, ice-cream stalls and dessert kiosks.
+A new broad filter is included:
+- 🐔 Inasal & BBQ
 
-## Audio fix
-The roulette SFX use the same persistent Web Audio approach as v2.
-There is one `TAP FOR SOUND` button again.
-
-That button:
-1. unlocks the iPhone audio context,
-2. plays a test chime,
-3. starts the local cute looping background track.
-
-Winner SFX and the sushi dance remain enabled.
-
-If an installed Home Screen version still behaves like an old build, remove the old
-Home Screen icon, open the refreshed GitHub Pages URL in Safari, then Add to Home Screen again.
+All v5 features remain:
+- general Dinner/Cafe/Burgers/Asian/etc filters
+- cute music + SFX
+- dancing sushi winner animation
+- Google Maps importer
+- delete / restore restaurant
+- GPS area selection
+- favorites / skips
+- offline PWA

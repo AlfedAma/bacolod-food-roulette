@@ -1196,6 +1196,27 @@ button{touch-action:manipulation}
   }
 }
 
+
+/* FINAL: high-resolution multi-pose winner animation */
+.winner-frame-art{
+  display:block !important;
+  margin:0 auto !important;
+  width:338px !important;
+  height:304px !important;
+  object-fit:contain !important;
+  object-position:center center !important;
+  image-rendering:auto !important;
+  animation:none !important;
+  transform:none !important;
+  filter:drop-shadow(0 14px 12px rgba(41,58,35,.16));
+}
+@media(max-width:390px){
+  .winner-frame-art{
+    width:314px !important;
+    height:284px !important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -1386,7 +1407,7 @@ button{touch-action:manipulation}
   <div class="winner-inner">
     <div class="match">IT’S A MATCH!</div>
     <div id="winnerName" class="winner-name"></div>
-    <img id="winnerMascot" class="winner-art winner-art-crisp" src="sushi-icon-source.png" alt="Dibs4u sushi dancing">
+    <img id="winnerMascot" class="winner-art winner-frame-art" src="dance-frame-01.png" alt="Dibs4u sushi dancing">
     <div class="winner-actions">
       <button id="winnerMaps" class="win-btn primary" type="button">📍 OPEN IN MAPS</button>
       <button id="winnerFavorite" class="win-btn secondary" type="button">♡ SAVE TO FAVORITES</button>
@@ -1766,10 +1787,44 @@ function confetti(){
     host.appendChild(p);
   }
 }
+
+const WINNER_DANCE_FRAMES=["dance-frame-01.png", "dance-frame-02.png", "dance-frame-03.png", "dance-frame-04.png", "dance-frame-05.png", "dance-frame-06.png", "dance-frame-07.png", "dance-frame-08.png", "dance-frame-09.png", "dance-frame-10.png", "dance-frame-11.png", "dance-frame-12.png", "dance-frame-13.png", "dance-frame-14.png"];
+const WINNER_DANCE_DURATIONS=[95, 80, 75, 70, 70, 70, 75, 80, 80, 90, 105, 90, 95, 110];
+let winnerDanceTimer=null;
+let winnerDanceIndex=0;
+
+function preloadWinnerDance(){
+  WINNER_DANCE_FRAMES.forEach(src=>{
+    const img=new Image();
+    img.src=src;
+  });
+}
+function stopWinnerDance(){
+  if(winnerDanceTimer){
+    clearTimeout(winnerDanceTimer);
+    winnerDanceTimer=null;
+  }
+}
+function startWinnerDance(){
+  stopWinnerDance();
+  winnerDanceIndex=0;
+  const mascot=$('winnerMascot');
+  const step=()=>{
+    mascot.src=WINNER_DANCE_FRAMES[winnerDanceIndex];
+    const wait=WINNER_DANCE_DURATIONS[winnerDanceIndex]||85;
+    winnerDanceIndex=(winnerDanceIndex+1)%WINNER_DANCE_FRAMES.length;
+    winnerDanceTimer=setTimeout(step,wait);
+  };
+  step();
+}
+
 function showWinner(){
-  $('winnerOverlay').classList.add('show');confetti();
+  $('winnerOverlay').classList.add('show');
+  startWinnerDance();
+  confetti();
 }
 function hideWinner(){
+  stopWinnerDance();
   clearDrumRoll();
   $('winnerOverlay').classList.remove('show');$('confettiLayer').innerHTML='';
 }
@@ -1824,7 +1879,8 @@ function deleteRestaurant(r){
     deleted.add(r.name);safeStorage.setItem('dibs_deleted',JSON.stringify([...deleted]));
   }
   favorites.delete(r.name);skipped.delete(r.name);saveSets();
-  populateAreas();renderBrowse();loadSix();updateCount();
+  preloadWinnerDance();
+populateAreas();renderBrowse();loadSix();updateCount();
 }
 function restoreDeleted(){
   deleted.clear();safeStorage.setItem('dibs_deleted','[]');

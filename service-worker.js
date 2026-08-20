@@ -1,5 +1,5 @@
-const CACHE='dibs4u-reference-v23';
-const ASSETS=['./','./index.html','./manifest.json','./cute-music.wav','./sushi-icon-source.png','./sushi-wheel.png','./sushi-winner.png','./sushi-dance.gif','./icon-192.png','./icon-512.png','./apple-touch-icon.png','./favicon-64.png'];
+const CACHE='dibs4u-final-v24';
+const ASSETS=['./','./index.html','./manifest.json','./cute-music.wav','./sushi-icon-source.png','./sushi-wheel.png','./sushi-winner.png','./sushi-dance-final.gif','./icon-192.png','./icon-512.png','./apple-touch-icon.png','./favicon-64.png','./dance-frame-01.png','./dance-frame-02.png','./dance-frame-03.png','./dance-frame-04.png','./dance-frame-05.png','./dance-frame-06.png','./dance-frame-07.png','./dance-frame-08.png','./dance-frame-09.png','./dance-frame-10.png','./dance-frame-11.png','./dance-frame-12.png','./dance-frame-13.png','./dance-frame-14.png'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)));self.skipWaiting();});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))));self.clients.claim();});
 self.addEventListener('fetch',e=>{if(e.request.method!=='GET')return;e.respondWith(fetch(e.request).then(r=>{const copy=r.clone();caches.open(CACHE).then(c=>c.put(e.request,copy));return r;}).catch(()=>caches.match(e.request)));});

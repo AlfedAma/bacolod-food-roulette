@@ -64,6 +64,7 @@ main{
 .logo{font-size:29px;line-height:1;font-weight:950;letter-spacing:-1.4px}
 .logo em{font-style:normal;color:var(--leaf)}
 .subtitle{margin-top:5px;color:var(--muted);font-size:11px}
+.audio-controls{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end}
 .sound{
   border:2px solid var(--line);background:rgba(255,253,245,.8);color:var(--ink);
   border-radius:999px;padding:8px 10px;font-size:11px;font-weight:800;
@@ -96,6 +97,13 @@ main{
 .cheek{position:absolute;bottom:10px;width:7px;height:4px;background:var(--pink);border-radius:50%;z-index:3;opacity:.7}
 .cheek.a{left:17px}.cheek.b{left:49px}
 .arm{position:absolute;right:-8px;bottom:13px;width:16px;height:3px;border-radius:999px;background:#d8e7cf;transform:rotate(-30deg)}
+.sushi.dance{animation:sushiDance .38s ease-in-out 7 !important;transform-origin:50% 80%}
+@keyframes sushiDance{
+  0%,100%{transform:translateX(75px) translateY(0) rotate(-10deg) scale(1)}
+  25%{transform:translateX(75px) translateY(-13px) rotate(12deg) scale(1.08)}
+  50%{transform:translateX(75px) translateY(1px) rotate(-14deg) scale(.98)}
+  75%{transform:translateX(75px) translateY(-10px) rotate(14deg) scale(1.08)}
+}
 @keyframes bounceWalk{
   0%{transform:translateX(0) translateY(0) rotate(-3deg)}
   40%{transform:translateX(82px) translateY(-6px) rotate(4deg)}
@@ -307,6 +315,11 @@ main{
 }
 .library-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px}
 .library-head strong{font-size:12px}.library-head span{font-size:9px;color:var(--muted)}
+.library-tools{display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.restore-deleted{
+  border:2px solid var(--line);background:var(--white);color:var(--muted);
+  border-radius:999px;padding:5px 8px;font-size:8px;font-weight:900
+}
 .search-row{display:grid;grid-template-columns:1fr auto;gap:7px}
 .search{
   width:100%;border:2px solid var(--line);background:var(--white);color:var(--ink);
@@ -316,6 +329,26 @@ main{
   border:2px solid var(--ink);background:var(--mint2);color:var(--ink);border-radius:14px;
   padding:0 12px;font-size:10px;font-weight:900
 }
+.browse-row{display:grid;grid-template-columns:1fr auto;gap:7px}
+.import-box{
+  margin-top:10px;padding:10px;border:2px dashed var(--line);border-radius:17px;
+  background:rgba(220,245,206,.58)
+}
+.import-title{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px}
+.import-title strong{font-size:11px}.import-title span{font-size:8px;color:var(--muted)}
+.import-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:7px}
+.tiny-label{display:block;margin:0 0 4px 4px;font-size:8px;font-weight:900;color:var(--muted);text-transform:uppercase;letter-spacing:.6px}
+.import-save{
+  width:100%;margin-top:8px;min-height:44px;border:3px solid var(--ink);border-radius:14px;
+  background:var(--lime);color:var(--ink);font-weight:950;box-shadow:0 4px 0 var(--ink)
+}
+.import-save:active{transform:translateY(2px);box-shadow:0 2px 0 var(--ink)}
+.import-help{margin-top:7px;font-size:8.5px;color:var(--muted);line-height:1.4}
+.delete-custom{
+  border:0;background:#ffe6e8;color:#7f3339;border-radius:999px;padding:6px 8px;
+  font-size:8px;font-weight:900;margin-left:4px
+}
+@media(max-width:480px){.import-grid{grid-template-columns:1fr}.browse-row{grid-template-columns:1fr auto}}
 .list{display:grid;gap:6px;margin-top:8px;max-height:340px;overflow:auto}
 .row{
   display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;
@@ -346,6 +379,7 @@ main{
 </style>
 </head>
 <body>
+<audio id="bgMusic" src="cute-music.wav" loop preload="auto" playsinline></audio>
 <main>
   <div class="top">
     <div class="brand">
@@ -355,7 +389,7 @@ main{
         <div class="subtitle">Bacolod's cutest bad decision maker</div>
       </div>
     </div>
-    <button id="sound" class="sound" type="button">🔊 sound</button>
+    <button id="sound" class="sound" type="button">🔊 TAP FOR SOUND</button>
   </div>
 
   <div class="mascot-row">
@@ -376,17 +410,7 @@ main{
     <div class="filters-grid">
       <div class="field">
         <label>Area</label>
-        <select id="area">
-          <option value="">Anywhere</option>
-          <option>Downtown</option>
-          <option>Lacson</option>
-          <option>Mandalagan</option>
-          <option>Upper East</option>
-          <option>Singcang</option>
-          <option>Bata</option>
-          <option>South</option>
-          <option>Tangub</option>
-        </select>
+        <select id="area"><option value="">Anywhere</option></select>
       </div>
       <div class="field">
         <label>How near?</label>
@@ -397,9 +421,18 @@ main{
         </select>
       </div>
       <div class="field">
-        <label>Cuisine</label>
-        <select id="cuisine">
-          <option value="">Anything</option>
+        <label>What are we feeling?</label>
+        <select id="mood">
+          <option value="dinner" selected>🍽️ Dinner</option>
+          <option value="">🎲 Anything</option>
+          <option value="cafe">☕ Cafe</option>
+          <option value="burger">🍔 Burgers</option>
+          <option value="asian">🍜 Asian</option>
+          <option value="fastfood">🍟 Fast food</option>
+          <option value="filipino">🇵🇭 Filipino</option>
+          <option value="pizza">🍕 Pizza</option>
+          <option value="dessert">🍰 Dessert</option>
+          <option value="breakfast">🍳 Breakfast / brunch</option>
         </select>
       </div>
       <div class="field">
@@ -418,14 +451,14 @@ main{
         <div id="locationLabel" class="location-label">📍 Anywhere in Bacolod</div>
         <button id="gpsBtn" class="location-btn" type="button">Use GPS</button>
       </div>
-      <label class="pill"><input id="openOnly" type="checkbox" checked> Open now</label>
+      <label class="pill"><input id="openOnly" type="checkbox"> Open now</label>
       <label class="pill"><input id="allowUnknown" type="checkbox" checked> Unknown hours OK</label>
     </div>
   </section>
 
   <section class="game">
     <div class="game-head">
-      <strong>💚 Dinner roulette</strong>
+      <strong>💚 Restaurant roulette</strong>
       <span id="eligibleLabel">0 eligible</span>
     </div>
 
@@ -482,43 +515,119 @@ main{
   <section class="library">
     <div class="library-head">
       <strong>🍜 Local stash</strong>
-      <span><b id="dbCount">0</b> saved Bacolod spots</span>
+      <div class="library-tools">
+        <span><b id="dbCount">0</b> saved Bacolod spots</span>
+        <button id="restoreDeleted" class="restore-deleted" type="button" hidden>RESTORE DELETED</button>
+      </div>
     </div>
-    <input id="search" class="search" type="search" placeholder="Search Odaegam, Calea, Korean, ramen…">
+
+    <div class="browse-row">
+      <input id="search" class="search" type="search" placeholder="Search Odaegam, Calea, Korean, ramen…">
+      <button id="browseAll" class="add-btn" type="button">BROWSE ALL</button>
+    </div>
     <div id="list" class="list"></div>
-    <div class="search-row" style="margin-top:8px">
-      <input id="customName" class="search" type="text" placeholder="Add a missing Bacolod restaurant">
-      <button id="addCustom" class="add-btn" type="button">ADD</button>
+
+    <div class="import-box">
+      <div class="import-title">
+        <strong>📍 Add from Google Maps</strong>
+        <span>saved only on this phone</span>
+      </div>
+
+      <input id="mapsLink" class="search" type="url" inputmode="url" placeholder="Paste Google Maps restaurant link">
+
+      <div class="import-grid">
+        <div>
+          <label class="tiny-label" for="customName">Restaurant name</label>
+          <input id="customName" class="search" type="text" placeholder="Auto-filled when possible">
+        </div>
+        <div>
+          <label class="tiny-label" for="customArea">Area</label>
+          <select id="customArea" class="search"><option value="Unknown">Not sure</option></select>
+        </div>
+        <div>
+          <label class="tiny-label" for="customCuisine">Cuisine</label>
+          <input id="customCuisine" class="search" type="text" placeholder="e.g. Korean, Cafe">
+        </div>
+        <div>
+          <label class="tiny-label" for="customPrice">Budget</label>
+          <select id="customPrice" class="search">
+            <option value="">Not sure</option>
+            <option value="1">₱ budget</option>
+            <option value="2">₱₱ mid</option>
+            <option value="3">₱₱₱ treat yourself</option>
+          </select>
+        </div>
+      </div>
+
+      <button id="addCustom" class="import-save" type="button">💚 SAVE TO DIBS</button>
+      <div id="importHelp" class="import-help">
+        Normal Google Maps links can auto-fill the name. Short <b>maps.app.goo.gl</b> links hide the name, so paste the link and type the restaurant name once.
+      </div>
     </div>
   </section>
 
   <div class="note">
-    Restaurant details are stored locally in this app and can become outdated. Google Maps is opened only when you tap it, so you can verify current hours, reviews, photos and directions.
+    Restaurant details are stored locally in this app and can become outdated. This expanded build combines verified current listings with a broad Bacolod discovery pass, but small businesses can still open, move, or close. Google Maps is opened only when you tap it, so you can verify current hours, reviews, photos and directions.
   </div>
 </main>
 
 <script>
-const BASE_DB=[{"name":"ODAEGAM Ramen Station","area":"Lacson","cuisine":"Korean · Ramen","price":2,"address":"27 BS Aquino Dr","rating":4.3,"reviews":75,"hours":"11:00-21:00"},{"name":"Daebak Korean Restaurant","area":"Mandalagan","cuisine":"Korean","price":2,"address":"Mandalagan","rating":4.7,"reviews":78,"hours":"11:00-22:00"},{"name":"Furai Contemporary Japanese","area":"Lacson","cuisine":"Japanese","price":1,"address":"The Row, Lacson St","rating":4.8,"reviews":143,"hours":"11:00-14:00|16:30-21:00"},{"name":"Gerry's SM Bacolod","area":"Downtown","cuisine":"Filipino · Grill","price":3,"address":"SM City Bacolod","rating":4.9,"reviews":2312,"hours":"10:00-22:00"},{"name":"Studio Cafe","area":"Downtown","cuisine":"Cafe · Casual","price":1,"address":"Bacolod City","rating":4.6,"reviews":385,"hours":"06:30-22:00"},{"name":"Golden Fortune Seafood Restaurant","area":"South","cuisine":"Chinese · Seafood","price":3,"address":"Magsaysay Ave","rating":4.3,"reviews":455,"hours":"09:30-14:00|16:30-21:00"},{"name":"Pzza PH","area":"Upper East","cuisine":"Pizza","price":2,"address":"Burgos Ext., Villamonte","rating":4.5,"reviews":130,"hours":"12:00-21:30"},{"name":"Modern Shang","area":"Downtown","cuisine":"Chinese","price":2,"address":"Ayala Malls Capitol Central","rating":4.7,"reviews":219,"hours":null},{"name":"KitcheNamit Buffet Restaurant","area":"Downtown","cuisine":"Buffet · Filipino","price":1,"address":"San Sebastian St","rating":4.1,"reviews":8,"hours":"10:30-22:30"},{"name":"Fuego Bar & Lounge","area":"Lacson","cuisine":"Bar · International","price":3,"address":"Lacson St","rating":4.8,"reviews":52,"hours":"16:00-22:00"},{"name":"Vikings Luxury Buffet","area":"Downtown","cuisine":"Buffet · International","price":3,"address":"SM City Bacolod","rating":4.9,"reviews":16034,"hours":"11:00-14:30|17:30-22:00"},{"name":"Hanok Authentic Korean Restaurant","area":"Singcang","cuisine":"Korean","price":2,"address":"Goldenfield Commercial Complex","rating":4.5,"reviews":361,"hours":"11:00-20:30"},{"name":"Ikkoryu Ramen","area":"Downtown","cuisine":"Japanese · Ramen","price":1,"address":"Bacolod City","rating":4.7,"reviews":387,"hours":"10:00-22:00"},{"name":"IMAY'S","area":"Lacson","cuisine":"Filipino","price":2,"address":"6th Lacson St","rating":4.3,"reviews":591,"hours":"10:30-21:00"},{"name":"Coffee Culture ROASTERY","area":"South","cuisine":"Cafe · Coffee","price":1,"address":"Alijis Rd","rating":4.7,"reviews":381,"hours":"09:00-18:00"},{"name":"Rojo's Beach Resort and Floating Restaurant","area":"South","cuisine":"Seafood · Filipino","price":1,"address":"Bacolod City","rating":4.2,"reviews":433,"hours":"08:00-21:30"},{"name":"Johnny's Pizza","area":"Upper East","cuisine":"Pizza · American","price":1,"address":"C.L. Montelibano Ave","rating":4.5,"reviews":125,"hours":"11:00-21:00"},{"name":"Chino's WOK 6100","area":"Tangub","cuisine":"Thai","price":1,"address":"Gardenville Subdivision, Tangub","rating":4.9,"reviews":110,"hours":"12:00-21:00"},{"name":"Yukimix Buffet International","area":"Downtown","cuisine":"Buffet · International","price":1,"address":"Lopez Jaena St","rating":4.6,"reviews":311,"hours":"06:00-22:00"},{"name":"Kristin's Akasya Grill & Steakhouse","area":"Lacson","cuisine":"Steak · Grill","price":2,"address":"17th St","rating":4.3,"reviews":168,"hours":"11:00-22:00"},{"name":"Inasal & co!","area":"Downtown","cuisine":"Filipino · Inasal","price":1,"address":"Bacolod City","rating":4.5,"reviews":237,"hours":"14:00-22:00"},{"name":"Calea Pastries & Coffee","area":"Lacson","cuisine":"Cafe · Dessert","price":1,"address":"15th St","rating":4.6,"reviews":1923,"hours":"09:00-22:00"},{"name":"GUNNY'S ALL AMERICAN BURGERHOUSE","area":"Upper East","cuisine":"Burger · American","price":1,"address":"Villamonte","rating":4.6,"reviews":337,"hours":"10:00-22:00"},{"name":"Rau-Ram Restaurant","area":"Bata","cuisine":"Vietnamese","price":1,"address":"Brgy. Bata","rating":4.5,"reviews":704,"hours":"11:00-21:00"},{"name":"Italianni's SM City Bacolod","area":"Downtown","cuisine":"Italian","price":3,"address":"SM City Bacolod","rating":4.9,"reviews":983,"hours":"10:00-22:00"},{"name":"Mimi's Cafe & Restaurant","area":"Lacson","cuisine":"Cafe · Casual","price":1,"address":"25th St. corner Lacson","rating":4.4,"reviews":233,"hours":"07:30-20:00"},{"name":"The Samgyup 31","area":"Downtown","cuisine":"Korean · BBQ","price":2,"address":"Bacolod City","rating":4.5,"reviews":201,"hours":"10:00-22:00"},{"name":"Sugaree Gelato, Bakery, Pizza and Cafe","area":"Upper East","cuisine":"Cafe · Dessert · Pizza","price":2,"address":"Bacolod City","rating":4.7,"reviews":143,"hours":"09:00-22:00"},{"name":"Sprout Burger - Villamonte","area":"Upper East","cuisine":"Burger · American","price":1,"address":"BS Aquino Dr., Villamonte","rating":4.7,"reviews":33,"hours":"10:00-21:00"},{"name":"Bánh Mì Kitchen - Shell Lacson","area":"Mandalagan","cuisine":"Vietnamese · Sandwich","price":1,"address":"Shell Lacson, Mandalagan","rating":4.6,"reviews":27,"hours":"07:00-19:00"},{"name":"BAAN THAI HOMM","area":"Mandalagan","cuisine":"Thai","price":1,"address":"GM Cordova Ave","rating":4.7,"reviews":44,"hours":"11:00-15:00|17:00-20:30"},{"name":"Italia Restaurant","area":"Mandalagan","cuisine":"Italian","price":2,"address":"Paseo Verde","rating":4.4,"reviews":389,"hours":"11:00-22:00"},{"name":"Ishan's Coffee and Diner","area":"Lacson","cuisine":"Cafe · Diner","price":1,"address":"La Salle Ave","rating":4.5,"reviews":134,"hours":"06:30-20:30"},{"name":"Muhan Samgyeopsal Grill","area":"Upper East","cuisine":"Korean · BBQ","price":2,"address":"Villa Angela Marketplace","rating":3.2,"reviews":35,"hours":"10:00-22:00"},{"name":"Mang Inasal - New City Mall","area":"Downtown","cuisine":"Filipino · Inasal","price":1,"address":"Luzuriaga St","rating":4.3,"reviews":121,"hours":"09:00-21:00"},{"name":"GLACIERS Bar & Restaurant","area":"Upper East","cuisine":"Cafe · Casual","price":1,"address":"C.L. Montelibano Ave","rating":4.8,"reviews":37,"hours":"07:00-19:00"},{"name":"Veego","area":"Downtown","cuisine":"Vegan · Healthy","price":1,"address":"Hilado St","rating":4.9,"reviews":72,"hours":"11:00-20:00"},{"name":"Sian Tian Food Center","area":"Downtown","cuisine":"Chinese","price":1,"address":"Burgos Ave","rating":4.7,"reviews":29,"hours":"08:00-17:00"},{"name":"Ciano's Seafood Grill & Bar - NGC","area":"Upper East","cuisine":"Seafood · Grill","price":1,"address":"Villa Angela, Villamonte","rating":3.9,"reviews":100,"hours":"06:00-21:00"},{"name":"nolew's kitchen","area":"Upper East","cuisine":"Casual · Family","price":1,"address":"Margarita St","rating":4.7,"reviews":21,"hours":"17:00-21:00"},{"name":"Taverna Bacolod","area":"South","cuisine":"International · Casual","price":2,"address":"May's Organic Garden, Pahanocoy","rating":4.8,"reviews":94,"hours":null},{"name":"Good Coffee Bacolod","area":"Lacson","cuisine":"Cafe · Coffee","price":1,"address":"11th St., Lacson","rating":4.9,"reviews":20,"hours":"10:00-22:00"},{"name":"Tippy's Bistro","area":"Lacson","cuisine":"Bistro · Bar","price":1,"address":"Lacson St","rating":4.5,"reviews":424,"hours":"16:00-23:00"},{"name":"Natural Garden Cafe","area":"Upper East","cuisine":"Cafe · Healthy","price":1,"address":"Kametal Rd","rating":4.7,"reviews":55,"hours":"09:00-17:00"},{"name":"Scarborough Seafoods","area":"South","cuisine":"Seafood","price":2,"address":"Bacolod City","rating":4.4,"reviews":159,"hours":"11:00-14:00|17:00-21:00"},{"name":"Delicioso","area":"Mandalagan","cuisine":"European · International","price":2,"address":"Lacson St","rating":4.4,"reviews":661,"hours":"07:30-22:00"},{"name":"Juliana's Cafe & Resto","area":"Lacson","cuisine":"Cafe · Filipino","price":3,"address":"7th St","rating":4.4,"reviews":70,"hours":"11:00-21:00"},{"name":"Bob's Restaurant Main Northdrive","area":"Lacson","cuisine":"Filipino · International","price":2,"address":"BS Aquino Dr","rating":4.4,"reviews":1257,"hours":"07:30-21:30"},{"name":"21 Restaurant","area":"Lacson","cuisine":"Filipino · International","price":1,"address":"21 Lacson St","rating":4.4,"reviews":451,"hours":"10:00-22:00"},{"name":"Aboy's Restaurant","area":"Singcang","cuisine":"Filipino · Seafood","price":2,"address":"Liroville Subd., Singcang","rating":4.4,"reviews":778,"hours":"10:00-22:00"},{"name":"Chicken House - Main Branch","area":"Lacson","cuisine":"Filipino · Inasal","price":1,"address":"24th Lacson St","rating":4.4,"reviews":513,"hours":"11:00-22:00"},{"name":"Aida's Chicken - Manokan Country","area":"Downtown","cuisine":"Filipino · Inasal","price":1,"address":"Manokan Country","rating":4.2,"reviews":276,"hours":"09:00-23:30"},{"name":"Masskara Chicken","area":"Lacson","cuisine":"Filipino · Inasal","price":1,"address":"BS Aquino Dr","rating":4.1,"reviews":628,"hours":"10:00-21:00"},{"name":"Palawud","area":"Bata","cuisine":"Filipino · Seafood · Grill","price":3,"address":"San Patricio, Banago","rating":4.3,"reviews":1032,"hours":"11:00-00:00"},{"name":"Cafe Uma","area":"Mandalagan","cuisine":"Asian Fusion","price":2,"address":"Paseo Verde","rating":4.5,"reviews":100,"hours":"11:00-21:00"},{"name":"Quedan","area":"Mandalagan","cuisine":"Spanish · Filipino","price":2,"address":"Paseo Verde","rating":4.4,"reviews":202,"hours":"16:00-00:00"},{"name":"Kinoboy Restaurant and Bar","area":"Lacson","cuisine":"Filipino · Bar","price":1,"address":"26 Lacson St","rating":4.4,"reviews":77,"hours":"00:00-24:00"},{"name":"Chicken House - Shopping Branch","area":"Downtown","cuisine":"Filipino · Inasal","price":1,"address":"Hilado St","rating":4.4,"reviews":434,"hours":"11:00-22:00"},{"name":"Aida's Chicken Inasal - Art District","area":"Mandalagan","cuisine":"Filipino · Inasal","price":1,"address":"Art District, Mandalagan","rating":4.1,"reviews":50,"hours":"10:00-21:30"},{"name":"Masskara Chicken Inasal Buri Rd","area":"Mandalagan","cuisine":"Filipino · Inasal","price":1,"address":"Buri Road","rating":3.8,"reviews":52,"hours":null},{"name":"Chicken House - Alunan Branch","area":"South","cuisine":"Filipino · Inasal","price":1,"address":"Araneta Ave","rating":4.3,"reviews":328,"hours":"11:00-22:00"},{"name":"Aida's Chicken San Juan Branch","area":"Downtown","cuisine":"Filipino · Inasal","price":1,"address":"San Juan St","rating":4.3,"reviews":125,"hours":"09:00-23:00"},{"name":"Masskara Chicken Inasal East NGC","area":"Upper East","cuisine":"Filipino · Inasal","price":1,"address":"Circumferential Rd., Villamonte","rating":4.1,"reviews":113,"hours":"11:00-22:00"},{"name":"Chicken House - Homesite Branch","area":"Upper East","cuisine":"Filipino · Inasal","price":1,"address":"Homesite, Circumferential Rd","rating":4.3,"reviews":19,"hours":"11:00-22:00"},{"name":"Masskara Chicken Inasal - La Salle Ave","area":"Lacson","cuisine":"Filipino · Inasal","price":1,"address":"La Salle Ave","rating":5.0,"reviews":2,"hours":null},{"name":"Chicken House - San Juan Branch","area":"Downtown","cuisine":"Filipino · Inasal","price":1,"address":"San Juan / San Sebastian","rating":4.3,"reviews":74,"hours":"11:00-22:00"},{"name":"Jin Long Hotpot","area":"Downtown","cuisine":"Chinese · Hotpot","price":2,"address":"Anahaw Arcade","rating":4.3,"reviews":42,"hours":"11:00-22:00"},{"name":"Coffee Culture On Lacson","area":"Lacson","cuisine":"Cafe · Coffee","price":1,"address":"20th St. corner Lacson","rating":4.7,"reviews":49,"hours":"09:00-21:00"},{"name":"74 Cafe - Bacolod","area":"Upper East","cuisine":"Cafe · Casual","price":1,"address":"One Regis Tower, Upper East","rating":4.4,"reviews":67,"hours":"08:00-22:00"},{"name":"Buttery Bacolod","area":"Mandalagan","cuisine":"Cafe · Dessert","price":2,"address":"Lacson / C.L. Montelibano","rating":4.6,"reviews":74,"hours":"09:00-22:00"},{"name":"Ribshack - SM City Bacolod","area":"Downtown","cuisine":"Ribs · Grill","price":1,"address":"SM City Bacolod","rating":4.2,"reviews":327,"hours":"10:00-21:00"},{"name":"Uncle Rick's Pizza","area":"Upper East","cuisine":"Pizza","price":1,"address":"Victorina Drive","rating":4.8,"reviews":37,"hours":"11:30-20:00"},{"name":"Subarashii","area":"Mandalagan","cuisine":"Japanese","price":1,"address":"GM Cordova Ave","rating":4.7,"reviews":71,"hours":"11:00-20:00"},{"name":"NEW NATURE'S HOTPOT RESTAURANT","area":"Lacson","cuisine":"Chinese · Hotpot","price":1,"address":"BS Aquino Dr","rating":4.3,"reviews":66,"hours":"08:00-20:00"},{"name":"Angel's Pizza Bacolod","area":"Mandalagan","cuisine":"Pizza","price":1,"address":"Lacson St","rating":4.0,"reviews":157,"hours":"09:00-21:00"},{"name":"SEOUL BLACK SM CITY BACOLOD","area":"Downtown","cuisine":"Korean · BBQ","price":2,"address":"SM City Bacolod","rating":4.3,"reviews":36,"hours":"10:00-22:00"}];
+const BASE_DB=[{"name":"ODAEGAM Ramen Station","area":"Lacson","cuisine":"Korean · Ramen","price":2,"address":"27 BS Aquino Dr","rating":4.3,"reviews":75,"hours":"11:00-21:00"},{"name":"Daebak Korean Restaurant","area":"Mandalagan","cuisine":"Korean","price":2,"address":"Mandalagan","rating":4.7,"reviews":78,"hours":"11:00-22:00"},{"name":"Furai Contemporary Japanese","area":"Lacson","cuisine":"Japanese","price":1,"address":"The Row, Lacson St","rating":4.8,"reviews":143,"hours":"11:00-14:00|16:30-21:00"},{"name":"Gerry's SM Bacolod","area":"SM City Bacolod","cuisine":"Filipino · Grill","price":3,"address":"SM City Bacolod","rating":4.9,"reviews":2312,"hours":"10:00-22:00"},{"name":"Studio Cafe","area":"Downtown","cuisine":"Cafe · Casual","price":1,"address":"Bacolod City","rating":4.6,"reviews":385,"hours":"06:30-22:00"},{"name":"Golden Fortune Seafood Restaurant","area":"South","cuisine":"Chinese · Seafood","price":3,"address":"Magsaysay Ave","rating":4.3,"reviews":455,"hours":"09:30-14:00|16:30-21:00"},{"name":"Pzza PH","area":"Villamonte","cuisine":"Pizza","price":2,"address":"Burgos Ext., Villamonte","rating":4.5,"reviews":130,"hours":"12:00-21:30"},{"name":"Modern Shang","area":"Ayala Capitol Central","cuisine":"Chinese","price":2,"address":"Ayala Malls Capitol Central","rating":4.7,"reviews":219,"hours":null},{"name":"KitcheNamit Buffet Restaurant","area":"Downtown","cuisine":"Buffet · Filipino","price":1,"address":"San Sebastian St","rating":4.1,"reviews":8,"hours":"10:30-22:30"},{"name":"Fuego Bar & Lounge","area":"Lacson","cuisine":"Bar · International","price":3,"address":"Lacson St","rating":4.8,"reviews":52,"hours":"16:00-22:00"},{"name":"Vikings Luxury Buffet","area":"SM City Bacolod","cuisine":"Buffet · International","price":3,"address":"SM City Bacolod","rating":4.9,"reviews":16034,"hours":"11:00-14:30|17:30-22:00"},{"name":"Hanok Authentic Korean Restaurant","area":"Singcang / Goldenfield","cuisine":"Korean","price":2,"address":"Goldenfield Commercial Complex","rating":4.5,"reviews":361,"hours":"11:00-20:30"},{"name":"Ikkoryu Ramen","area":"Downtown","cuisine":"Japanese · Ramen","price":1,"address":"Bacolod City","rating":4.7,"reviews":387,"hours":"10:00-22:00"},{"name":"IMAY'S","area":"Lacson","cuisine":"Filipino","price":2,"address":"6th Lacson St","rating":4.3,"reviews":591,"hours":"10:30-21:00"},{"name":"Coffee Culture ROASTERY","area":"Alijis","cuisine":"Cafe · Coffee","price":1,"address":"Alijis Rd","rating":4.7,"reviews":381,"hours":"09:00-18:00"},{"name":"Rojo's Beach Resort and Floating Restaurant","area":"South","cuisine":"Seafood · Filipino","price":1,"address":"Bacolod City","rating":4.2,"reviews":433,"hours":"08:00-21:30"},{"name":"Johnny's Pizza","area":"Upper East","cuisine":"Pizza · American","price":1,"address":"C.L. Montelibano Ave","rating":4.5,"reviews":125,"hours":"11:00-21:00"},{"name":"Chino's WOK 6100","area":"Tangub","cuisine":"Thai","price":1,"address":"Gardenville Subdivision, Tangub","rating":4.9,"reviews":110,"hours":"12:00-21:00"},{"name":"Yukimix Buffet International","area":"Downtown","cuisine":"Buffet · International","price":1,"address":"Lopez Jaena St","rating":4.6,"reviews":311,"hours":"06:00-22:00"},{"name":"Kristin's Akasya Grill & Steakhouse","area":"Lacson","cuisine":"Steak · Grill","price":2,"address":"17th St","rating":4.3,"reviews":168,"hours":"11:00-22:00"},{"name":"Inasal & co!","area":"Downtown","cuisine":"Filipino · Inasal","price":1,"address":"Bacolod City","rating":4.5,"reviews":237,"hours":"14:00-22:00"},{"name":"Calea Pastries & Coffee","area":"Lacson","cuisine":"Cafe · Dessert","price":1,"address":"15th St","rating":4.6,"reviews":1923,"hours":"09:00-22:00"},{"name":"GUNNY'S ALL AMERICAN BURGERHOUSE","area":"Villamonte","cuisine":"Burger · American","price":1,"address":"Villamonte","rating":4.6,"reviews":337,"hours":"10:00-22:00"},{"name":"Rau-Ram Restaurant","area":"Bata","cuisine":"Vietnamese","price":1,"address":"Brgy. Bata","rating":4.5,"reviews":704,"hours":"11:00-21:00"},{"name":"Italianni's SM City Bacolod","area":"SM City Bacolod","cuisine":"Italian","price":3,"address":"SM City Bacolod","rating":4.9,"reviews":983,"hours":"10:00-22:00"},{"name":"Mimi's Cafe & Restaurant","area":"Lacson","cuisine":"Cafe · Casual","price":1,"address":"25th St. corner Lacson","rating":4.4,"reviews":233,"hours":"07:30-20:00"},{"name":"The Samgyup 31","area":"Downtown","cuisine":"Korean · BBQ","price":2,"address":"Bacolod City","rating":4.5,"reviews":201,"hours":"10:00-22:00"},{"name":"Sugaree Gelato, Bakery, Pizza and Cafe","area":"Upper East","cuisine":"Cafe · Dessert · Pizza","price":2,"address":"Bacolod City","rating":4.7,"reviews":143,"hours":"09:00-22:00"},{"name":"Sprout Burger - Villamonte","area":"Villamonte","cuisine":"Burger · American","price":1,"address":"BS Aquino Dr., Villamonte","rating":4.7,"reviews":33,"hours":"10:00-21:00"},{"name":"Bánh Mì Kitchen - Shell Lacson","area":"Mandalagan","cuisine":"Vietnamese · Sandwich","price":1,"address":"Shell Lacson, Mandalagan","rating":4.6,"reviews":27,"hours":"07:00-19:00"},{"name":"BAAN THAI HOMM","area":"Mandalagan","cuisine":"Thai","price":1,"address":"GM Cordova Ave","rating":4.7,"reviews":44,"hours":"11:00-15:00|17:00-20:30"},{"name":"Italia Restaurant","area":"Mandalagan","cuisine":"Italian","price":2,"address":"Paseo Verde","rating":4.4,"reviews":389,"hours":"11:00-22:00"},{"name":"Ishan's Coffee and Diner","area":"Lacson","cuisine":"Cafe · Diner","price":1,"address":"La Salle Ave","rating":4.5,"reviews":134,"hours":"06:30-20:30"},{"name":"Muhan Samgyeopsal Grill","area":"Villamonte","cuisine":"Korean · BBQ","price":2,"address":"Villa Angela Marketplace","rating":3.2,"reviews":35,"hours":"10:00-22:00"},{"name":"Mang Inasal - New City Mall","area":"Downtown","cuisine":"Filipino · Inasal","price":1,"address":"Luzuriaga St","rating":4.3,"reviews":121,"hours":"09:00-21:00"},{"name":"GLACIERS Bar & Restaurant","area":"Villamonte","cuisine":"Cafe · Casual","price":1,"address":"C.L. Montelibano Ave","rating":4.8,"reviews":37,"hours":"07:00-19:00"},{"name":"Veego","area":"Downtown","cuisine":"Vegan · Healthy","price":1,"address":"Hilado St","rating":4.9,"reviews":72,"hours":"11:00-20:00"},{"name":"Sian Tian Food Center","area":"Downtown","cuisine":"Chinese","price":1,"address":"Burgos Ave","rating":4.7,"reviews":29,"hours":"08:00-17:00"},{"name":"Ciano's Seafood Grill & Bar - NGC","area":"Villamonte","cuisine":"Seafood · Grill","price":1,"address":"Villa Angela, Villamonte","rating":3.9,"reviews":100,"hours":"06:00-21:00"},{"name":"nolew's kitchen","area":"Villamonte","cuisine":"Casual · Family","price":1,"address":"Margarita St","rating":4.7,"reviews":21,"hours":"17:00-21:00"},{"name":"Taverna Bacolod","area":"Pahanocoy / Sum-ag","cuisine":"International · Casual","price":2,"address":"May's Organic Garden, Pahanocoy","rating":4.8,"reviews":94,"hours":null},{"name":"Good Coffee Bacolod","area":"Lacson","cuisine":"Cafe · Coffee","price":1,"address":"11th St., Lacson","rating":4.9,"reviews":20,"hours":"10:00-22:00"},{"name":"Tippy's Bistro","area":"Lacson","cuisine":"Bistro · Bar","price":1,"address":"Lacson St","rating":4.5,"reviews":424,"hours":"16:00-23:00"},{"name":"Natural Garden Cafe","area":"Villamonte","cuisine":"Cafe · Healthy","price":1,"address":"Kametal Rd","rating":4.7,"reviews":55,"hours":"09:00-17:00"},{"name":"Scarborough Seafoods","area":"South","cuisine":"Seafood","price":2,"address":"Bacolod City","rating":4.4,"reviews":159,"hours":"11:00-14:00|17:00-21:00"},{"name":"Delicioso","area":"Mandalagan","cuisine":"European · International","price":2,"address":"Lacson St","rating":4.4,"reviews":661,"hours":"07:30-22:00"},{"name":"Juliana's Cafe & Resto","area":"Lacson","cuisine":"Cafe · Filipino","price":3,"address":"7th St","rating":4.4,"reviews":70,"hours":"11:00-21:00"},{"name":"Bob's Restaurant Main Northdrive","area":"Lacson","cuisine":"Filipino · International","price":2,"address":"BS Aquino Dr","rating":4.4,"reviews":1257,"hours":"07:30-21:30"},{"name":"21 Restaurant","area":"Lacson","cuisine":"Filipino · International","price":1,"address":"21 Lacson St","rating":4.4,"reviews":451,"hours":"10:00-22:00"},{"name":"Aboy's Restaurant","area":"Singcang / Goldenfield","cuisine":"Filipino · Seafood","price":2,"address":"Liroville Subd., Singcang","rating":4.4,"reviews":778,"hours":"10:00-22:00"},{"name":"Chicken House - Main Branch","area":"Lacson","cuisine":"Filipino · Inasal","price":1,"address":"24th Lacson St","rating":4.4,"reviews":513,"hours":"11:00-22:00"},{"name":"Aida's Chicken - Manokan Country","area":"Downtown","cuisine":"Filipino · Inasal","price":1,"address":"Manokan Country","rating":4.2,"reviews":276,"hours":"09:00-23:30"},{"name":"Masskara Chicken","area":"Lacson","cuisine":"Filipino · Inasal","price":1,"address":"BS Aquino Dr","rating":4.1,"reviews":628,"hours":"10:00-21:00"},{"name":"Palawud","area":"Bata / Banago","cuisine":"Filipino · Seafood · Grill","price":3,"address":"San Patricio, Banago","rating":4.3,"reviews":1032,"hours":"11:00-00:00"},{"name":"Cafe Uma","area":"Mandalagan","cuisine":"Asian Fusion","price":2,"address":"Paseo Verde","rating":4.5,"reviews":100,"hours":"11:00-21:00"},{"name":"Quedan","area":"Mandalagan","cuisine":"Spanish · Filipino","price":2,"address":"Paseo Verde","rating":4.4,"reviews":202,"hours":"16:00-00:00"},{"name":"Kinoboy Restaurant and Bar","area":"Lacson","cuisine":"Filipino · Bar","price":1,"address":"26 Lacson St","rating":4.4,"reviews":77,"hours":"00:00-24:00"},{"name":"Chicken House - Shopping Branch","area":"Downtown","cuisine":"Filipino · Inasal","price":1,"address":"Hilado St","rating":4.4,"reviews":434,"hours":"11:00-22:00"},{"name":"Aida's Chicken Inasal - Art District","area":"Mandalagan","cuisine":"Filipino · Inasal","price":1,"address":"Art District, Mandalagan","rating":4.1,"reviews":50,"hours":"10:00-21:30"},{"name":"Masskara Chicken Inasal Buri Rd","area":"Mandalagan","cuisine":"Filipino · Inasal","price":1,"address":"Buri Road","rating":3.8,"reviews":52,"hours":null},{"name":"Chicken House - Alunan Branch","area":"Singcang / Goldenfield","cuisine":"Filipino · Inasal","price":1,"address":"Araneta Ave","rating":4.3,"reviews":328,"hours":"11:00-22:00"},{"name":"Aida's Chicken San Juan Branch","area":"Downtown","cuisine":"Filipino · Inasal","price":1,"address":"San Juan St","rating":4.3,"reviews":125,"hours":"09:00-23:00"},{"name":"Masskara Chicken Inasal East NGC","area":"Villamonte","cuisine":"Filipino · Inasal","price":1,"address":"Circumferential Rd., Villamonte","rating":4.1,"reviews":113,"hours":"11:00-22:00"},{"name":"Chicken House - Homesite Branch","area":"Villamonte","cuisine":"Filipino · Inasal","price":1,"address":"Homesite, Circumferential Rd","rating":4.3,"reviews":19,"hours":"11:00-22:00"},{"name":"Masskara Chicken Inasal - La Salle Ave","area":"Lacson","cuisine":"Filipino · Inasal","price":1,"address":"La Salle Ave","rating":5.0,"reviews":2,"hours":null},{"name":"Chicken House - San Juan Branch","area":"Downtown","cuisine":"Filipino · Inasal","price":1,"address":"San Juan / San Sebastian","rating":4.3,"reviews":74,"hours":"11:00-22:00"},{"name":"Jin Long Hotpot","area":"Downtown","cuisine":"Chinese · Hotpot","price":2,"address":"Anahaw Arcade","rating":4.3,"reviews":42,"hours":"11:00-22:00"},{"name":"Coffee Culture On Lacson","area":"Lacson","cuisine":"Cafe · Coffee","price":1,"address":"20th St. corner Lacson","rating":4.7,"reviews":49,"hours":"09:00-21:00"},{"name":"74 Cafe - Bacolod","area":"Upper East","cuisine":"Cafe · Casual","price":1,"address":"One Regis Tower, Upper East","rating":4.4,"reviews":67,"hours":"08:00-22:00"},{"name":"Buttery Bacolod","area":"Mandalagan","cuisine":"Cafe · Dessert","price":2,"address":"Lacson / C.L. Montelibano","rating":4.6,"reviews":74,"hours":"09:00-22:00"},{"name":"Ribshack - SM City Bacolod","area":"SM City Bacolod","cuisine":"Ribs · Grill","price":1,"address":"SM City Bacolod","rating":4.2,"reviews":327,"hours":"10:00-21:00"},{"name":"Uncle Rick's Pizza","area":"Villamonte","cuisine":"Pizza","price":1,"address":"Victorina Drive","rating":4.8,"reviews":37,"hours":"11:30-20:00"},{"name":"Subarashii","area":"Mandalagan","cuisine":"Japanese","price":1,"address":"GM Cordova Ave","rating":4.7,"reviews":71,"hours":"11:00-20:00"},{"name":"NEW NATURE'S HOTPOT RESTAURANT","area":"Villamonte","cuisine":"Chinese · Hotpot","price":1,"address":"BS Aquino Dr","rating":4.3,"reviews":66,"hours":"08:00-20:00"},{"name":"Angel's Pizza Bacolod","area":"Mandalagan","cuisine":"Pizza","price":1,"address":"Lacson St","rating":4.0,"reviews":157,"hours":"09:00-21:00"},{"name":"SEOUL BLACK SM CITY BACOLOD","area":"SM City Bacolod","cuisine":"Korean · BBQ","price":2,"address":"SM City Bacolod","rating":4.3,"reviews":36,"hours":"10:00-22:00"},{"name":"Lola Grill & Restaurant","area":"Mandalagan","cuisine":"Filipino · Grill","price":2,"address":"Carmenville Subdivision, Bacolod","rating":4.9,"reviews":566,"hours":"11:00-21:00"},{"name":"Botejyu Ayala Malls Capitol Central","area":"Ayala Capitol Central","cuisine":"Japanese","price":2,"address":"Ayala Malls Capitol Central, Gatuslao St","rating":4.8,"reviews":495,"hours":"10:00-22:00"},{"name":"Kuya J Restaurant","area":"Downtown","cuisine":"Filipino","price":2,"address":"Father M. Ferrero St","rating":4.0,"reviews":391,"hours":"10:00-21:00"},{"name":"UNCLE GER'S","area":"Downtown","cuisine":"Seafood · Filipino","price":2,"address":"Bacolod City","rating":4.4,"reviews":134,"hours":"11:00-22:00"},{"name":"Cafe Bobs Flagship","area":"Lacson","cuisine":"Cafe · Filipino","price":1,"address":"21 Lacson St","rating":4.3,"reviews":924,"hours":"08:00-22:00"},{"name":"Ted’s Old Timer La Paz Batchoy - San Juan St","area":"Downtown","cuisine":"Filipino · Batchoy","price":1,"address":"San Juan St","rating":5.0,"reviews":1,"hours":"00:00-24:00"},{"name":"Gina's Seafoods Restaurant","area":"Downtown","cuisine":"Seafood · Filipino","price":2,"address":"San Juan St","rating":4.6,"reviews":1115,"hours":"10:00-22:00"},{"name":"GG Korean Food House","area":"Downtown","cuisine":"Korean","price":1,"address":"Bacolod City","rating":4.9,"reviews":34,"hours":"10:00-20:00"},{"name":"UMAMI JAPANESE RESTAURANT","area":"Lacson","cuisine":"Japanese","price":2,"address":"15th Street, Lacson St","rating":4.7,"reviews":63,"hours":"11:30-21:30"},{"name":"BRUNCH OUT CAFE","area":"Downtown","cuisine":"Cafe · Brunch","price":1,"address":"Bacolod City","rating":4.4,"reviews":54,"hours":"10:30-22:00"},{"name":"EME's Food Hall Bacolod","area":"Downtown","cuisine":"Food Hall · Fast Food","price":1,"address":"San Sebastian St","rating":4.7,"reviews":23,"hours":"10:00-00:00"},{"name":"The Dhaba Authentic Indian Restaurant","area":"Villamonte","cuisine":"Indian","price":1,"address":"The Shophouse Heritage, B.S. Aquino Drive","rating":3.4,"reviews":32,"hours":"09:00-19:00"},{"name":"Ramen & Sushi","area":"Mandalagan","cuisine":"Japanese · Ramen · Sushi","price":1,"address":"GM Cordova Ave (Buri Road), Mandalagan","rating":null,"reviews":0,"hours":null},{"name":"Carinderia by Galilee","area":"Singcang / Goldenfield","cuisine":"Filipino · Carinderia","price":1,"address":"Magsaysay Ave, Singcang-Airport","rating":5.0,"reviews":2,"hours":null},{"name":"2 STORY KITCHEN","area":"Villamonte","cuisine":"Casual · Family","price":1,"address":"Villa Angela, Circumferential Rd, Villamonte","rating":4.3,"reviews":294,"hours":"10:30-22:30"},{"name":"Pretty Baked Bacolod","area":"Villamonte","cuisine":"Cafe · Dessert · Bakery","price":1,"address":"Capitol Heights, Sambag St","rating":5.0,"reviews":22,"hours":"09:00-19:00"},{"name":"Jollibee SM City Bacolod","area":"SM City Bacolod","cuisine":"Fast Food · Filipino","price":1,"address":"SM City Bacolod","rating":4.4,"reviews":138,"hours":"10:00-22:00"},{"name":"Indian Foods Bacolod","area":"Downtown","cuisine":"Indian","price":1,"address":"Bacolod City","rating":3.8,"reviews":9,"hours":null},{"name":"Bascon Cakes 888","area":"888 Chinatown","cuisine":"Cafe · Dessert · Bakery","price":2,"address":"888 Gatuslao St","rating":5.0,"reviews":75,"hours":"08:00-20:00"},{"name":"24 Chicken San Juan Downtown Bacolod","area":"Downtown","cuisine":"Korean · Chicken · Fast Food","price":1,"address":"78 San Juan St","rating":4.9,"reviews":81,"hours":"10:00-21:00"},{"name":"Kuppa Coffee & Tea","area":"Villamonte","cuisine":"Cafe · Breakfast · Coffee","price":1,"address":"Capitol Shopping Center, Tindalo Ave, Villamonte","rating":4.4,"reviews":557,"hours":"07:00-22:00"},{"name":"Parrilla Negrense Kitchen","area":"Lacson","cuisine":"Filipino · Grill","price":2,"address":"23rd & 24th, Lacson St","rating":4.2,"reviews":36,"hours":"11:00-15:00|18:00-21:00"},{"name":"TGI Fridays - Ayala Malls Capitol Central","area":"Ayala Capitol Central","cuisine":"American · Grill","price":2,"address":"Ayala Malls Capitol Central","rating":4.7,"reviews":422,"hours":"10:00-21:00"},{"name":"Botejyu SM City Bacolod","area":"SM City Bacolod","cuisine":"Japanese","price":2,"address":"SM City Bacolod","rating":4.9,"reviews":1479,"hours":"10:00-21:00"},{"name":"Inasal de Ilonggo","area":"Lacson","cuisine":"Filipino · Inasal","price":1,"address":"27th Street, Lacson St","rating":4.5,"reviews":19,"hours":null},{"name":"Tong Yang, Capitol Central Bacolod","area":"Ayala Capitol Central","cuisine":"Buffet · Hotpot · Grill","price":2,"address":"Ayala Malls Capitol Central","rating":4.9,"reviews":3648,"hours":"11:00-14:30|17:30-21:00"},{"name":"Tong Yang, SM City Bacolod","area":"SM City Bacolod","cuisine":"Buffet · Hotpot · Grill","price":2,"address":"SM City Bacolod","rating":4.9,"reviews":2199,"hours":"11:00-14:30|17:30-22:00"},{"name":"Sandok Comfort Food","area":"Villamonte","cuisine":"Filipino · Comfort Food","price":1,"address":"Capitol Shopping Center, Narra Ave, Villamonte","rating":4.5,"reviews":273,"hours":"10:00-21:00"},{"name":"Pizza Hut - SM City Bacolod","area":"SM City Bacolod","cuisine":"Pizza · Fast Food","price":1,"address":"SM City Bacolod, Rizal St","rating":null,"reviews":0,"hours":"10:00-22:00"},{"name":"But First, Coffee - SM City Bacolod","area":"SM City Bacolod","cuisine":"Cafe · Coffee","price":1,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":null},{"name":"PICKUP COFFEE - SM City Bacolod","area":"SM City Bacolod","cuisine":"Cafe · Coffee","price":1,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Waffle Time - SM City Bacolod","area":"SM City Bacolod","cuisine":"Snack · Waffle","price":1,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Shakey's Pizza - SM City Bacolod","area":"SM City Bacolod","cuisine":"Pizza · American","price":2,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Buchiton Tonkotsu Ramen - SM City Bacolod","area":"SM City Bacolod","cuisine":"Japanese · Ramen","price":1,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":null},{"name":"KUPPA - SM City Bacolod","area":"SM City Bacolod","cuisine":"Cafe · Coffee","price":1,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Chooks-to-Go - SM City Bacolod","area":"SM City Bacolod","cuisine":"Filipino · Chicken","price":1,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":null},{"name":"J.CO Donuts & Coffee - SM City Bacolod","area":"SM City Bacolod","cuisine":"Cafe · Donuts · Coffee","price":1,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":null},{"name":"McDonald's - SM City Bacolod","area":"SM City Bacolod","cuisine":"Fast Food · Burger","price":1,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Sumo Niku - SM City Bacolod","area":"SM City Bacolod","cuisine":"Japanese · Grill","price":2,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Seattle's Best Coffee - SM City Bacolod","area":"SM City Bacolod","cuisine":"Cafe · Coffee","price":1,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Burger King - SM City Bacolod","area":"SM City Bacolod","cuisine":"Fast Food · Burger","price":1,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":null},{"name":"The Maki Project - SM City Bacolod","area":"SM City Bacolod","cuisine":"Japanese · Sushi","price":1,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Dairy Queen - SM City Bacolod","area":"SM City Bacolod","cuisine":"Dessert · Ice Cream","price":1,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Red Ribbon - SM City Bacolod","area":"SM City Bacolod","cuisine":"Bakery · Dessert","price":1,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Picole - SM City Bacolod","area":"SM City Bacolod","cuisine":"Dessert · Ice Cream","price":1,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Ooze Taiwan Wheel Cake - SM City Bacolod","area":"SM City Bacolod","cuisine":"Dessert · Snack","price":1,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Gong Cha - SM City Bacolod","area":"SM City Bacolod","cuisine":"Milk Tea · Drinks","price":1,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":null},{"name":"KFC - SM City Bacolod","area":"SM City Bacolod","cuisine":"Fast Food · Chicken","price":1,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Chowking - SM City Bacolod","area":"SM City Bacolod","cuisine":"Chinese · Fast Food","price":1,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Greenwich - SM City Bacolod","area":"SM City Bacolod","cuisine":"Pizza · Fast Food","price":1,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Mang Inasal - SM City Bacolod","area":"SM City Bacolod","cuisine":"Filipino · Inasal · Fast Food","price":1,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Kenny Rogers Roasters - SM City Bacolod","area":"SM City Bacolod","cuisine":"Chicken · American","price":2,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Dunkin' - SM City Bacolod","area":"SM City Bacolod","cuisine":"Cafe · Donuts · Coffee","price":1,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Bo's Coffee - SM City Bacolod","area":"SM City Bacolod","cuisine":"Cafe · Coffee","price":1,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Giligan's Island Restaurant & Bar - SM City Bacolod","area":"SM City Bacolod","cuisine":"Filipino · Grill","price":2,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Max's Restaurant - SM City Bacolod","area":"SM City Bacolod","cuisine":"Filipino · Chicken","price":2,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Mister Donut Cafe - SM City Bacolod","area":"SM City Bacolod","cuisine":"Cafe · Donuts","price":1,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Kuya J - SM City Bacolod","area":"SM City Bacolod","cuisine":"Filipino","price":2,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Mr. Kimbob - SM City Bacolod","area":"SM City Bacolod","cuisine":"Korean · Fast Food","price":1,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Pepper Lunch - SM City Bacolod","area":"SM City Bacolod","cuisine":"Japanese · Steak","price":2,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":null},{"name":"L'Kaisei Japanese Restaurant - SM City Bacolod","area":"SM City Bacolod","cuisine":"Japanese · Buffet","price":2,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":"10:00-22:00"},{"name":"Yellow Cab Pizza - SM City Bacolod","area":"SM City Bacolod","cuisine":"Pizza · American","price":2,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Lechon H - SM City Bacolod","area":"SM City Bacolod","cuisine":"Filipino · Lechon","price":1,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Quino's Cafe - SM City Bacolod","area":"SM City Bacolod","cuisine":"Cafe · Casual","price":1,"address":"SM City Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Bigby's Cafe & Restaurant - Ayala Capitol Central","area":"Ayala Capitol Central","cuisine":"American · Filipino · Cafe","price":2,"address":"Ayala Malls Capitol Central","rating":null,"reviews":0,"hours":null},{"name":"Potato Corner - Ayala Capitol Central","area":"Ayala Capitol Central","cuisine":"Snack · Fries","price":1,"address":"Ayala Malls Capitol Central","rating":null,"reviews":0,"hours":null},{"name":"Starbucks - Ayala Capitol Central","area":"Ayala Capitol Central","cuisine":"Cafe · Coffee","price":2,"address":"Ayala Malls Capitol Central","rating":null,"reviews":0,"hours":null},{"name":"Red Ribbon - Ayala Capitol Central","area":"Ayala Capitol Central","cuisine":"Bakery · Dessert","price":1,"address":"Ayala Malls Capitol Central","rating":null,"reviews":0,"hours":null},{"name":"Avocadoria.ph - Ayala Capitol Central","area":"Ayala Capitol Central","cuisine":"Dessert · Healthy","price":1,"address":"Ayala Malls Capitol Central","rating":null,"reviews":0,"hours":null},{"name":"Chatime - Ayala Capitol Central","area":"Ayala Capitol Central","cuisine":"Milk Tea · Drinks","price":1,"address":"Ayala Malls Capitol Central","rating":null,"reviews":0,"hours":null},{"name":"Yellow Cab Pizza - Ayala Capitol Central","area":"Ayala Capitol Central","cuisine":"Pizza · American","price":2,"address":"Ayala Malls Capitol Central","rating":null,"reviews":0,"hours":null},{"name":"Mang Inasal - Ayala Capitol Central","area":"Ayala Capitol Central","cuisine":"Filipino · Inasal · Fast Food","price":1,"address":"Ayala Malls Capitol Central","rating":null,"reviews":0,"hours":null},{"name":"Leylam - Ayala Capitol Central","area":"Ayala Capitol Central","cuisine":"Shawarma · Fast Food","price":1,"address":"Ayala Malls Capitol Central","rating":null,"reviews":0,"hours":null},{"name":"Pan de Manila - Ayala Capitol Central","area":"Ayala Capitol Central","cuisine":"Bakery · Cafe","price":1,"address":"Ayala Malls Capitol Central","rating":null,"reviews":0,"hours":null},{"name":"Pancake House - Ayala Capitol Central","area":"Ayala Capitol Central","cuisine":"American · Breakfast","price":2,"address":"Ayala Malls Capitol Central","rating":null,"reviews":0,"hours":null},{"name":"Turks - Ayala Capitol Central","area":"Ayala Capitol Central","cuisine":"Shawarma · Fast Food","price":1,"address":"Ayala Malls Capitol Central","rating":null,"reviews":0,"hours":null},{"name":"Little Farmers Coffee - Ayala Capitol Central","area":"Ayala Capitol Central","cuisine":"Cafe · Coffee","price":1,"address":"Ayala Malls Capitol Central","rating":null,"reviews":0,"hours":null},{"name":"BreadTalk - Ayala Capitol Central","area":"Ayala Capitol Central","cuisine":"Bakery · Cafe","price":1,"address":"Ayala Malls Capitol Central","rating":null,"reviews":0,"hours":null},{"name":"The Coffee Bean & Tea Leaf - Ayala Capitol Central","area":"Ayala Capitol Central","cuisine":"Cafe · Coffee","price":2,"address":"Ayala Malls Capitol Central","rating":null,"reviews":0,"hours":null},{"name":"Tater's - Ayala Capitol Central","area":"Ayala Capitol Central","cuisine":"Snack · Cinema Food","price":1,"address":"Ayala Malls Capitol Central","rating":null,"reviews":0,"hours":null},{"name":"Watami Grill & Sushi Bar - Ayala Capitol Central","area":"Ayala Capitol Central","cuisine":"Japanese · Sushi · Grill","price":2,"address":"Ayala Malls Capitol Central","rating":null,"reviews":0,"hours":null},{"name":"Siomai House - Ayala Capitol Central","area":"Ayala Capitol Central","cuisine":"Chinese · Dim Sum · Snack","price":1,"address":"Ayala Malls Capitol Central","rating":null,"reviews":0,"hours":null},{"name":"BongBong's Delicacies - Ayala Capitol Central","area":"Ayala Capitol Central","cuisine":"Bakery · Pasalubong","price":1,"address":"Ayala Malls Capitol Central","rating":null,"reviews":0,"hours":null},{"name":"Tokyo Tokyo - Ayala Capitol Central","area":"Ayala Capitol Central","cuisine":"Japanese · Fast Food","price":1,"address":"Ayala Malls Capitol Central","rating":null,"reviews":0,"hours":null},{"name":"Omotenashi Ramen - Ayala Capitol Central","area":"Ayala Capitol Central","cuisine":"Japanese · Ramen","price":2,"address":"Ayala Malls Capitol Central","rating":null,"reviews":0,"hours":null},{"name":"Riannes Churreria - Ayala Capitol Central","area":"Ayala Capitol Central","cuisine":"Dessert · Churros","price":1,"address":"Ayala Malls Capitol Central","rating":null,"reviews":0,"hours":null},{"name":"Jollibee - Ayala Capitol Central","area":"Ayala Capitol Central","cuisine":"Fast Food · Filipino","price":1,"address":"Ayala Malls Capitol Central","rating":null,"reviews":0,"hours":null},{"name":"Lantien - Ayala Capitol Central","area":"Ayala Capitol Central","cuisine":"Chinese","price":2,"address":"Ayala Malls Capitol Central","rating":null,"reviews":0,"hours":null},{"name":"PICKUP COFFEE - Ayala Capitol Central","area":"Ayala Capitol Central","cuisine":"Cafe · Coffee","price":1,"address":"Ayala Malls Capitol Central","rating":null,"reviews":0,"hours":null},{"name":"Yappari Steak - Ayala Capitol Central","area":"Ayala Capitol Central","cuisine":"Japanese · Steak","price":2,"address":"Ayala Malls Capitol Central","rating":null,"reviews":0,"hours":null},{"name":"Chowking - Ayala Capitol Central","area":"Ayala Capitol Central","cuisine":"Chinese · Fast Food","price":1,"address":"Ayala Malls Capitol Central","rating":null,"reviews":0,"hours":null},{"name":"Dunkin' - Ayala Capitol Central","area":"Ayala Capitol Central","cuisine":"Cafe · Donuts · Coffee","price":1,"address":"Ayala Malls Capitol Central","rating":null,"reviews":0,"hours":null},{"name":"Biscocho Haus - Robinsons Bacolod","area":"Robinsons Bacolod","cuisine":"Bakery · Pasalubong","price":1,"address":"Robinsons Bacolod, Lacson St, Mandalagan","rating":null,"reviews":0,"hours":"10:00-21:00"},{"name":"BreadTalk - Robinsons Bacolod","area":"Robinsons Bacolod","cuisine":"Bakery · Cafe","price":1,"address":"Robinsons Bacolod, Lacson St, Mandalagan","rating":null,"reviews":0,"hours":"10:00-21:00"},{"name":"Chatime - Robinsons Bacolod","area":"Robinsons Bacolod","cuisine":"Milk Tea · Drinks","price":1,"address":"Robinsons Bacolod, Lacson St, Mandalagan","rating":null,"reviews":0,"hours":"10:00-21:00"},{"name":"Greenwich - Robinsons Bacolod","area":"Robinsons Bacolod","cuisine":"Pizza · Fast Food","price":1,"address":"Robinsons Bacolod, Lacson St, Mandalagan","rating":4.6,"reviews":99,"hours":"10:00-21:00"},{"name":"Hong Kong Kitchen - Robinsons Bacolod","area":"Robinsons Bacolod","cuisine":"Chinese","price":1,"address":"Robinsons Bacolod, Lacson St, Mandalagan","rating":null,"reviews":0,"hours":"10:00-21:00"},{"name":"KFC - Robinsons Bacolod","area":"Robinsons Bacolod","cuisine":"Fast Food · Chicken","price":1,"address":"Robinsons Bacolod, Lacson St, Mandalagan","rating":null,"reviews":0,"hours":"10:00-21:00"},{"name":"Leylam - Robinsons Bacolod","area":"Robinsons Bacolod","cuisine":"Shawarma · Fast Food","price":1,"address":"Robinsons Bacolod, Lacson St, Mandalagan","rating":null,"reviews":0,"hours":"10:00-21:00"},{"name":"The Pastry Shop of Bob's - Robinsons Bacolod","area":"Robinsons Bacolod","cuisine":"Bakery · Dessert · Cafe","price":1,"address":"Robinsons Bacolod, Lacson St, Mandalagan","rating":null,"reviews":0,"hours":"10:00-21:00"},{"name":"Expresse Cafe - Robinsons Bacolod","area":"Robinsons Bacolod","cuisine":"Cafe · Coffee","price":1,"address":"Robinsons Bacolod, Lacson St, Mandalagan","rating":null,"reviews":0,"hours":"10:00-21:00"},{"name":"Potato Corner - Robinsons Bacolod","area":"Robinsons Bacolod","cuisine":"Snack · Fries","price":1,"address":"Robinsons Bacolod, Lacson St, Mandalagan","rating":null,"reviews":0,"hours":"10:00-21:00"},{"name":"Thirsty - Robinsons Bacolod","area":"Robinsons Bacolod","cuisine":"Drinks · Juice","price":1,"address":"Robinsons Bacolod, Lacson St, Mandalagan","rating":null,"reviews":0,"hours":"10:00-21:00"},{"name":"Fruits To Go - Robinsons Bacolod","area":"Robinsons Bacolod","cuisine":"Drinks · Fruit","price":1,"address":"Robinsons Bacolod Citywalk","rating":null,"reviews":0,"hours":"10:00-21:00"},{"name":"Maisy's Coffee Cut - Robinsons Bacolod","area":"Robinsons Bacolod","cuisine":"Cafe · Coffee","price":1,"address":"Robinsons Bacolod Citywalk","rating":null,"reviews":0,"hours":"10:00-21:00"},{"name":"Tienda Street Food - Robinsons Bacolod","area":"Robinsons Bacolod","cuisine":"Street Food · Filipino","price":1,"address":"Robinsons Bacolod Citywalk","rating":null,"reviews":0,"hours":"10:00-21:00"},{"name":"Squeeze It Lemon - Robinsons Bacolod","area":"Robinsons Bacolod","cuisine":"Drinks · Lemonade","price":1,"address":"Robinsons Bacolod Citywalk","rating":null,"reviews":0,"hours":"10:00-21:00"},{"name":"Grill Central - Robinsons Bacolod","area":"Robinsons Bacolod","cuisine":"Grill · Filipino","price":1,"address":"Robinsons Bacolod Citywalk","rating":null,"reviews":0,"hours":"10:00-21:00"},{"name":"El Rincon - Robinsons Bacolod","area":"Robinsons Bacolod","cuisine":"Filipino","price":2,"address":"Level 3, Robinsons Bacolod, Lacson St","rating":null,"reviews":0,"hours":"10:00-21:00"},{"name":"PICKUP COFFEE - 888 Chinatown","area":"888 Chinatown","cuisine":"Cafe · Coffee","price":1,"address":"888 Chinatown Square, Gatuslao St","rating":null,"reviews":0,"hours":null},{"name":"Chigue House of Kimchi - 888 Premier","area":"888 Chinatown","cuisine":"Korean","price":1,"address":"Chopsticks Zone 2, 2F 888 Chinatown Premier","rating":null,"reviews":0,"hours":null},{"name":"Mr. Kokio - 888 Chinatown","area":"888 Chinatown","cuisine":"Korean · Chicken","price":1,"address":"888 Chinatown Square","rating":null,"reviews":0,"hours":null},{"name":"Glizzy Hotdogs - 888 Chinatown","area":"888 Chinatown","cuisine":"Hotdog · Fast Food","price":1,"address":"GT 888 Mall","rating":null,"reviews":0,"hours":null},{"name":"Little Farmers Coffee Brim - 888 Premier","area":"888 Chinatown","cuisine":"Cafe · Coffee","price":1,"address":"888 Chinatown Premier","rating":null,"reviews":0,"hours":null},{"name":"Famous Belgian Waffles - 888 Chinatown","area":"888 Chinatown","cuisine":"Dessert · Waffle","price":1,"address":"888 Chinatown Square","rating":null,"reviews":0,"hours":null},{"name":"Popoy's Batchoy - 888 Chinatown","area":"888 Chinatown","cuisine":"Filipino · Batchoy","price":1,"address":"888 Chinatown Mall","rating":null,"reviews":0,"hours":null},{"name":"Leylam - 888 Chinatown","area":"888 Chinatown","cuisine":"Shawarma · Fast Food","price":1,"address":"888 Chinatown Premier","rating":null,"reviews":0,"hours":null},{"name":"Lay Tea - 888 Chinatown","area":"888 Chinatown","cuisine":"Milk Tea · Drinks","price":1,"address":"888 Chinatown Premier","rating":null,"reviews":0,"hours":null},{"name":"Totong's - 888 Chinatown","area":"888 Chinatown","cuisine":"Filipino · Fast Food","price":1,"address":"888 Chinatown Premier","rating":null,"reviews":0,"hours":null},{"name":"Hungry-Army Food Stall - 888 Chinatown","area":"888 Chinatown","cuisine":"Fast Food · Snack","price":1,"address":"888 Chinatown","rating":null,"reviews":0,"hours":null},{"name":"El's Takobites And Brews - 888 Chinatown","area":"888 Chinatown","cuisine":"Japanese · Takoyaki · Drinks","price":1,"address":"888 Chinatown","rating":null,"reviews":0,"hours":null},{"name":"Turks - 888 Chinatown","area":"888 Chinatown","cuisine":"Shawarma · Fast Food","price":1,"address":"888 Chinatown Premier","rating":null,"reviews":0,"hours":null},{"name":"Sio-Yummy Premium Siomai - 888 Chinatown","area":"888 Chinatown","cuisine":"Chinese · Siomai","price":1,"address":"888 Chinatown Premier","rating":null,"reviews":0,"hours":null},{"name":"Quickher Cafe - 888 Chinatown","area":"888 Chinatown","cuisine":"Cafe · Coffee","price":1,"address":"888 Chinatown","rating":null,"reviews":0,"hours":null},{"name":"Rainbowl - 888 Chinatown","area":"888 Chinatown","cuisine":"Rice Bowl · Fast Food","price":1,"address":"888 Chinatown Food Court","rating":null,"reviews":0,"hours":null},{"name":"Ribshack - 888 Chinatown","area":"888 Chinatown","cuisine":"Ribs · Grill","price":1,"address":"GT 888 Mall","rating":4.5,"reviews":4,"hours":"10:00-20:00"},{"name":"Ted's Old Timer La Paz Batchoy - 888 Chinatown","area":"888 Chinatown","cuisine":"Filipino · Batchoy","price":1,"address":"888 Chinatown","rating":null,"reviews":0,"hours":null},{"name":"Inaka Restaurant and Sushi Bar","area":"Lacson","cuisine":"Japanese · Sushi","price":2,"address":"21st St corner Lacson St, Bacolod","rating":4.5,"reviews":220,"hours":"11:00-14:00"},{"name":"Apollo Restaurant - Goldenfield","area":"Singcang / Goldenfield","cuisine":"Filipino · Chinese","price":1,"address":"Araneta Ave, Goldenfield area","rating":4.1,"reviews":161,"hours":"10:00-20:30"},{"name":"Lord Byron's BackRibs Bacolod","area":"Singcang / Goldenfield","cuisine":"Ribs · Grill","price":1,"address":"Teleperformance, Magsaysay Ave","rating":4.3,"reviews":213,"hours":"10:00-22:00"},{"name":"Lugaw Avenue Restaurant Bacolod","area":"Villamonte","cuisine":"Filipino · Lugaw","price":1,"address":"Villa Angela HI-STRIP, Circumferential Rd, Villamonte","rating":4.4,"reviews":10,"hours":null},{"name":"Bodega Grill and Restaurant","area":"Mandalagan","cuisine":"Grill · Continental","price":2,"address":"Buri Road, Mandalagan","rating":4.5,"reviews":122,"hours":"11:00-14:30|17:00-21:00"},{"name":"Sanders Coffee and Sausages Downtown","area":"Downtown","cuisine":"Cafe · Sausage · Casual","price":1,"address":"6 Locsin St","rating":4.6,"reviews":84,"hours":"08:00-22:00"},{"name":"Kyle's Eatery","area":"Downtown","cuisine":"Filipino · Eatery","price":1,"address":"43 E.J. Garcia St","rating":4.5,"reviews":343,"hours":"10:00-19:30"},{"name":"Kape CONTI","area":"Granada","cuisine":"Cafe · Filipino","price":1,"address":"Purok 2 Rivera Street, Brgy. Granada","rating":4.5,"reviews":104,"hours":"05:30-21:00"},{"name":"Yummy Chikboi Inasal - Villamonte","area":"Villamonte","cuisine":"Filipino · Inasal","price":1,"address":"L N Agustin Dr, Villamonte","rating":5.0,"reviews":1,"hours":null},{"name":"Sucré by Liz and Mom","area":"Upper East","cuisine":"Cafe · Dessert · Bakery","price":2,"address":"Upper East, Bacolod City","rating":null,"reviews":0,"hours":null},{"name":"Mango's Tree Resto & Bar","area":"Mansilingan","cuisine":"Filipino · Bar","price":1,"address":"Mansilingan, Bacolod City","rating":null,"reviews":0,"hours":null},{"name":"Carmen's Cafe - Go Hotels Bacolod","area":"Robinsons Bacolod","cuisine":"Cafe · Breakfast","price":1,"address":"Go Hotels Bacolod, Robinsons area","rating":null,"reviews":0,"hours":null},{"name":"Edibowl_Bcd","area":"Mandalagan","cuisine":"Asian · Rice Bowl","price":1,"address":"Ani Residences, Buri Road, Mandalagan","rating":null,"reviews":0,"hours":null},{"name":"Ribshack - Lacson","area":"Lacson","cuisine":"Ribs · Grill","price":1,"address":"Lacson St, Bacolod City","rating":null,"reviews":0,"hours":null},{"name":"Arabesques Middle Eastern Restaurant","area":"Villamonte","cuisine":"Middle Eastern","price":2,"address":"C.L. Montelibano Ave, Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Mezcla Mexican Cocina & Bar","area":"Lacson","cuisine":"Mexican · Bar","price":2,"address":"Lacson St, Bacolod City","rating":null,"reviews":0,"hours":null},{"name":"Al Satwa Shawarma","area":"Lacson","cuisine":"Middle Eastern · Shawarma","price":1,"address":"La Salle Ave, Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Sharyn's Cansi House","area":"Villamonte","cuisine":"Filipino · Cansi","price":1,"address":"Capitol Shopping Center, Narra Ave, Villamonte","rating":null,"reviews":0,"hours":null},{"name":"Byron's Backribs - Homesite","area":"Villamonte","cuisine":"Ribs · Grill","price":1,"address":"Homesite, Bacolod City","rating":null,"reviews":0,"hours":null},{"name":"DONOL'S Lechon","area":"Singcang / Goldenfield","cuisine":"Filipino · Lechon","price":1,"address":"Araneta St, Singcang","rating":null,"reviews":0,"hours":null},{"name":"Consing's Carinderia","area":"Downtown","cuisine":"Filipino · Carinderia","price":1,"address":"Bonifacio St, Bacolod City","rating":null,"reviews":0,"hours":null},{"name":"19th Street Coffee","area":"Lacson","cuisine":"Cafe · Coffee","price":1,"address":"19th St, Lacson, Bacolod","rating":null,"reviews":0,"hours":null},{"name":"The Local Cafe Bacolod","area":"Mandalagan","cuisine":"Cafe · Coffee","price":1,"address":"Ani Building, Buri Road, Mandalagan","rating":null,"reviews":0,"hours":null},{"name":"Sofia Bread & Pastries","area":"Villamonte","cuisine":"Bakery · Cafe","price":1,"address":"Narra Ave, Villamonte","rating":null,"reviews":0,"hours":null},{"name":"Dan Eric's Grand Ice Cream - Sum-ag","area":"Pahanocoy / Sum-ag","cuisine":"Dessert · Ice Cream","price":1,"address":"Sum-ag, Bacolod City","rating":null,"reviews":0,"hours":null},{"name":"Got Tea? - 20th Lacson","area":"Lacson","cuisine":"Milk Tea · Drinks","price":1,"address":"20th St, Lacson, Bacolod","rating":null,"reviews":0,"hours":null},{"name":"TUS Restaurant","area":"Villamonte","cuisine":"Filipino · International","price":2,"address":"LOC Residences, 11th St corner Tops Rd, Villamonte","rating":null,"reviews":0,"hours":null},{"name":"Cafe Joint - Art District","area":"Mandalagan","cuisine":"Cafe · Coffee","price":1,"address":"Art District, Mandalagan","rating":null,"reviews":0,"hours":null},{"name":"Cafe Lim - Upper East","area":"Upper East","cuisine":"Cafe · Coffee","price":1,"address":"Upper East Foodpark, Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Cafe Oscar","area":"Downtown","cuisine":"Cafe · Casual","price":1,"address":"Galo St, Bacolod City","rating":null,"reviews":0,"hours":null},{"name":"Hello Halo Dessert Shop","area":"Downtown","cuisine":"Dessert · Halo-halo","price":1,"address":"Hernaez St, Bacolod City","rating":null,"reviews":0,"hours":null},{"name":"Maria Kucina Familia","area":"Lacson","cuisine":"Filipino","price":2,"address":"La Salle Ave, Bacolod City","rating":null,"reviews":0,"hours":null},{"name":"Margie's","area":"Downtown","cuisine":"Cafe · Dessert · Bakery","price":1,"address":"Burgos / Lopez Jaena, Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Manoy's Eastblock","area":"Villamonte","cuisine":"Filipino · Casual","price":1,"address":"East Block, Villamonte, Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Buri Rd Coffee and Cocktails","area":"Mandalagan","cuisine":"Cafe · Bar · Coffee","price":2,"address":"Buri Road, Mandalagan","rating":null,"reviews":0,"hours":null},{"name":"Quan Native Delicacies - La Salle","area":"Lacson","cuisine":"Filipino · Native Delicacies","price":1,"address":"La Salle Ave, Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Food Trip - Tangub","area":"Tangub","cuisine":"Filipino · Casual","price":1,"address":"Chapel Village, Tangub, Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Jollibee - Gatuslao","area":"Downtown","cuisine":"Fast Food · Filipino","price":1,"address":"Gatuslao St, Bacolod","rating":null,"reviews":0,"hours":null},{"name":"Starbucks - SM City Bacolod","area":"SM City Bacolod","cuisine":"Cafe · Coffee","price":2,"address":"SM City Bacolod, Rizal St","rating":4.4,"reviews":239,"hours":"08:00-22:00"},{"name":"The Coffee Bean & Tea Leaf - SM City Bacolod","area":"SM City Bacolod","cuisine":"Cafe · Coffee","price":2,"address":"SM City Bacolod North Wing","rating":4.5,"reviews":2,"hours":null},{"name":"Krispy Kreme - SM City Bacolod","area":"SM City Bacolod","cuisine":"Cafe · Donuts · Coffee","price":1,"address":"SMX Center, SM City Bacolod North Wing","rating":4.4,"reviews":100,"hours":"10:00-22:00"},{"name":"Cafe Bobs - Ayala Capitol Central","area":"Ayala Capitol Central","cuisine":"Cafe · Bakery","price":1,"address":"Ayala Malls Capitol Central","rating":4.5,"reviews":30,"hours":"10:00-22:00"},{"name":"Quino's Cafe - Ayala Capitol Central","area":"Ayala Capitol Central","cuisine":"Cafe · Casual","price":1,"address":"3rd Floor, Ayala Malls Capitol Central","rating":4.3,"reviews":4,"hours":null},{"name":"Takoyaki Sensei - Robinsons Bacolod","area":"Robinsons Bacolod","cuisine":"Japanese · Takoyaki","price":1,"address":"Robinsons Place Central Citywalk","rating":4.0,"reviews":7,"hours":"11:00-20:00"},{"name":"SITTING DUCK","area":"Lacson","cuisine":"Filipino · International","price":2,"address":"Paseo Verde Complex, Lacson St","rating":4.4,"reviews":139,"hours":"11:00-14:00|17:00-21:00"},{"name":"Charlie's Burger","area":"Villamonte","cuisine":"Burgers · American","price":1,"address":"Corner Kamunsil St, C.L. Montelibano Ave / La Salle Ave","rating":4.2,"reviews":39,"hours":"11:00-20:00"},{"name":"Pamahao by CommisCo","area":"Villamonte","cuisine":"Asian · Noodles","price":1,"address":"St. Francis Avenue, Doña Juliana Dr","rating":5.0,"reviews":1,"hours":"12:00-21:00"},{"name":"Mansion De Bacolod","area":"Downtown","cuisine":"Filipino · International","price":2,"address":"111 South Lacson St, Brgy. 40","rating":4.1,"reviews":22,"hours":"10:30-14:30|17:30-21:30"},{"name":"Menma","area":"Villamonte","cuisine":"Japanese · Ramen","price":1,"address":"Dahlia St, Circumferential Road","rating":4.2,"reviews":13,"hours":"11:30-21:00"},{"name":"Balai1430","area":"Helvetia Heights","cuisine":"Filipino · Comfort Food","price":2,"address":"1430 Zurich St, Helvetia Heights","rating":4.8,"reviews":62,"hours":"11:00-15:00|18:00-21:00"},{"name":"Cafe Avo","area":"Villamonte","cuisine":"Cafe · Pizza","price":1,"address":"Diola St","rating":4.4,"reviews":47,"hours":"10:00-20:30"},{"name":"Keeka Poke Bar","area":"Mandalagan","cuisine":"Japanese · Poke · Healthy","price":2,"address":"Ani Residences, GM Cordova Ave (Buri Road)","rating":4.8,"reviews":34,"hours":"11:00-20:00"},{"name":"Boodie's Bistro","area":"Mandalagan","cuisine":"Filipino · American · Spanish","price":2,"address":"Food Central Compound, Lacson St, Mandalagan","rating":4.6,"reviews":73,"hours":"11:00-22:00"},{"name":"Rumah Makan Kampung","area":"Villamonte","cuisine":"Indonesian · Thai · Malay","price":1,"address":"The Shophouse Heritage, BS Aquino cor Narra Ave","rating":5.0,"reviews":45,"hours":"11:00-18:30"},{"name":"Twist Restaurant - Sugarland Hotel","area":"Singcang / Goldenfield","cuisine":"Filipino · International","price":2,"address":"Sugarland Hotel, Araneta Ave","rating":3.7,"reviews":6,"hours":"06:00-23:00"},{"name":"Cafe Gorda","area":"Villamonte","cuisine":"Cafe · Filipino","price":1,"address":"The Hub, La Salle Ave, Brgy. Villamonte","rating":4.4,"reviews":138,"hours":"08:00-20:00"},{"name":"El Gato","area":"Mandalagan","cuisine":"International · Bar","price":2,"address":"GM Cordova Ave (Buri Road)","rating":5.0,"reviews":2,"hours":"11:00-23:00"},{"name":"MuShu","area":"Lacson","cuisine":"Asian Fusion","price":3,"address":"20th St, Lacson","rating":4.4,"reviews":214,"hours":"11:00-21:30"},{"name":"NOOMA Kitchen+Bar","area":"Lacson","cuisine":"Filipino · Kapampangan · Bar","price":2,"address":"Lacson St","rating":4.4,"reviews":43,"hours":"11:00-01:00"},{"name":"Tita Ping's Restaurant","area":"Villamonte","cuisine":"Chinese · Filipino","price":1,"address":"Capitol Shopping Center, Hilado St","rating":4.0,"reviews":71,"hours":"09:00-21:00"},{"name":"Salgado's Kitchen","area":"Villamonte","cuisine":"Filipino · Home Cooking","price":1,"address":"Doña Juliana and Sebastian Sts, Brgy. 33","rating":4.5,"reviews":45,"hours":"10:30-14:00"},{"name":"Nezu Modern Japanese","area":"Lacson","cuisine":"Japanese","price":1,"address":"19th-20th St, Lacson","rating":4.6,"reviews":406,"hours":"11:00-14:00|16:30-20:30"},{"name":"Bangaw Keeng Bacolod","area":"Villamonte","cuisine":"Asian · Casual","price":1,"address":"C.L. Montelibano Ave cor Bugnay Road","rating":4.7,"reviews":25,"hours":"11:00-22:00"},{"name":"Azalea Cucina","area":"Homesite / Montevista","cuisine":"Filipino · Family","price":1,"address":"Blk 9 Oriole St, Homesite, Brgy. Montevista","rating":5.0,"reviews":2,"hours":"10:30-19:30"},{"name":"LANAI by FreshStart","area":"Pahanocoy / Sum-ag","cuisine":"Filipino · Healthy · International","price":2,"address":"Sitio Aning, Araneta Highway, Brgy. Pahanocoy","rating":4.5,"reviews":226,"hours":"11:00-21:00"},{"name":"Bascon Cafe Sumag","area":"Pahanocoy / Sum-ag","cuisine":"Cafe · Filipino","price":1,"address":"Adveniat Building, Negros South Road, Brgy. Sum-ag","rating":4.2,"reviews":5,"hours":"06:00-21:00"},{"name":"Sarah's Diner","area":"Tangub","cuisine":"Filipino · Diner","price":1,"address":"Ramylu Dr, Brgy. Tangub","rating":4.6,"reviews":5,"hours":"08:00-21:00"},{"name":"Casablanca Restaurant","area":"Mandalagan","cuisine":"International · Filipino","price":1,"address":"Bacolod City","rating":4.6,"reviews":62,"hours":"10:00-21:00"},{"name":"Apna Punjab Indian Grocery and Restaurant","area":"Villamonte","cuisine":"Indian","price":1,"address":"Narra Ext","rating":4.8,"reviews":17,"hours":"08:15-19:30"},{"name":"Hardwood Cafe","area":"Upper East","cuisine":"Cafe · Coffee","price":1,"address":"Lopue's East Center Annex","rating":4.6,"reviews":29,"hours":"09:00-19:00"},{"name":"Got Tea? Kitchen & Beverage Studio","area":"Lacson","cuisine":"Milk Tea · Cafe","price":1,"address":"20th St, Lacson","rating":4.6,"reviews":150,"hours":"10:00-22:00"},{"name":"Eron's Cansi House","area":"Villamonte","cuisine":"Filipino · Cansi","price":1,"address":"62 Narra Ave, Capitol Shopping","rating":4.5,"reviews":388,"hours":"06:00-21:00"},{"name":"Super Batchoy","area":"Downtown","cuisine":"Filipino · Batchoy","price":1,"address":"Bacolod City","rating":4.3,"reviews":235,"hours":"10:00-20:00"},{"name":"Coffee Culture Roastery Capitol Shopping","area":"Villamonte","cuisine":"Cafe · Coffee","price":1,"address":"2687 Narra Ave, Capitol Shopping Center","rating":4.9,"reviews":101,"hours":"09:00-18:00"},{"name":"also coffee","area":"Villamonte","cuisine":"Cafe · Coffee","price":1,"address":"Corner C.L. Montelibano, La Salle Ave","rating":4.8,"reviews":101,"hours":"08:00-17:30"},{"name":"Lazy Hound Cafe","area":"Villamonte","cuisine":"Cafe · Coffee","price":1,"address":"2380 C.L. Montelibano Ave","rating":4.7,"reviews":41,"hours":"08:00-20:00"},{"name":"19th Street Coffee Lacson","area":"Lacson","cuisine":"Cafe · Coffee","price":1,"address":"14 19th St, Lacson","rating":4.8,"reviews":54,"hours":"07:00-18:30"},{"name":"Origami Café","area":"Upper East","cuisine":"Cafe · Coffee","price":1,"address":"Marketplace NGC, Circumferential Rd","rating":4.7,"reviews":55,"hours":"08:00-20:00"},{"name":"Dozy Coffee","area":"Villamonte","cuisine":"Cafe · Coffee","price":1,"address":"Pearl Manor Building, BS Aquino Dr","rating":4.9,"reviews":48,"hours":"09:00-18:00"},{"name":"Coffee by NOM","area":"Lacson","cuisine":"Cafe · Coffee","price":1,"address":"Pohang Badminton Center, 23rd St","rating":4.9,"reviews":53,"hours":"08:30-17:00"},{"name":"Shop Samahan + Tiempo Cafe - The Row","area":"Bata / Banago","cuisine":"Cafe · Coffee","price":1,"address":"The Row, Lacson St, Brgy. Bata","rating":4.6,"reviews":58,"hours":"08:00-19:00"},{"name":"Cafe Mera","area":"Mandalagan","cuisine":"Cafe · Coffee","price":1,"address":"The Gardens, Lacson-Mandalagan Extension","rating":4.8,"reviews":36,"hours":"09:00-18:00"},{"name":"Brew Crew Coffee & Dessert Shop","area":"Downtown","cuisine":"Cafe · Dessert","price":1,"address":"P. Hernaez St Ext","rating":4.7,"reviews":43,"hours":"09:00-20:00"},{"name":"UCC Clockwork","area":"Lacson","cuisine":"Cafe · Japanese","price":2,"address":"PNB Park, 10th St","rating":4.5,"reviews":238,"hours":"07:00-21:00"},{"name":"Artisan Rooftop Cafe","area":"Villamonte","cuisine":"Cafe · Coffee","price":1,"address":"Celine Homes","rating":4.3,"reviews":41,"hours":"06:30-20:30"},{"name":"Tago Cafe","area":"Villamonte","cuisine":"Cafe · Coffee","price":1,"address":"676 4th Road","rating":4.6,"reviews":36,"hours":"08:00-21:00"},{"name":"Wayside Coffee","area":"Mandalagan","cuisine":"Cafe · Coffee","price":1,"address":"MEX Building, Lopue's Mandalagan Compound","rating":5.0,"reviews":30,"hours":"10:00-20:00"},{"name":"Calle Catorce Bacolod","area":"Lacson","cuisine":"Filipino · Bar","price":1,"address":"52 corner 14th St, Lacson","rating":4.5,"reviews":91,"hours":"15:00-00:00"},{"name":"KSL","area":"Downtown","cuisine":"Filipino · Casual","price":1,"address":"2 P. Hernaez St Ext","rating":4.4,"reviews":216,"hours":"11:00-23:00"},{"name":"LA ARTE","area":"Villamonte","cuisine":"Filipino · Casual","price":1,"address":"23 C.L. Montelibano Ave, Estefania","rating":4.3,"reviews":89,"hours":"11:00-00:00"},{"name":"Sugba Sugba Inasal & Seafood Lacson Capitol","area":"Lacson","cuisine":"Filipino · Inasal · Seafood","price":2,"address":"115 4th St","rating":4.4,"reviews":202,"hours":"10:30-14:30|17:30-21:30"},{"name":"Pink Porch Cafe","area":"Villamonte","cuisine":"Cafe · Matcha · Coffee","price":1,"address":"C.L. Montelibano Ave, Kamunsil St","rating":4.6,"reviews":18,"hours":"09:00-20:00"},{"name":"Sweet Siesta Cafe + Bistro","area":"Villamonte","cuisine":"Cafe · Matcha · Bistro","price":1,"address":"BS Aquino Dr cor Acacia St, Brgy. Villamonte","rating":4.8,"reviews":128,"hours":"09:00-20:00"},{"name":"KapiPat Café","area":"Mansilingan","cuisine":"Cafe · Coffee","price":1,"address":"Mansilingan, Bacolod City","rating":4.8,"reviews":56,"hours":"15:00-23:00"},{"name":"POB Library Cafe","area":"Mansilingan","cuisine":"Cafe · Coffee","price":1,"address":"Victorina Heights, P. Hernaez Ave","rating":4.6,"reviews":7,"hours":"09:00-18:00"},{"name":"North Roast Coffee","area":"Villamonte","cuisine":"Cafe · Coffee","price":1,"address":"Room 102 H.O. Building, BS Aquino Dr","rating":5.0,"reviews":10,"hours":"08:00-20:00"},{"name":"Kohi Majikku","area":"Lacson","cuisine":"Cafe · Coffee","price":1,"address":"19th cor Lacson St","rating":4.7,"reviews":22,"hours":"10:00-22:00"},{"name":"Balay Barista by the Beki-ry","area":"Mansilingan","cuisine":"Cafe · Coffee","price":1,"address":"Greenplains Subdivision","rating":5.0,"reviews":7,"hours":"11:00-01:00"},{"name":"The Chewbox","area":"Villamonte","cuisine":"Bakery · Dessert","price":1,"address":"105 San Agustin Dr","rating":4.5,"reviews":6,"hours":"09:00-19:00"},{"name":"Double Happiness","area":"Upper East","cuisine":"Chinese · Asian","price":1,"address":"In front of Government Center, Circumferential Rd","rating":5.0,"reviews":2,"hours":"11:00-21:00"},{"name":"Fat Choi","area":"Ayala Capitol Central","cuisine":"Chinese · Noodles","price":1,"address":"4th Floor, Ayala Malls Capitol Central","rating":4.0,"reviews":5,"hours":null},{"name":"Sienna Sourdough","area":"Pahanocoy / Sum-ag","cuisine":"Bakery · Cafe","price":2,"address":"South Bacolod","rating":5.0,"reviews":17,"hours":"09:00-18:30"},{"name":"Talaita's Pizza House","area":"Villamonte","cuisine":"Pizza · Italian","price":1,"address":"Triangle Island Plaza, Brgy. Villamonte","rating":4.9,"reviews":39,"hours":"11:00-20:00"},{"name":"KUSHIYA","area":"Villamonte","cuisine":"Japanese · Grill","price":2,"address":"Bacolod City","rating":4.0,"reviews":110,"hours":"11:00-22:00"},{"name":"Azucarera","area":"Villamonte","cuisine":"Steakhouse · International","price":2,"address":"89 C.L. Montelibano Ave","rating":4.5,"reviews":205,"hours":"11:00-14:00|16:00-21:00"},{"name":"Portiko Café • Lounge","area":"Lacson","cuisine":"Filipino · Cafe · Bar","price":2,"address":"23rd Lacson St","rating":4.5,"reviews":232,"hours":"11:00-01:00"},{"name":"Acaya Coffee House","area":"Taculing","cuisine":"Cafe · Coffee","price":1,"address":"Fuentebella St, Puentebella Subdivision","rating":4.8,"reviews":37,"hours":"18:00-00:00"},{"name":"V&W Bakery Cafe & Restaurant at The Row","area":"Bata / Banago","cuisine":"Bakery · Cafe · Restaurant","price":2,"address":"The Row, Lacson St","rating":4.3,"reviews":77,"hours":"07:30-21:30"},{"name":"Miren Desserts Cafe","area":"Mandalagan","cuisine":"Dessert · Cafe · Ice Cream","price":1,"address":"Lacson St, Mandalagan","rating":3.8,"reviews":21,"hours":"09:00-21:30"},{"name":"Commis & Co","area":"Villamonte","cuisine":"Asian · International","price":1,"address":"St. Francis Building, Doña Juliana Dr","rating":4.8,"reviews":26,"hours":"12:00-21:00"},{"name":"The Turf PH","area":"Downtown","cuisine":"Filipino · Casual","price":1,"address":"San Juan St","rating":4.9,"reviews":10,"hours":"10:00-21:00"},{"name":"Luisa's Fried Chicken","area":"Villamonte","cuisine":"Filipino · Fried Chicken","price":1,"address":"Capitol Shopping Center, Narra Ave","rating":4.5,"reviews":147,"hours":"10:30-14:00|17:00-19:30"},{"name":"X Bar.Cafe.Grill","area":"Villamonte","cuisine":"Filipino · Grill · Cafe","price":1,"address":"C.L. Montelibano Ave","rating":4.4,"reviews":54,"hours":"11:00-21:00"},{"name":"KRAMGEN GRILL","area":"Villamonte","cuisine":"Filipino · Grill","price":1,"address":"Bacolod City","rating":4.3,"reviews":8,"hours":"00:00-23:59"},{"name":"Maricor","area":"Villamonte","cuisine":"Filipino · Inasal","price":1,"address":"20 Narra Ave","rating":null,"reviews":0,"hours":null},{"name":"Lechoneria Bacolod","area":"SM City Bacolod","cuisine":"Filipino · Lechon","price":2,"address":"SM City Bacolod, Reclamation Area","rating":3.8,"reviews":32,"hours":null}];
 const ZONES={
   "Downtown":{lat:10.6712,lon:122.9505},
   "Lacson":{lat:10.6835,lon:122.9560},
   "Mandalagan":{lat:10.7000,lon:122.9610},
-  "Upper East":{lat:10.6745,lon:122.9750},
-  "Singcang":{lat:10.6505,lon:122.9475},
-  "Bata":{lat:10.7160,lon:122.9650},
+  "Villamonte":{lat:10.6745,lon:122.9750},
+  "Singcang / Goldenfield":{lat:10.6505,lon:122.9475},
+  "Bata / Banago":{lat:10.7160,lon:122.9650},
   "South":{lat:10.6350,lon:122.9560},
-  "Tangub":{lat:10.6230,lon:122.9690}
+  "Tangub":{lat:10.6230,lon:122.9690},
+  "Granada":{lat:10.7080,lon:123.0280},
+  "Taculing":{lat:10.6540,lon:122.9650},
+  "Helvetia Heights":{lat:10.6605,lon:122.9715},
+  "Homesite / Montevista":{lat:10.6870,lon:122.9740}
+};
+const AREA_ZONE={
+  "SM City Bacolod":"Downtown",
+  "Ayala Capitol Central":"Downtown",
+  "888 Chinatown":"Downtown",
+  "Downtown":"Downtown",
+  "Robinsons Bacolod":"Mandalagan",
+  "Mandalagan":"Mandalagan",
+  "Lacson":"Lacson",
+  "Upper East":"Villamonte",
+  "Villamonte":"Villamonte",
+  "Singcang":"Singcang / Goldenfield",
+  "Singcang / Goldenfield":"Singcang / Goldenfield",
+  "Bata":"Bata / Banago",
+  "Bata / Banago":"Bata / Banago",
+  "Alijis":"South",
+  "Mansilingan":"South",
+  "Pahanocoy / Sum-ag":"South",
+  "South":"South",
+  "Tangub":"Tangub",
+  "Granada":"Granada",
+  "Taculing":"South",
+  "Helvetia Heights":"South",
+  "Homesite / Montevista":"Villamonte"
 };
 const NEAR={
-  "Downtown":["Lacson","Upper East","Singcang"],
-  "Lacson":["Downtown","Mandalagan","Upper East"],
-  "Mandalagan":["Lacson","Bata","Upper East"],
-  "Upper East":["Downtown","Lacson","Mandalagan","South"],
-  "Singcang":["Downtown","South"],
-  "Bata":["Mandalagan"],
-  "South":["Singcang","Upper East","Tangub"],
-  "Tangub":["South"]
+  "Downtown":["Lacson","Villamonte","Singcang / Goldenfield"],
+  "Lacson":["Downtown","Mandalagan","Villamonte"],
+  "Mandalagan":["Lacson","Villamonte","Bata / Banago","Granada"],
+  "Villamonte":["Downtown","Lacson","Mandalagan","South","Granada"],
+  "Singcang / Goldenfield":["Downtown","South"],
+  "Bata / Banago":["Mandalagan"],
+  "South":["Singcang / Goldenfield","Villamonte","Tangub"],
+  "Tangub":["South"],
+  "Granada":["Mandalagan","Villamonte"]
 };
+const AREA_PRIORITY=[
+  "SM City Bacolod","Ayala Capitol Central","888 Chinatown","Robinsons Bacolod",
+  "Downtown","Lacson","Villamonte","Upper East","Mandalagan",
+  "Singcang / Goldenfield","Bata / Banago","Alijis","Mansilingan",
+  "Tangub","Granada","Taculing","Helvetia Heights","Homesite / Montevista","Pahanocoy / Sum-ag","South"
+];
 
 const $=id=>document.getElementById(id);
 const chambers=[...document.querySelectorAll('.chamber')];
@@ -534,22 +643,27 @@ let winner=null;
 let sound=true;
 let rotation=0;
 let busy=false;
+let browseAll=false;
+let audioCtx=null;
+let audioUnlocked=false;
 
 let favorites=new Set(JSON.parse(localStorage.getItem('dibs_favorites')||'[]'));
 let skipped=new Set(JSON.parse(localStorage.getItem('dibs_skipped')||'[]'));
+let deleted=new Set(JSON.parse(localStorage.getItem('dibs_deleted')||'[]'));
 let custom=JSON.parse(localStorage.getItem('dibs_custom')||'[]');
 
 const allRestaurants=()=>[
-  ...BASE_DB,
+  ...BASE_DB.filter(r=>!deleted.has(r.name)),
   ...custom.map(x=>({
     name:x.name,
-    area:x.area||'Downtown',
+    area:x.area||'Unknown',
     cuisine:x.cuisine||'Custom',
     price:x.price||null,
     address:x.address||'Bacolod City',
     rating:null,
     reviews:0,
     hours:null,
+    mapsUrl:x.mapsUrl||null,
     custom:true
   }))
 ];
@@ -584,24 +698,93 @@ function openText(r){
   if(o===false)return 'Closed now';
   return 'Hours unknown';
 }
+function areaZone(area){
+  return AREA_ZONE[area]||area;
+}
+function moodTags(r){
+  const text=`${r.name||''} ${r.cuisine||''}`.toLowerCase();
+  const tags=new Set();
+
+  const has=(words)=>words.some(w=>text.includes(w));
+
+  const cafe=has([
+    'cafe','café','coffee','espresso','roastery','tea','milk tea','milktea',
+    'boba','beverage','juice','smoothie','matcha'
+  ]);
+  const dessert=has([
+    'dessert','cake','pastry','bakery','bakeshop','gelato','ice cream',
+    'donut','doughnut','waffle','crepe','cookie','chocolate','sweet'
+  ]);
+  const burger=has(['burger','burgerhouse','hamburger','smash burger']);
+  const asian=has([
+    'asian','japanese','korean','chinese','thai','vietnamese','indian',
+    'ramen','sushi','samgyup','samgyeop','hotpot','dim sum','dimsum',
+    'teriyaki','tempura','yakitori','biryani','curry','bao','siomai'
+  ]);
+  const fastfood=has([
+    'fast food','jollibee','mcdonald','mcdo','kfc','burger king','chowking',
+    'greenwich','mang inasal','popeyes','bonchon','wendy','kenny rogers',
+    '24 chicken','potato corner','turks','ley lam','leylam'
+  ]);
+  const filipino=has([
+    'filipino','inasal','batchoy','silog','lutong bahay','native',
+    'bacolodnon','negrense','kansi','cansi'
+  ]);
+  const pizza=has(['pizza','pizzeria','yellow cab']);
+  const breakfast=has([
+    'breakfast','brunch','silog','pancake','waffle','tapsilog',
+    'longsilog','tocilog'
+  ]);
+  const snackOnly=has([
+    'potato corner','waffle','milk tea','milktea','boba','juice','smoothie',
+    'donut','doughnut','gelato','ice cream','dessert kiosk'
+  ]);
+
+  if(cafe)tags.add('cafe');
+  if(dessert)tags.add('dessert');
+  if(burger)tags.add('burger');
+  if(asian)tags.add('asian');
+  if(fastfood)tags.add('fastfood');
+  if(filipino)tags.add('filipino');
+  if(pizza)tags.add('pizza');
+  if(breakfast)tags.add('breakfast');
+
+  // "Dinner" means somewhere that reasonably serves a proper meal.
+  // Coffee/dessert/snack-only places are intentionally excluded.
+  const mealSignal=has([
+    'restaurant','resto','bistro','grill','steak','seafood','buffet',
+    'ramen','sushi','samgyup','samgyeop','hotpot','barbecue','bbq',
+    'chicken','pizza','burger','filipino','korean','japanese','chinese',
+    'thai','vietnamese','indian','italian','mexican','mediterranean',
+    'american','asian','pasta','noodle','rice','food hall','diner',
+    'wings','lechon','kansi','cansi','batchoy'
+  ]);
+
+  const cafeOrDessertOnly=(cafe||dessert||snackOnly) && !mealSignal;
+  if(!cafeOrDessertOnly)tags.add('dinner');
+
+  return tags;
+}
 function filterPool(){
   const area=$('area').value;
   const proximity=$('proximity').value;
-  const cuisine=$('cuisine').value;
+  const mood=$('mood').value;
   const price=$('price').value;
 
-  let allowedAreas=null;
-  if(area && proximity!=='all'){
-    allowedAreas=proximity==='same' ? [area] : [area,...(NEAR[area]||[])];
-  }
+  const selectedZone=area ? areaZone(area) : null;
+  const allowedZones=(selectedZone && proximity==='nearby')
+    ? [selectedZone,...(NEAR[selectedZone]||[])]
+    : null;
 
   return allRestaurants().filter(r=>{
     if(skipped.has(r.name))return false;
-    if(allowedAreas && !allowedAreas.includes(r.area))return false;
-    if(cuisine){
-      const tags=String(r.cuisine||'').split(' · ');
-      if(!tags.includes(cuisine))return false;
+
+    if(area && r.area!=='Unknown'){
+      if(proximity==='same' && r.area!==area)return false;
+      if(proximity==='nearby' && !allowedZones.includes(areaZone(r.area)))return false;
     }
+
+    if(mood && !moodTags(r).has(mood))return false;
     if(price && String(r.price||'')!==price)return false;
 
     if($('openOnly').checked){
@@ -620,20 +803,43 @@ function shuffle(arr){
   }
   return a;
 }
-function updateCuisineOptions(){
-  const prev=$('cuisine').value;
-  const vals=[...new Set(allRestaurants().flatMap(r=>String(r.cuisine||'').split(' · ')).filter(Boolean))].sort();
-  $('cuisine').innerHTML='<option value="">Anything</option>';
+function updateAreaOptions(){
+  const current=$('area').value;
+  const customCurrent=$('customArea').value;
+  const vals=[...new Set(allRestaurants().map(r=>r.area).filter(a=>a&&a!=='Unknown'))];
+  vals.sort((a,b)=>{
+    const ia=AREA_PRIORITY.indexOf(a),ib=AREA_PRIORITY.indexOf(b);
+    if(ia!==-1||ib!==-1){
+      if(ia===-1)return 1;
+      if(ib===-1)return -1;
+      return ia-ib;
+    }
+    return a.localeCompare(b);
+  });
+
+  $('area').innerHTML='<option value="">Anywhere</option>';
+  $('customArea').innerHTML='<option value="Unknown">Not sure</option>';
+
   for(const v of vals){
-    const o=document.createElement('option');
-    o.value=v;o.textContent=v;
-    $('cuisine').appendChild(o);
+    const a=document.createElement('option');
+    a.value=v;a.textContent=v;
+    $('area').appendChild(a);
+
+    const c=document.createElement('option');
+    c.value=v;c.textContent=v;
+    $('customArea').appendChild(c);
   }
-  if(vals.includes(prev))$('cuisine').value=prev;
+
+  if(vals.includes(current))$('area').value=current;
+  if(vals.includes(customCurrent)||customCurrent==='Unknown')$('customArea').value=customCurrent||'Unknown';
 }
+function updateCuisineOptions(){ return; }
 function updateCounts(){
   $('eligibleLabel').textContent=`${filterPool().length} eligible`;
   $('dbCount').textContent=allRestaurants().length;
+  const restore=$('restoreDeleted');
+  restore.hidden=deleted.size===0;
+  restore.textContent=deleted.size ? `RESTORE ${deleted.size} DELETED` : 'RESTORE DELETED';
 }
 function shortName(name){
   if(name.length<=22)return name;
@@ -657,7 +863,9 @@ function renderLoaded(){
     card.type='button';
     card.className='card';
     const review = r.rating ? `★ ${r.rating}` : 'No rating';
-    card.innerHTML=`<b>${i+1}</b><strong>${safeText(r.name)}</strong><span>${safeText(r.cuisine||'Cuisine ?')} · ${priceText(r.price)} · ${review}</span>`;
+    const tags=[...moodTags(r)];
+    const broad=tags.includes('cafe')?'Cafe':tags.includes('burger')?'Burger':tags.includes('asian')?'Asian':tags.includes('fastfood')?'Fast food':tags.includes('filipino')?'Filipino':'Dinner';
+    card.innerHTML=`<b>${i+1}</b><strong>${safeText(r.name)}</strong><span>${broad} · ${priceText(r.price)} · ${review}</span>`;
     card.addEventListener('click',()=>replaceOne(i));
     cards.appendChild(card);
   });
@@ -704,36 +912,91 @@ function loadSix(){
   setTimeout(()=>tone(610,.05),65);
   setTimeout(()=>tone(760,.06),130);
 }
-function tone(freq,duration=.05,type='triangle',gain=.035){
-  if(!sound)return;
+function ensureAudio(){
   try{
     const A=window.AudioContext||window.webkitAudioContext;
-    const ctx=new A();
-    const o=ctx.createOscillator();
-    const g=ctx.createGain();
+    if(!A)return false;
+    if(!audioCtx)audioCtx=new A();
+    if(audioCtx.state==='suspended')audioCtx.resume();
+    audioUnlocked=true;
+    $('sound').textContent=sound?'🔊 SOUND + MUSIC ON':'🔇 MUTED';
+    return true;
+  }catch(e){
+    $('sound').textContent='🔇 SOUND UNAVAILABLE';
+    return false;
+  }
+}
+function tone(freq,duration=.05,type='triangle',gain=.05,delay=0){
+  if(!sound||!audioUnlocked||!audioCtx)return;
+  try{
+    const now=audioCtx.currentTime+delay;
+    const o=audioCtx.createOscillator();
+    const g=audioCtx.createGain();
     o.type=type;
-    o.frequency.value=freq;
-    g.gain.setValueAtTime(gain,ctx.currentTime);
-    g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+duration);
-    o.connect(g);g.connect(ctx.destination);
-    o.start();o.stop(ctx.currentTime+duration);
+    o.frequency.setValueAtTime(freq,now);
+    g.gain.setValueAtTime(gain,now);
+    g.gain.exponentialRampToValueAtTime(.001,now+duration);
+    o.connect(g);g.connect(audioCtx.destination);
+    o.start(now);o.stop(now+duration);
+  }catch(e){}
+}
+function noiseBurst(duration=.08,gain=.07){
+  if(!sound||!audioUnlocked||!audioCtx)return;
+  try{
+    const length=Math.max(1,Math.floor(audioCtx.sampleRate*duration));
+    const buffer=audioCtx.createBuffer(1,length,audioCtx.sampleRate);
+    const data=buffer.getChannelData(0);
+    for(let i=0;i<length;i++)data[i]=(Math.random()*2-1)*(1-i/length);
+    const src=audioCtx.createBufferSource();
+    const g=audioCtx.createGain();
+    src.buffer=buffer;
+    g.gain.setValueAtTime(gain,audioCtx.currentTime);
+    g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+duration);
+    src.connect(g);g.connect(audioCtx.destination);
+    src.start();
   }catch(e){}
 }
 function pew(){
-  if(!sound)return;
+  if(!sound||!audioUnlocked||!audioCtx)return;
   try{
-    const A=window.AudioContext||window.webkitAudioContext;
-    const ctx=new A();
-    const o=ctx.createOscillator();
-    const g=ctx.createGain();
+    const now=audioCtx.currentTime;
+    const o=audioCtx.createOscillator();
+    const g=audioCtx.createGain();
     o.type='square';
-    o.frequency.setValueAtTime(430,ctx.currentTime);
-    o.frequency.exponentialRampToValueAtTime(120,ctx.currentTime+.17);
-    g.gain.setValueAtTime(.065,ctx.currentTime);
-    g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.18);
-    o.connect(g);g.connect(ctx.destination);
-    o.start();o.stop(ctx.currentTime+.19);
+    o.frequency.setValueAtTime(520,now);
+    o.frequency.exponentialRampToValueAtTime(105,now+.20);
+    g.gain.setValueAtTime(.09,now);
+    g.gain.exponentialRampToValueAtTime(.001,now+.22);
+    o.connect(g);g.connect(audioCtx.destination);
+    o.start(now);o.stop(now+.22);
+    noiseBurst(.09,.06);
   }catch(e){}
+}
+function winnerJingle(){
+  if(!sound||!audioUnlocked||!audioCtx)return;
+  tone(659.25,.18,'triangle',.07,0);
+  tone(783.99,.18,'triangle',.075,.12);
+  tone(987.77,.22,'triangle',.08,.24);
+  tone(1318.51,.42,'sine',.075,.38);
+}
+function danceSushi(){
+  const s=document.querySelector('.sushi');
+  if(!s)return;
+  s.classList.remove('dance');
+  void s.offsetWidth;
+  s.classList.add('dance');
+  setTimeout(()=>s.classList.remove('dance'),2850);
+}
+function startCuteMusic(){
+  if(!sound)return;
+  const music=$('bgMusic');
+  music.volume=.16;
+  const p=music.play();
+  if(p&&p.catch)p.catch(()=>{});
+}
+function stopCuteMusic(){
+  const music=$('bgMusic');
+  music.pause();
 }
 function animateGun(){
   hammer.classList.add('cocked');
@@ -747,6 +1010,10 @@ function animateGun(){
   setTimeout(()=>spark.classList.remove('show'),560);
 }
 function shoot(){
+  if(sound){
+    ensureAudio();
+    startCuteMusic();
+  }
   if(busy||loaded.length<2)return;
   busy=true;
   chambers.forEach(x=>x.classList.remove('win'));
@@ -784,12 +1051,16 @@ function shoot(){
     $('status').textContent=`Dibs on ${winner.name}. Dinner has been decided.`;
     speech.textContent='Direct hit. Go eat before you change your mind. 😌🍣';
 
-    tone(720,.07);
-    setTimeout(()=>tone(920,.12),70);
+    winnerJingle();
+    danceSushi();
     busy=false;
   },2500);
 }
-function openMaps(name){
+function openMaps(name, exactUrl=null){
+  if(exactUrl){
+    window.open(exactUrl,'_blank');
+    return;
+  }
   const q=encodeURIComponent(`${name}, Bacolod City`);
   window.open(`https://www.google.com/maps/search/?api=1&query=${q}`,'_blank');
 }
@@ -816,11 +1087,11 @@ function skipWinner(){
 function renderSearch(){
   const q=$('search').value.trim().toLowerCase();
   const source=q
-    ? allRestaurants().filter(r=>(`${r.name} ${r.cuisine||''} ${r.area||''}`).toLowerCase().includes(q))
-    : [];
+    ? allRestaurants().filter(r=>(`${r.name} ${r.cuisine||''} ${r.area||''} ${r.address||''}`).toLowerCase().includes(q))
+    : (browseAll ? allRestaurants() : []);
 
   $('list').innerHTML='';
-  for(const r of source.slice(0,40)){
+  for(const r of source.slice(0,500)){
     const row=document.createElement('div');
     row.className='row';
 
@@ -828,38 +1099,134 @@ function renderSearch(){
     const title=document.createElement('strong');
     title.textContent=(favorites.has(r.name)?'❤️ ':'')+(skipped.has(r.name)?'🙅 ':'')+r.name;
     const meta=document.createElement('span');
-    meta.textContent=`${r.cuisine||'Cuisine ?'} · ${priceText(r.price)} · ${r.area||'Bacolod'} · ${openText(r)}`;
+    meta.textContent=`${r.cuisine||'Cuisine ?'} · ${priceText(r.price)} · ${r.area||'Bacolod'} · ${openText(r)}${r.address?' · '+r.address:''}`;
     info.appendChild(title);info.appendChild(meta);
 
+    const actions=document.createElement('div');
     const mapBtn=document.createElement('button');
     mapBtn.type='button';mapBtn.className='row-map';mapBtn.textContent='MAPS';
-    mapBtn.addEventListener('click',()=>openMaps(r.name));
+    mapBtn.addEventListener('click',()=>openMaps(r.name,r.mapsUrl));
+    actions.appendChild(mapBtn);
 
-    row.appendChild(info);row.appendChild(mapBtn);
+    const del=document.createElement('button');
+    del.type='button';del.className='delete-custom';del.textContent='DELETE';
+    del.addEventListener('click',()=>deleteRestaurant(r));
+    actions.appendChild(del);
+
+    row.appendChild(info);row.appendChild(actions);
     $('list').appendChild(row);
+  }
+
+  if(!source.length && (q||browseAll)){
+    const empty=document.createElement('div');
+    empty.className='row';
+    empty.innerHTML='<div><strong>No matches</strong><span>Paste a Google Maps link below to add it.</span></div>';
+    $('list').appendChild(empty);
+  }
+}
+function extractNameFromGoogleMapsUrl(raw){
+  try{
+    const url=new URL(raw.trim());
+    const path=decodeURIComponent(url.pathname.replace(/\+/g,' '));
+    let m=path.match(/\/maps\/place\/([^/]+)/i);
+    if(m&&m[1])return m[1].replace(/\+/g,' ').trim();
+    const q=url.searchParams.get('query')||url.searchParams.get('q');
+    if(q)return decodeURIComponent(q).replace(/,\s*Bacolod.*$/i,'').trim();
+    return '';
+  }catch(e){
+    return '';
+  }
+}
+function handleMapsLinkPaste(){
+  const raw=$('mapsLink').value.trim();
+  if(!raw)return;
+  const name=extractNameFromGoogleMapsUrl(raw);
+  if(name && !$('customName').value.trim()){
+    $('customName').value=name;
+    $('importHelp').textContent='Nice. I found the restaurant name from that Google Maps link.';
+  }else if(/maps\.app\.goo\.gl/i.test(raw)){
+    $('importHelp').innerHTML='This is a short Google Maps link, so the restaurant name is hidden. Type the restaurant name once, then tap <b>SAVE TO DIBS</b>. The exact link will still be saved.';
+  }else{
+    $('importHelp').textContent='Link saved. If the name did not auto-fill, type the restaurant name once.';
   }
 }
 function addCustom(){
-  const name=$('customName').value.trim();
-  if(!name)return;
-  if(allRestaurants().some(r=>r.name.toLowerCase()===name.toLowerCase())){
-    $('status').textContent='That restaurant is already in the stash.';
+  const mapsUrl=$('mapsLink').value.trim();
+  let name=$('customName').value.trim();
+  if(!name && mapsUrl)name=extractNameFromGoogleMapsUrl(mapsUrl);
+
+  if(!name){
+    $('status').textContent='Add the restaurant name so Dibs knows what to call it.';
+    speech.textContent='I need a name. Short Google links are mysterious little things. 🥲';
     return;
   }
+
+  const existing=allRestaurants().find(r=>r.name.toLowerCase()===name.toLowerCase());
+  if(existing){
+    $('status').textContent='That restaurant is already in the stash.';
+    speech.textContent='Already got that one. My memory is better than it looks. 🍣';
+    return;
+  }
+
   custom.push({
     name,
-    area:$('area').value||'Downtown',
-    cuisine:'Custom',
-    price:null,
+    mapsUrl: mapsUrl || null,
+    area:$('customArea').value||'Unknown',
+    cuisine:$('customCuisine').value.trim()||'Custom',
+    price:$('customPrice').value ? Number($('customPrice').value) : null,
     address:'Bacolod City'
   });
   localStorage.setItem('dibs_custom',JSON.stringify(custom));
+
+  $('mapsLink').value='';
   $('customName').value='';
+  $('customCuisine').value='';
+  $('customPrice').value='';
+  $('customArea').value='Unknown';
+
+  updateAreaOptions();
   updateCuisineOptions();
   updateCounts();
   renderSearch();
   loadSix();
-  speech.textContent='Added it. It can now get picked. 🍣';
+  $('importHelp').textContent='Saved! It is now part of your local Dibs database on this phone.';
+  speech.textContent=`Added ${name}. It can now get picked. 🍣`;
+}
+function deleteRestaurant(r){
+  if(!r||!r.name)return;
+  const ok=window.confirm(`Delete ${r.name} from Dibs on this phone?`);
+  if(!ok)return;
+
+  if(r.custom){
+    custom=custom.filter(x=>x.name!==r.name);
+    localStorage.setItem('dibs_custom',JSON.stringify(custom));
+  }else{
+    deleted.add(r.name);
+    localStorage.setItem('dibs_deleted',JSON.stringify([...deleted]));
+  }
+
+  favorites.delete(r.name);
+  skipped.delete(r.name);
+  saveSets();
+  updateAreaOptions();
+  updateCuisineOptions();
+  updateCounts();
+  renderSearch();
+  loadSix();
+  $('status').textContent=`Deleted ${r.name} from your local Dibs database.`;
+  speech.textContent='Gone. I will stop putting that one in the chamber. 🫡🍣';
+}
+function restoreDeletedRestaurants(){
+  if(!deleted.size)return;
+  deleted.clear();
+  localStorage.setItem('dibs_deleted','[]');
+  updateAreaOptions();
+  updateCuisineOptions();
+  updateCounts();
+  renderSearch();
+  loadSix();
+  $('status').textContent='Restored all built-in restaurants you deleted.';
+  speech.textContent='The deleted restaurants have returned from the dead. 👻🍣';
 }
 function hav(a,b,c,d){
   const R=6371,t=x=>x*Math.PI/180;
@@ -877,7 +1244,8 @@ function useGPS(){
   navigator.geolocation.getCurrentPosition(
     pos=>{
       const zone=nearestZone(pos.coords.latitude,pos.coords.longitude);
-      $('area').value=zone;
+      if([...$('area').options].some(o=>o.value===zone))$('area').value=zone;
+      else $('area').value='';
       $('proximity').value='nearby';
       $('locationLabel').textContent=`📍 ${zone} + nearby`;
       loadSix();
@@ -891,28 +1259,61 @@ function useGPS(){
 }
 
 $('sound').addEventListener('click',()=>{
+  if(!audioUnlocked){
+    sound=true;
+    ensureAudio();
+
+    // Starting a media element directly from this tap is the most reliable
+    // iPhone/Safari way to unlock the background music.
+    startCuteMusic();
+
+    // This is the same v2 test chime/SFX approach that worked before.
+    tone(620,.07,'triangle',.06);
+    setTimeout(()=>tone(820,.12,'sine',.07),80);
+
+    $('status').textContent='Sound unlocked. Cute music + roulette SFX are on.';
+    speech.textContent='Sound check! If you heard that, we are back in business. 🔊🍣';
+    return;
+  }
+
   sound=!sound;
-  $('sound').textContent=sound?'🔊 sound':'🔇 muted';
-  if(sound)tone(700,.07);
+  $('sound').textContent=sound?'🔊 SOUND + MUSIC ON':'🔇 MUTED';
+
+  if(sound){
+    ensureAudio();
+    startCuteMusic();
+    tone(700,.07);
+  }else{
+    stopCuteMusic();
+  }
 });
-$('new-six').addEventListener('click',loadSix);
+$('new-six').addEventListener('click',()=>{if(sound)ensureAudio();if(sound)startCuteMusic();loadSix();});
 $('shoot').addEventListener('click',shoot);
 $('again').addEventListener('click',()=>{
+  if(sound){ensureAudio();startCuteMusic();}
   loadSix();
   setTimeout(shoot,220);
 });
-$('maps').addEventListener('click',()=>winner&&openMaps(winner.name));
+$('maps').addEventListener('click',()=>winner&&openMaps(winner.name,winner.mapsUrl));
 $('love').addEventListener('click',loveWinner);
 $('skip').addEventListener('click',skipWinner);
 $('gpsBtn').addEventListener('click',useGPS);
 $('search').addEventListener('input',renderSearch);
+$('restoreDeleted').addEventListener('click',restoreDeletedRestaurants);
+$('browseAll').addEventListener('click',()=>{
+  browseAll=!browseAll;
+  $('browseAll').textContent=browseAll?'HIDE':'BROWSE ALL';
+  renderSearch();
+});
+$('mapsLink').addEventListener('input',handleMapsLinkPaste);
 $('addCustom').addEventListener('click',addCustom);
 $('customName').addEventListener('keydown',e=>{
   if(e.key==='Enter')addCustom();
 });
 
-['area','proximity','cuisine','price','openOnly','allowUnknown'].forEach(id=>{
+['area','proximity','mood','price','openOnly','allowUnknown'].forEach(id=>{
   $(id).addEventListener('change',()=>{
+    if(sound)ensureAudio();
     if(id==='area'){
       $('locationLabel').textContent=$('area').value ? `📍 ${$('area').value}` : '📍 Anywhere in Bacolod';
     }
@@ -920,6 +1321,7 @@ $('customName').addEventListener('keydown',e=>{
   });
 });
 
+updateAreaOptions();
 updateCuisineOptions();
 updateCounts();
 loadSix();

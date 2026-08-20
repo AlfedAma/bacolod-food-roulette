@@ -1,32 +1,33 @@
-# Dibs for you
+# Dibs for you v5
 
-Cute Bacolod restaurant roulette for GitHub Pages.
+This build keeps the 319-place Bacolod database and changes two major things:
 
-## Included
-- 76 Bacolod restaurant/eatery records embedded directly in the app
-- Cute green 2D revolver roulette
-- Six restaurant names inside the cylinder
-- Tap any of the six cards to replace just that choice
-- Animated sushi mascot
-- Sound effects with mute toggle
-- Area, nearby-area, cuisine, budget and open-now filters
-- GPS used only to estimate your nearest Bacolod area cluster
-- Favorites and skips saved in the browser
-- Add missing restaurants locally
-- Google Maps button for winner and searched restaurants
-- Offline-capable PWA after first successful load
+## General meal filters
+The old detailed cuisine picker is replaced with:
+- Dinner
+- Anything
+- Cafe
+- Burgers
+- Asian
+- Fast food
+- Filipino
+- Pizza
+- Dessert
+- Breakfast / brunch
 
-## Update your existing GitHub Pages site
-Upload these files into the root of your existing repository and replace the old versions:
+Dinner intentionally filters out coffee/dessert/snack-only places such as Starbucks,
+milk-tea shops, ice-cream stalls and dessert kiosks.
 
-- index.html
-- manifest.json
-- service-worker.js
-- icon-192.png
-- icon-512.png
-- apple-touch-icon.png
+## Audio fix
+The roulette SFX use the same persistent Web Audio approach as v2.
+There is one `TAP FOR SOUND` button again.
 
-Then commit to `main`. GitHub Pages should redeploy automatically.
+That button:
+1. unlocks the iPhone audio context,
+2. plays a test chime,
+3. starts the local cute looping background track.
 
-## Notes
-The restaurant information is a local snapshot and can become outdated. Google Maps is opened only when the user chooses to verify a restaurant.
+Winner SFX and the sushi dance remain enabled.
+
+If an installed Home Screen version still behaves like an old build, remove the old
+Home Screen icon, open the refreshed GitHub Pages URL in Safari, then Add to Home Screen again.

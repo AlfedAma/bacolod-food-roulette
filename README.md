@@ -2,23 +2,32 @@
 
 Cute Bacolod restaurant roulette for GitHub Pages.
 
-## Included
-- 76 Bacolod restaurant/eatery records embedded directly in the app
+## What's in this build
+- 104 Bacolod restaurant/eatery records built into the app
 - Cute green 2D revolver roulette
 - Six restaurant names inside the cylinder
-- Tap any of the six cards to replace just that choice
+- Tap any choice card to replace only that restaurant
 - Animated sushi mascot
-- Sound effects with mute toggle
-- Area, nearby-area, cuisine, budget and open-now filters
-- GPS used only to estimate your nearest Bacolod area cluster
-- Favorites and skips saved in the browser
-- Add missing restaurants locally
-- Google Maps button for winner and searched restaurants
+- iPhone-friendly sound unlock button and persistent sound engine
+- Click-click roulette audio and cute pew sound
+- Open-now filter is OFF by default so the initial pool stays large
+- Area, nearby-area, cuisine and budget filters
+- GPS estimates your nearest Bacolod area cluster
+- Favorites and skips saved on-device
+- Browse all local restaurants
+- Add a restaurant by pasting a Google Maps link
+- Long Google Maps links can auto-fill the restaurant name
+- Short maps.app.goo.gl links are saved exactly, but you type the restaurant name once because the short URL hides it
+- Exact pasted Google Maps link is saved and reopened for that restaurant
+- Custom restaurants can be deleted
+- Google Maps winner button
 - Offline-capable PWA after first successful load
 
-## Update your existing GitHub Pages site
-Upload these files into the root of your existing repository and replace the old versions:
+## Important local-storage note
+Restaurants that you add yourself are saved in that browser/device's local storage. Clearing Safari website data or using a different phone will not carry those personal additions over.
 
+## Update an existing GitHub Pages repository
+Replace:
 - index.html
 - manifest.json
 - service-worker.js
@@ -26,7 +35,4 @@ Upload these files into the root of your existing repository and replace the old
 - icon-512.png
 - apple-touch-icon.png
 
-Then commit to `main`. GitHub Pages should redeploy automatically.
-
-## Notes
-The restaurant information is a local snapshot and can become outdated. Google Maps is opened only when the user chooses to verify a restaurant.
+Commit to main. GitHub Pages should redeploy automatically.

@@ -1,10 +1,12 @@
 {
   "name": "Dibs for you",
   "short_name": "Dibs",
+  "description": "Cute Bacolod restaurant roulette.",
   "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
-  "background_color": "#f7f7f5",
-  "theme_color": "#f7f7f5",
+  "background_color": "#dff6d4",
+  "theme_color": "#dff6d4",
   "icons": [
     {
       "src": "icon-192.png",

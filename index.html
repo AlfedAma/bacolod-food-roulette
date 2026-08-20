@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#f7f7f5">
+<meta name="theme-color" content="#dff6d4">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Dibs for you">
@@ -11,96 +11,922 @@
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <style>
-:root{color-scheme:light;--bg:#f7f7f5;--surface:#fff;--text:#171717;--muted:#777771;--line:#e7e7e2;--soft:#efefeb;--accent:#171717}
-@media(prefers-color-scheme:dark){:root{color-scheme:dark;--bg:#111210;--surface:#191a17;--text:#f5f5f1;--muted:#9b9b93;--line:#2d2f2a;--soft:#232520;--accent:#f5f5f1}}
-*{box-sizing:border-box}html{background:var(--bg)}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;background:var(--bg);color:var(--text)}
-button,input,select{font:inherit}button{touch-action:manipulation}main{width:min(100%,720px);margin:0 auto;padding:26px 16px 50px}
-.top{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:22px}.brand h1{margin:0;font-size:30px;line-height:1;letter-spacing:-1.1px;font-weight:700}.brand p{margin:7px 0 0;color:var(--muted);font-size:14px}
-.icon-btn,.ghost,.primary{border:0;border-radius:14px;min-height:46px;padding:0 15px}.icon-btn,.ghost{background:var(--surface);color:var(--text);border:1px solid var(--line)}.primary{background:var(--accent);color:var(--bg);font-weight:650}
-.location-row{display:flex;align-items:center;gap:8px;margin-bottom:14px}.location-pill{flex:1;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 14px;color:var(--muted);font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.filters{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-bottom:12px}.field{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:8px 10px}.field label{display:block;font-size:11px;color:var(--muted);margin-bottom:2px}.field select{width:100%;border:0;outline:0;background:transparent;color:var(--text);font-size:14px;padding:2px 0}
-.toggle-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:3px 2px 14px;color:var(--muted);font-size:13px}.toggle{display:flex;align-items:center;gap:8px}.toggle input{width:18px;height:18px}
-.scan-row{display:grid;grid-template-columns:1fr auto;gap:8px;margin-bottom:16px}.status{min-height:20px;margin:0 2px 10px;font-size:12px;color:var(--muted)}
-.wheel-wrap{position:relative;display:grid;place-items:center;margin:4px 0 14px}.pointer{position:absolute;top:-3px;z-index:3;width:0;height:0;border-left:12px solid transparent;border-right:12px solid transparent;border-top:24px solid var(--text)}
-#wheel{width:min(92vw,540px);height:auto;overflow:visible}.center-dot{position:absolute;width:58px;height:58px;border-radius:50%;background:var(--surface);border:1px solid var(--line);display:grid;place-items:center;font-weight:750;font-size:13px;z-index:2}
-.wheel-meta{display:flex;justify-content:center;gap:7px;flex-wrap:wrap;margin-bottom:13px}.pill{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:7px 10px;font-size:12px;color:var(--muted)}
-.actions{display:grid;grid-template-columns:1fr auto;gap:8px;margin-bottom:18px}.spin{min-height:54px;font-size:16px}
-.result{display:none;margin:8px 0 20px;background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:18px}.result.show{display:block}.eyebrow{text-transform:uppercase;letter-spacing:1.2px;font-size:10px;color:var(--muted)}
-.result h2{margin:5px 0 7px;font-size:25px;letter-spacing:-.6px}.result p{margin:5px 0;color:var(--muted);line-height:1.4;font-size:14px}.result-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:15px}
-.section{margin-top:18px;border-top:1px solid var(--line);padding-top:18px}.section-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:10px}.section-head h3{margin:0;font-size:15px}.section-head span{color:var(--muted);font-size:12px}
-.search{width:100%;background:var(--surface);color:var(--text);border:1px solid var(--line);border-radius:14px;padding:13px 14px;outline:0}.list{display:grid;gap:7px;margin-top:9px}.row{background:var(--surface);border:1px solid var(--line);border-radius:13px;padding:11px 12px}.row-name{font-size:14px;font-weight:600}.row-meta{font-size:11px;color:var(--muted);margin-top:3px}
-.manual{display:grid;grid-template-columns:1fr auto;gap:8px}details{margin-top:14px}summary{color:var(--muted);font-size:13px;cursor:pointer}.note{font-size:11px;color:var(--muted);line-height:1.45;margin-top:24px}
-@media(max-width:520px){main{padding-top:20px}.filters{grid-template-columns:1fr 1fr}.field:last-child{grid-column:1/-1}}
+:root{
+  --cream:#fbf8eb;
+  --cream2:#f5f1df;
+  --ink:#163524;
+  --muted:#688573;
+  --leaf:#2f7d4e;
+  --leaf2:#4ea86d;
+  --mint:#bfe8ae;
+  --mint2:#dcf5ce;
+  --lime:#dafa7e;
+  --avocado:#8fcf6d;
+  --pink:#ff9ea9;
+  --salmon:#ff997e;
+  --yellow:#ffe66f;
+  --white:#fffdf5;
+  --line:#9fcea5;
+  --danger:#d95f68;
+}
+*{box-sizing:border-box}
+html{background:#dff4d5}
+body{
+  margin:0;
+  min-height:100vh;
+  color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Rounded","Avenir Next","Segoe UI",sans-serif;
+  background:
+    radial-gradient(circle at 12% 3%,rgba(255,230,111,.62),transparent 20rem),
+    radial-gradient(circle at 94% 18%,rgba(191,232,174,.85),transparent 22rem),
+    linear-gradient(180deg,#eff9df,#dff4d5 52%,#cceabf);
+}
+button,input,select{font:inherit}
+button{cursor:pointer;touch-action:manipulation}
+main{
+  width:min(100%,720px);
+  margin:auto;
+  padding:calc(18px + env(safe-area-inset-top)) 13px calc(42px + env(safe-area-inset-bottom));
+}
+.top{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+}
+.brand{display:flex;gap:10px;align-items:center}
+.brand-mark{
+  width:49px;height:49px;border-radius:17px;background:var(--leaf);
+  display:grid;place-items:center;box-shadow:0 7px 0 rgba(47,125,78,.14);
+  transform:rotate(-4deg);
+}
+.brand-mark span{font-size:26px;transform:rotate(4deg)}
+.logo{font-size:29px;line-height:1;font-weight:950;letter-spacing:-1.4px}
+.logo em{font-style:normal;color:var(--leaf)}
+.subtitle{margin-top:5px;color:var(--muted);font-size:11px}
+.sound{
+  border:2px solid var(--line);background:rgba(255,253,245,.8);color:var(--ink);
+  border-radius:999px;padding:8px 10px;font-size:11px;font-weight:800;
+  box-shadow:0 4px 0 rgba(104,133,115,.09);
+}
+
+.mascot-row{height:86px;position:relative;margin:7px 0 2px;overflow:hidden}
+.sushi{
+  position:absolute;width:68px;height:55px;left:3px;top:10px;
+  animation:bounceWalk 5.4s ease-in-out infinite alternate;
+  filter:drop-shadow(0 6px 0 rgba(47,125,78,.1));
+}
+.sushi .rice{
+  position:absolute;left:8px;bottom:0;width:52px;height:36px;
+  border-radius:18px 18px 14px 14px;background:var(--white);border:3px solid #d8e7cf;
+}
+.sushi .fish{
+  position:absolute;left:2px;top:4px;width:64px;height:25px;
+  border-radius:17px 17px 10px 10px;background:var(--salmon);
+  border:3px solid #f47e69;transform:rotate(-4deg);
+}
+.sushi .fish:after{
+  content:"";position:absolute;left:9px;right:9px;top:7px;height:3px;border-radius:999px;
+  background:rgba(255,255,255,.65);box-shadow:0 7px 0 rgba(255,255,255,.47);
+  transform:rotate(-6deg);
+}
+.eye{position:absolute;width:5px;height:7px;border-radius:50%;background:var(--ink);bottom:13px;z-index:4}
+.eye.a{left:26px}.eye.b{left:42px}
+.mouth{position:absolute;left:34px;bottom:7px;width:9px;height:5px;border-bottom:2px solid var(--ink);border-radius:50%;z-index:4}
+.cheek{position:absolute;bottom:10px;width:7px;height:4px;background:var(--pink);border-radius:50%;z-index:3;opacity:.7}
+.cheek.a{left:17px}.cheek.b{left:49px}
+.arm{position:absolute;right:-8px;bottom:13px;width:16px;height:3px;border-radius:999px;background:#d8e7cf;transform:rotate(-30deg)}
+@keyframes bounceWalk{
+  0%{transform:translateX(0) translateY(0) rotate(-3deg)}
+  40%{transform:translateX(82px) translateY(-6px) rotate(4deg)}
+  70%{transform:translateX(128px) translateY(2px) rotate(-3deg)}
+  100%{transform:translateX(43px) translateY(-4px) rotate(4deg)}
+}
+.speech{
+  position:absolute;right:0;top:8px;max-width:235px;padding:10px 12px;
+  border-radius:18px 18px 18px 6px;background:var(--white);border:2px solid var(--line);
+  font-size:11px;line-height:1.25;font-weight:850;box-shadow:0 5px 0 rgba(47,125,78,.09);
+}
+
+.filters{
+  background:rgba(255,253,245,.72);border:2px solid var(--line);border-radius:22px;
+  padding:10px;margin:4px 0 11px;box-shadow:0 5px 0 rgba(47,125,78,.06);
+}
+.filters-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:7px}
+.field{
+  background:rgba(255,253,245,.88);border:2px solid var(--line);
+  border-radius:15px;padding:8px 9px;
+}
+.field label{
+  display:block;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);
+  font-size:8px;font-weight:900;margin-bottom:2px;
+}
+.field select{
+  width:100%;background:transparent;border:0;outline:0;color:var(--ink);
+  font-size:12px;font-weight:700;padding:2px 0;
+}
+.filter-bottom{
+  display:flex;gap:7px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-top:8px
+}
+.pill{
+  display:flex;align-items:center;gap:6px;background:var(--white);border:2px solid var(--line);
+  border-radius:999px;padding:7px 9px;font-size:10px;color:var(--muted);font-weight:800
+}
+.pill input{accent-color:var(--leaf)}
+.location-row{display:flex;gap:7px;align-items:center;flex:1;min-width:210px}
+.location-label{
+  flex:1;min-width:0;background:var(--white);border:2px solid var(--line);border-radius:999px;
+  padding:7px 10px;font-size:10px;color:var(--muted);font-weight:800;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis
+}
+.location-btn{
+  border:2px solid var(--ink);background:var(--mint2);color:var(--ink);border-radius:999px;
+  padding:7px 10px;font-size:10px;font-weight:900
+}
+
+.game{
+  background:rgba(255,253,245,.76);border:2px solid var(--line);border-radius:29px;
+  padding:14px 9px 16px;box-shadow:0 9px 0 rgba(47,125,78,.08),0 18px 45px rgba(36,91,56,.09);
+}
+.game-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:0 7px 6px}
+.game-head strong{font-size:13px}.game-head span{color:var(--muted);font-size:9px}
+
+.gun-wrap{width:min(96vw,580px);height:330px;margin:auto;position:relative}
+.barrel{
+  position:absolute;left:47%;top:99px;width:43%;height:62px;border-radius:0 28px 28px 0;
+  background:var(--leaf2);border:4px solid var(--ink);border-left-width:2px;z-index:2
+}
+.barrel:before{
+  content:"";position:absolute;left:7px;right:13px;top:11px;height:10px;border-radius:999px;
+  background:rgba(255,255,255,.2)
+}
+.barrel:after{
+  content:"";position:absolute;right:-6px;top:13px;width:31px;height:29px;border-radius:4px 18px 18px 4px;
+  background:var(--ink);box-shadow:inset 10px 0 0 #0a2215
+}
+.front-sight{position:absolute;right:23px;top:-13px;width:12px;height:16px;border-radius:5px 5px 0 0;background:var(--ink)}
+.frame{
+  position:absolute;left:34%;top:123px;width:32%;height:118px;background:var(--avocado);
+  border:4px solid var(--ink);border-radius:28px 29px 40px 34px;z-index:1
+}
+.frame:after{
+  content:"🍣";position:absolute;right:8px;bottom:11px;width:37px;height:37px;display:grid;place-items:center;
+  border-radius:50%;background:var(--cream);border:3px solid var(--ink);font-size:20px;transform:rotate(7deg)
+}
+.grip{
+  position:absolute;left:48%;top:221px;width:94px;height:111px;background:var(--leaf);
+  border:4px solid var(--ink);border-radius:19px 20px 34px 29px;transform:rotate(12deg);
+  transform-origin:top center;z-index:0
+}
+.grip:before{
+  content:"";position:absolute;inset:13px 16px 16px;border-radius:12px;
+  background:radial-gradient(circle,var(--mint) 2px,transparent 3px) 0 0/14px 14px;opacity:.4
+}
+.trigger-guard{
+  position:absolute;left:48%;top:207px;width:77px;height:54px;border:10px solid var(--ink);
+  border-top-width:7px;border-radius:0 0 42px 42px;z-index:3
+}
+.trigger{
+  position:absolute;left:54%;top:217px;width:10px;height:34px;border-radius:999px;
+  background:var(--yellow);border:3px solid var(--ink);transform:rotate(14deg);
+  transform-origin:top center;transition:.18s;z-index:4
+}
+.trigger.pulled{transform:rotate(31deg) translateY(2px)}
+.hammer{
+  position:absolute;left:35%;top:96px;width:35px;height:39px;background:var(--leaf2);
+  border:4px solid var(--ink);border-radius:11px 6px 5px 11px;transform:rotate(-17deg);
+  transform-origin:bottom right;transition:.18s;z-index:1
+}
+.hammer.cocked{transform:rotate(-47deg)}
+
+.cylinder{
+  position:absolute;left:12%;top:53px;width:225px;height:225px;border-radius:50%;
+  background:var(--mint);border:5px solid var(--ink);z-index:6;
+  box-shadow:0 7px 0 rgba(22,53,36,.14);transition:transform 2.45s cubic-bezier(.1,.78,.1,1)
+}
+.cylinder:before{
+  content:"";position:absolute;inset:11px;border:3px dashed rgba(22,53,36,.22);border-radius:50%
+}
+.pointer{
+  position:absolute;left:50%;top:-9px;transform:translateX(-50%);
+  width:0;height:0;border-left:11px solid transparent;border-right:11px solid transparent;
+  border-top:23px solid var(--pink);z-index:10
+}
+.chamber{
+  position:absolute;width:82px;height:82px;margin:-41px;left:50%;top:50%;
+  transform:rotate(var(--a)) translateY(-69px) rotate(calc(var(--a)*-1));
+  border-radius:50%;background:var(--white);border:3px solid var(--ink);
+  display:flex;align-items:center;justify-content:center;text-align:center;padding:10px 8px;
+  transition:.2s;box-shadow:inset 0 -5px 0 rgba(143,207,109,.2)
+}
+.chamber .number{
+  position:absolute;top:5px;left:6px;width:18px;height:18px;border-radius:50%;display:grid;
+  place-items:center;color:var(--ink);background:var(--yellow);border:2px solid var(--ink);
+  font-size:8px;font-weight:950
+}
+.chamber .restaurant{
+  width:95%;font-size:9px;line-height:1.02;font-weight:900;letter-spacing:-.15px
+}
+.chamber.win{
+  background:var(--lime);
+  transform:rotate(var(--a)) translateY(-69px) rotate(calc(var(--a)*-1)) scale(1.08);
+  box-shadow:0 0 0 5px rgba(255,158,169,.34),0 8px 0 rgba(22,53,36,.13)
+}
+.center{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:50px;height:50px;border-radius:50%;background:var(--pink);
+  border:4px solid var(--ink);z-index:9;display:grid;place-items:center
+}
+.center:after{content:"♡";position:absolute;font-size:22px;color:var(--white)}
+
+.spark{position:absolute;right:-4px;top:86px;width:77px;height:77px;z-index:12;display:none}
+.spark.show{display:block;animation:popSpark .24s ease}
+.spark:before{
+  content:"PEW!";position:absolute;inset:0;display:grid;place-items:center;color:var(--ink);
+  font-size:16px;font-weight:950;transform:rotate(-8deg);background:var(--yellow);
+  border:4px solid var(--ink);
+  clip-path:polygon(50% 0,61% 25%,84% 8%,78% 35%,100% 38%,77% 53%,97% 71%,70% 70%,73% 100%,53% 77%,38% 100%,37% 74%,10% 91%,24% 63%,0 57%,27% 45%,5% 27%,33% 30%)
+}
+@keyframes popSpark{
+  from{transform:scale(.25) rotate(-18deg);opacity:0}
+  55%{transform:scale(1.12) rotate(4deg);opacity:1}
+  to{transform:scale(.9);opacity:0}
+}
+
+.cards-title{display:flex;justify-content:space-between;align-items:center;padding:0 4px 7px}
+.cards-title strong{font-size:12px}.cards-title span{font-size:9px;color:var(--muted)}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.card{
+  min-height:76px;border:2px solid var(--line);background:var(--white);color:var(--ink);
+  border-radius:15px;padding:8px;text-align:left;transition:.2s;box-shadow:0 4px 0 rgba(47,125,78,.05)
+}
+.card b{
+  display:inline-grid;place-items:center;width:20px;height:20px;border:2px solid var(--ink);
+  border-radius:50%;background:var(--yellow);font-size:8px;margin-bottom:5px
+}
+.card strong{display:block;font-size:9.5px;line-height:1.08}
+.card span{display:block;margin-top:4px;color:var(--muted);font-size:8px}
+.card.hit{
+  background:var(--lime);border-color:var(--ink);transform:translateY(-2px) rotate(-1deg);
+  box-shadow:0 7px 0 rgba(22,53,36,.14)
+}
+
+.actions{display:grid;grid-template-columns:1fr 1.45fr;gap:8px;margin-top:11px}
+.btn{
+  min-height:51px;border-radius:16px;font-weight:950;border:3px solid var(--ink);
+  padding:0 11px;box-shadow:0 5px 0 var(--ink)
+}
+.btn:active{transform:translateY(3px);box-shadow:0 2px 0 var(--ink)}
+.new{background:var(--white);color:var(--ink)}.shoot{background:var(--lime);color:var(--ink)}
+.status{color:var(--muted);font-size:10px;text-align:center;margin:10px 0 0;min-height:16px;font-weight:700}
+
+.winner{
+  display:none;margin-top:11px;padding:14px;border:3px solid var(--ink);
+  background:var(--white);border-radius:20px;box-shadow:0 7px 0 rgba(22,53,36,.13)
+}
+.winner.show{display:block;animation:winnerPop .34s ease}
+@keyframes winnerPop{
+  from{transform:scale(.93) rotate(-1deg);opacity:0}
+  to{transform:scale(1);opacity:1}
+}
+.eyebrow{color:var(--leaf);text-transform:uppercase;font-size:9px;font-weight:950;letter-spacing:1.3px}
+.winner h2{margin:4px 0 6px;font-size:23px;letter-spacing:-.5px}
+.winner p{margin:0;color:var(--muted);font-size:10.5px;line-height:1.45}
+.winner-actions{display:grid;grid-template-columns:1.25fr 1fr;gap:7px;margin-top:11px}
+.small-btn{
+  border:2px solid var(--ink);border-radius:13px;min-height:43px;padding:0 9px;
+  font-weight:900;font-size:10px;color:var(--ink);background:var(--cream)
+}
+.maps{background:var(--leaf);color:white}
+.secondary-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:7px}
+.good{background:var(--mint2)}.skip{background:#ffe6e8;color:#7f3339}
+
+.library{
+  margin-top:12px;background:rgba(255,253,245,.72);border:2px solid var(--line);
+  border-radius:22px;padding:11px;box-shadow:0 5px 0 rgba(47,125,78,.06)
+}
+.library-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px}
+.library-head strong{font-size:12px}.library-head span{font-size:9px;color:var(--muted)}
+.search-row{display:grid;grid-template-columns:1fr auto;gap:7px}
+.search{
+  width:100%;border:2px solid var(--line);background:var(--white);color:var(--ink);
+  border-radius:14px;padding:10px 11px;outline:0;font-size:11px;font-weight:700
+}
+.add-btn{
+  border:2px solid var(--ink);background:var(--mint2);color:var(--ink);border-radius:14px;
+  padding:0 12px;font-size:10px;font-weight:900
+}
+.list{display:grid;gap:6px;margin-top:8px;max-height:340px;overflow:auto}
+.row{
+  display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;
+  border:2px solid #c0dcc0;background:rgba(255,253,245,.88);border-radius:13px;padding:8px 9px
+}
+.row strong{font-size:10px;display:block}.row span{font-size:8px;color:var(--muted);display:block;margin-top:3px}
+.row-map{
+  border:0;background:var(--leaf);color:white;border-radius:999px;padding:7px 9px;
+  font-size:9px;font-weight:900;white-space:nowrap
+}
+.note{margin-top:12px;text-align:center;color:var(--muted);font-size:9px;line-height:1.45}
+
+@media(max-width:480px){
+  .filters-grid{grid-template-columns:1fr 1fr}
+  .gun-wrap{height:305px}
+  .cylinder{left:7%;top:49px;width:202px;height:202px}
+  .chamber{width:74px;height:74px;margin:-37px;transform:rotate(var(--a)) translateY(-61px) rotate(calc(var(--a)*-1))}
+  .chamber.win{transform:rotate(var(--a)) translateY(-61px) rotate(calc(var(--a)*-1)) scale(1.08)}
+  .barrel{left:46%;top:93px;height:56px}
+  .frame{left:32%;top:116px;height:110px}
+  .grip{left:47%;top:208px;width:86px;height:101px}
+  .trigger-guard{left:47%;top:194px}
+  .trigger{left:54%;top:204px}
+  .hammer{left:32%;top:91px}
+  .cards{grid-template-columns:repeat(2,1fr)}
+  .speech{max-width:190px}
+}
 </style>
 </head>
 <body>
 <main>
-<header class="top"><div class="brand"><h1>Dibs for you</h1><p>One spin. Dinner decided.</p></div><button id="resetAll" class="icon-btn" type="button">↻</button></header>
-<div class="location-row"><div id="locationText" class="location-pill">Bacolod City center</div><button id="locate" class="ghost" type="button">Use GPS</button></div>
-<section class="filters">
-<div class="field"><label for="radius">Distance</label><select id="radius"><option value="1000">1 km</option><option value="2000">2 km</option><option value="3000" selected>3 km</option><option value="5000">5 km</option><option value="8000">8 km</option><option value="12000">12 km</option><option value="20000">20 km</option></select></div>
-<div class="field"><label for="cuisine">Cuisine</label><select id="cuisine"><option value="">Anything</option></select></div>
-<div class="field"><label for="budget">Budget</label><select id="budget"><option value="">Any</option><option value="1">₱</option><option value="2">₱₱</option><option value="3">₱₱₱</option></select></div>
-</section>
-<div class="toggle-row"><label class="toggle"><input id="openOnly" type="checkbox" checked> Open now</label><label class="toggle"><input id="unknownHours" type="checkbox" checked> Include unknown hours</label></div>
-<div class="scan-row"><button id="scan" class="primary" type="button">Find food near me</button><button id="deep" class="ghost" type="button">Bacolod scan</button></div>
-<p id="scanStatus" class="status">Ready when you are.</p>
-<section class="wheel-wrap"><div class="pointer"></div><svg id="wheel" viewBox="-270 -270 540 540" role="img" aria-label="Restaurant choice wheel"></svg><div class="center-dot">Dibs</div></section>
-<div class="wheel-meta"><span id="wheelCount" class="pill">0 on wheel</span><span id="poolCount" class="pill">0 found</span></div>
-<div class="actions"><button id="spin" class="primary spin" type="button">Spin it</button><button id="shuffle" class="ghost" type="button">Shuffle</button></div>
-<section id="result" class="result" aria-live="polite"><div class="eyebrow">Dibs</div><h2 id="winnerName"></h2><p id="winnerMeta"></p><p id="winnerAddress"></p><div class="result-actions"><button id="googleWinner" class="primary" type="button">Google Maps</button><button id="reroll" class="ghost" type="button">Not feeling it</button></div></section>
-<section class="section"><div class="section-head"><h3>Search the pool</h3><span id="eligibleCount">0 eligible</span></div><input id="search" class="search" type="search" placeholder="Odaegam, Calea, Nezu..."><div id="searchResults" class="list"></div></section>
-<section class="section"><div class="section-head"><h3>Missing something?</h3><span>Add it yourself</span></div><div class="manual"><input id="manualName" class="search" placeholder="Restaurant name"><button id="manualAdd" class="ghost" type="button">Add</button></div><p class="status">Search it in Google Maps, copy its name, then add it here. Your additions stay on this phone.</p></section>
-<details class="section"><summary>See all eligible restaurants</summary><div id="poolList" class="list"></div></details>
-<p class="note">Restaurant discovery uses OpenStreetMap and public Overpass servers. Google Maps is used only to open or search a restaurant, which does not require an API key.</p>
+  <div class="top">
+    <div class="brand">
+      <div class="brand-mark"><span>🍙</span></div>
+      <div>
+        <div class="logo">Dibs <em>for you</em></div>
+        <div class="subtitle">Bacolod's cutest bad decision maker</div>
+      </div>
+    </div>
+    <button id="sound" class="sound" type="button">🔊 sound</button>
+  </div>
+
+  <div class="mascot-row">
+    <div class="sushi">
+      <div class="fish"></div>
+      <div class="rice"></div>
+      <div class="eye a"></div>
+      <div class="eye b"></div>
+      <div class="cheek a"></div>
+      <div class="cheek b"></div>
+      <div class="mouth"></div>
+      <div class="arm"></div>
+    </div>
+    <div id="speech" class="speech">I picked six. You just have to be brave. 🍣</div>
+  </div>
+
+  <section class="filters">
+    <div class="filters-grid">
+      <div class="field">
+        <label>Area</label>
+        <select id="area">
+          <option value="">Anywhere</option>
+          <option>Downtown</option>
+          <option>Lacson</option>
+          <option>Mandalagan</option>
+          <option>Upper East</option>
+          <option>Singcang</option>
+          <option>Bata</option>
+          <option>South</option>
+          <option>Tangub</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>How near?</label>
+        <select id="proximity">
+          <option value="nearby">My area + nearby</option>
+          <option value="same">My area only</option>
+          <option value="all">All Bacolod</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Cuisine</label>
+        <select id="cuisine">
+          <option value="">Anything</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Budget</label>
+        <select id="price">
+          <option value="">Any</option>
+          <option value="1">₱ budget</option>
+          <option value="2">₱₱ mid</option>
+          <option value="3">₱₱₱ treat yourself</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="filter-bottom">
+      <div class="location-row">
+        <div id="locationLabel" class="location-label">📍 Anywhere in Bacolod</div>
+        <button id="gpsBtn" class="location-btn" type="button">Use GPS</button>
+      </div>
+      <label class="pill"><input id="openOnly" type="checkbox" checked> Open now</label>
+      <label class="pill"><input id="allowUnknown" type="checkbox" checked> Unknown hours OK</label>
+    </div>
+  </section>
+
+  <section class="game">
+    <div class="game-head">
+      <strong>💚 Dinner roulette</strong>
+      <span id="eligibleLabel">0 eligible</span>
+    </div>
+
+    <div class="gun-wrap">
+      <div class="hammer" id="hammer"></div>
+      <div class="barrel"><div class="front-sight"></div></div>
+      <div class="frame"></div>
+      <div class="grip"></div>
+      <div class="trigger-guard"></div>
+      <div class="trigger" id="trigger"></div>
+      <div class="spark" id="spark"></div>
+
+      <div class="cylinder" id="cylinder">
+        <div class="pointer"></div>
+        <div class="chamber" style="--a:0deg"><span class="number">1</span><span class="restaurant"></span></div>
+        <div class="chamber" style="--a:60deg"><span class="number">2</span><span class="restaurant"></span></div>
+        <div class="chamber" style="--a:120deg"><span class="number">3</span><span class="restaurant"></span></div>
+        <div class="chamber" style="--a:180deg"><span class="number">4</span><span class="restaurant"></span></div>
+        <div class="chamber" style="--a:240deg"><span class="number">5</span><span class="restaurant"></span></div>
+        <div class="chamber" style="--a:300deg"><span class="number">6</span><span class="restaurant"></span></div>
+        <div class="center"></div>
+      </div>
+    </div>
+
+    <div class="cards-title">
+      <strong>Your six 🍽️</strong>
+      <span>tap a card to replace it</span>
+    </div>
+    <div class="cards" id="cards"></div>
+
+    <div class="actions">
+      <button id="new-six" class="btn new" type="button">🎲 NEW SIX</button>
+      <button id="shoot" class="btn shoot" type="button">💥 PULL THE TRIGGER</button>
+    </div>
+
+    <div class="status" id="status" aria-live="polite">Loading your six…</div>
+
+    <div class="winner" id="winner" aria-live="polite">
+      <div class="eyebrow">♡ dibs called it</div>
+      <h2 id="winner-name"></h2>
+      <p id="winner-meta"></p>
+
+      <div class="winner-actions">
+        <button id="maps" class="small-btn maps" type="button">📍 OPEN IN GOOGLE MAPS</button>
+        <button id="again" class="small-btn" type="button">Pew again 😭</button>
+      </div>
+      <div class="secondary-actions">
+        <button id="love" class="small-btn good" type="button">❤️ Would go again</button>
+        <button id="skip" class="small-btn skip" type="button">🙅 Skip next time</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="library">
+    <div class="library-head">
+      <strong>🍜 Local stash</strong>
+      <span><b id="dbCount">0</b> saved Bacolod spots</span>
+    </div>
+    <input id="search" class="search" type="search" placeholder="Search Odaegam, Calea, Korean, ramen…">
+    <div id="list" class="list"></div>
+    <div class="search-row" style="margin-top:8px">
+      <input id="customName" class="search" type="text" placeholder="Add a missing Bacolod restaurant">
+      <button id="addCustom" class="add-btn" type="button">ADD</button>
+    </div>
+  </section>
+
+  <div class="note">
+    Restaurant details are stored locally in this app and can become outdated. Google Maps is opened only when you tap it, so you can verify current hours, reviews, photos and directions.
+  </div>
 </main>
+
 <script>
-const BACOLOD={lat:10.6765,lon:122.9509}
-const endpoints=['https://overpass-api.de/api/interpreter','https://overpass.kumi.systems/api/interpreter']
-const builtInPrices={'odaegam ramen station':2,'calea pastries & coffee':2,'nezu modern japanese':2,'furai contemporary japanese':2,'vikings luxury buffet':3,'romantic baboy':2}
-let center={...BACOLOD},restaurants=[],wheelChoices=[],winner=null,rotation=0,spinning=false,used=new Set()
-const savedPrices=JSON.parse(localStorage.getItem('dibsPrices')||'{}')
-const manualRestaurants=JSON.parse(localStorage.getItem('dibsManual')||'[]')
-const $=id=>document.getElementById(id)
-function esc(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function hav(a,b,c,d){const R=6371,toRad=x=>x*Math.PI/180,dp=toRad(c-a),dl=toRad(d-b),z=Math.sin(dp/2)**2+Math.cos(toRad(a))*Math.cos(toRad(c))*Math.sin(dl/2)**2;return R*2*Math.atan2(Math.sqrt(z),Math.sqrt(1-z))}
-function coords(e){if(e.lat!=null)return[e.lat,e.lon];if(e.center)return[e.center.lat,e.center.lon];return[null,null]}
-function priceOf(r){return savedPrices[r.name.toLowerCase()]||builtInPrices[r.name.toLowerCase()]||r.manualPrice||null}
-function priceText(v){return v===1?'₱':v===2?'₱₱':v===3?'₱₱₱':'price ?'}
-function dayCode(d){return['Su','Mo','Tu','We','Th','Fr','Sa'][d.getDay()]}
-function hm(s){const[h,m]=s.split(':').map(Number);return h*60+m}
-function isOpenSimple(hours,date){
-if(!hours)return null;if(hours.trim()==='24/7')return true
-const code=dayCode(date),now=date.getHours()*60+date.getMinutes();let foundDay=false
-try{for(const raw of hours.split(';')){const part=raw.trim(),match=part.match(/^((?:Mo|Tu|We|Th|Fr|Sa|Su)(?:-(?:Mo|Tu|We|Th|Fr|Sa|Su))?(?:,(?:Mo|Tu|We|Th|Fr|Sa|Su))*)\s+(.+)$/);if(!match)continue
-const days=[];for(const token of match[1].split(',')){if(token.includes('-')){const codes=['Mo','Tu','We','Th','Fr','Sa','Su'],[a,b]=token.split('-'),ia=codes.indexOf(a),ib=codes.indexOf(b);if(ia<=ib)days.push(...codes.slice(ia,ib+1));else days.push(...codes.slice(ia),...codes.slice(0,ib+1))}else days.push(token)}
-if(!days.includes(code))continue;foundDay=true;if(match[2].trim()==='off')return false
-for(const slot of match[2].split(',')){const m=slot.trim().match(/^(\d\d?:\d\d)-(\d\d?:\d\d)$/);if(!m)continue;let a=hm(m[1]),b=hm(m[2]);if(b<=a)b+=1440;if(now>=a&&now<b)return true}}
-return foundDay?false:null}catch(e){return null}}
-function currentPool(){const c=$('cuisine').value.toLowerCase(),b=$('budget').value,now=new Date();return restaurants.filter(r=>{if(c){const tags=String(r.cuisine||'').toLowerCase().split(';').map(x=>x.trim());if(!tags.includes(c))return false}const p=priceOf(r);if(b&&p&&String(p)!==b)return false;if(b&&!p)return false;if($('openOnly').checked){const o=isOpenSimple(r.opening_hours,now);if(o===false)return false;if(o===null&&!$('unknownHours').checked)return false}return true})}
-function refreshCuisine(){const old=$('cuisine').value,vals=[...new Set(restaurants.flatMap(r=>String(r.cuisine||'').split(';').map(x=>x.trim()).filter(Boolean)))].sort();$('cuisine').innerHTML='<option value="">Anything</option>'+vals.map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join('');if(vals.includes(old))$('cuisine').value=old}
-function makeWheelChoices(){const p=currentPool().filter(r=>!used.has(r.id)),source=p.length?p:currentPool();wheelChoices=[...source].sort(()=>Math.random()-.5).slice(0,Math.min(source.length,12));drawWheel();updateLists()}
-function polar(r,a){const x=(a-90)*Math.PI/180;return{x:r*Math.cos(x),y:r*Math.sin(x)}}
-function arcPath(s,e){const p1=polar(255,e),p2=polar(255,s),large=e-s<=180?0:1;return`M 0 0 L ${p1.x} ${p1.y} A 255 255 0 ${large} 0 ${p2.x} ${p2.y} Z`}
-function shortName(n){if(n.length<=18)return n;let out='';for(const w of n.split(' ')){if((out+' '+w).trim().length>18)break;out=(out+' '+w).trim()}return out||n.slice(0,17)+'…'}
-function drawWheel(){const svg=$('wheel');svg.innerHTML='';svg.style.transform=`rotate(${rotation}deg)`;svg.style.transition='none';if(!wheelChoices.length){svg.innerHTML='<circle cx="0" cy="0" r="252" fill="var(--surface)" stroke="var(--line)" stroke-width="2"></circle><text x="0" y="-92" text-anchor="middle" fill="var(--muted)" font-size="16">Find restaurants first</text>';$('wheelCount').textContent='0 on wheel';return}
-const n=wheelChoices.length,slice=360/n;wheelChoices.forEach((r,i)=>{const start=i*slice,end=(i+1)*slice,path=document.createElementNS('http://www.w3.org/2000/svg','path');path.setAttribute('d',arcPath(start,end));path.setAttribute('fill',i%2===0?'var(--surface)':'var(--soft)');path.setAttribute('stroke','var(--line)');path.setAttribute('stroke-width','1');svg.appendChild(path);const mid=start+slice/2,p=polar(178,mid),text=document.createElementNS('http://www.w3.org/2000/svg','text');text.setAttribute('x',p.x);text.setAttribute('y',p.y);text.setAttribute('fill','var(--text)');text.setAttribute('font-size',n>10?'11':'12');text.setAttribute('font-weight','600');text.setAttribute('text-anchor','middle');text.setAttribute('dominant-baseline','middle');const flip=mid>90&&mid<270;text.setAttribute('transform',`rotate(${flip?mid+180:mid} ${p.x} ${p.y})`);text.textContent=shortName(r.name);svg.appendChild(text)});const ring=document.createElementNS('http://www.w3.org/2000/svg','circle');ring.setAttribute('cx','0');ring.setAttribute('cy','0');ring.setAttribute('r','255');ring.setAttribute('fill','none');ring.setAttribute('stroke','var(--text)');ring.setAttribute('stroke-width','2');svg.appendChild(ring);$('wheelCount').textContent=`${wheelChoices.length} on wheel`}
-function updateLists(){const p=currentPool();$('poolCount').textContent=`${restaurants.length} found`;$('eligibleCount').textContent=`${p.length} eligible`;$('poolList').innerHTML=p.map(r=>`<div class="row"><div class="row-name">${esc(r.name)}</div><div class="row-meta">${esc(r.cuisine||'cuisine ?')} · ${priceText(priceOf(r))}${r.distance!=null?' · '+r.distance.toFixed(1)+' km':''}${r.opening_hours?' · '+esc(r.opening_hours):''}</div></div>`).join('')||'<div class="row"><div class="row-meta">No matches.</div></div>';searchPool()}
-function searchPool(){const q=$('search').value.trim().toLowerCase();if(!q){$('searchResults').innerHTML='';return}const hits=restaurants.filter(r=>r.name.toLowerCase().includes(q)).slice(0,10);$('searchResults').innerHTML=hits.map(r=>`<div class="row"><div class="row-name">${esc(r.name)}</div><div class="row-meta">${esc(r.cuisine||'cuisine ?')} · ${priceText(priceOf(r))}${r.distance!=null?' · '+r.distance.toFixed(1)+' km':''}</div></div>`).join('')||'<div class="row"><div class="row-meta">Not in the current pool. Add it below.</div></div>'}
-async function overpass(radius,lat,lon){const q=`[out:json][timeout:40];(nwr(around:${radius},${lat},${lon})["amenity"~"restaurant|fast_food|cafe|food_court"];);out center tags;`;let last;for(const ep of endpoints){try{const res=await fetch(ep,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},body:'data='+encodeURIComponent(q)});if(!res.ok)throw new Error('HTTP '+res.status);return await res.json()}catch(e){last=e}}throw last||new Error('Search unavailable')}
-function mergeManual(list){const existing=new Set(list.map(r=>r.name.toLowerCase()));for(const m of manualRestaurants){if(existing.has(m.name.toLowerCase()))continue;list.push({id:'manual:'+m.name.toLowerCase(),name:m.name,cuisine:'',opening_hours:'',address:'Added manually',distance:0,manual:true})}return list}
-async function scan(deep=false){const radius=deep?Math.max(Number($('radius').value),12000):Number($('radius').value);$('scanStatus').textContent=deep?'Scanning Bacolod…':'Looking nearby…';$('scan').disabled=true;$('deep').disabled=true
-try{const data=await overpass(radius,center.lat,center.lon),seen=new Set();let list=data.elements.map(e=>{const[lat,lon]=coords(e),t=e.tags||{};if(lat==null||!t.name)return null;const key=t.name.toLowerCase()+'|'+lat.toFixed(4)+'|'+lon.toFixed(4);if(seen.has(key))return null;seen.add(key);const address=t['addr:full']||[t['addr:housenumber'],t['addr:street'],t['addr:suburb'],t['addr:city']].filter(Boolean).join(' ');return{id:e.type+'/'+e.id,name:t.name,lat,lon,cuisine:t.cuisine||'',opening_hours:t.opening_hours||t['opening_hours:kitchen']||'',address:address||'Bacolod City',distance:hav(center.lat,center.lon,lat,lon)}}).filter(Boolean).sort((a,b)=>a.distance-b.distance);restaurants=mergeManual(list);used.clear();refreshCuisine();makeWheelChoices();$('scanStatus').textContent=`Found ${restaurants.length} places${deep?' across Bacolod':''}.`;if(restaurants.some(r=>r.name.toLowerCase().includes('odaegam')))$('scanStatus').textContent+=' Odaegam is in the pool.'}catch(e){restaurants=mergeManual([]);refreshCuisine();makeWheelChoices();$('scanStatus').textContent='The free restaurant server is busy. Try again in a moment.'}finally{$('scan').disabled=false;$('deep').disabled=false}}
-function showWinner(r){winner=r;$('winnerName').textContent=r.name;$('winnerMeta').textContent=[r.cuisine||'Cuisine not tagged',priceText(priceOf(r)),r.distance!=null?r.distance.toFixed(1)+' km':null,r.opening_hours||'hours not tagged'].filter(Boolean).join(' · ');$('winnerAddress').textContent=r.address||'Bacolod City';$('result').classList.add('show')}
-function spinWheel(){if(spinning||!wheelChoices.length)return;spinning=true;$('result').classList.remove('show');const index=Math.floor(Math.random()*wheelChoices.length),slice=360/wheelChoices.length,target=index*slice+slice/2,extra=360*(5+Math.floor(Math.random()*3)),normalized=((rotation%360)+360)%360,delta=(360-target-normalized+360)%360;rotation+=extra+delta;$('wheel').style.transition='transform 4.2s cubic-bezier(.14,.74,.12,1)';$('wheel').style.transform=`rotate(${rotation}deg)`;setTimeout(()=>{const pick=wheelChoices[index];used.add(pick.id);showWinner(pick);spinning=false},4250)}
-function googleMaps(name){window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(name+', Bacolod City')}`,'_blank')}
-$('locate').addEventListener('click',()=>{$('locationText').textContent='Finding you…';navigator.geolocation.getCurrentPosition(p=>{center={lat:p.coords.latitude,lon:p.coords.longitude};$('locationText').textContent='Using your current location';scan(false)},()=>{center={...BACOLOD};$('locationText').textContent='Bacolod City center';$('scanStatus').textContent='GPS unavailable. Using Bacolod City center.'},{enableHighAccuracy:true,timeout:12000})})
-$('scan').addEventListener('click',()=>scan(false));$('deep').addEventListener('click',()=>scan(true));$('spin').addEventListener('click',spinWheel);$('shuffle').addEventListener('click',makeWheelChoices);$('reroll').addEventListener('click',()=>{$('result').classList.remove('show');makeWheelChoices();setTimeout(spinWheel,150)});$('googleWinner').addEventListener('click',()=>winner&&googleMaps(winner.name));$('search').addEventListener('input',searchPool)
-$('manualAdd').addEventListener('click',()=>{const name=$('manualName').value.trim();if(!name)return;if(!manualRestaurants.some(x=>x.name.toLowerCase()===name.toLowerCase())){manualRestaurants.push({name});localStorage.setItem('dibsManual',JSON.stringify(manualRestaurants))}$('manualName').value='';restaurants=mergeManual(restaurants);refreshCuisine();makeWheelChoices();$('scanStatus').textContent=`Added ${name}.`})
-$('manualName').addEventListener('keydown',e=>{if(e.key==='Enter')$('manualAdd').click()});$('resetAll').addEventListener('click',()=>{used.clear();rotation=0;$('result').classList.remove('show');makeWheelChoices()})
-;['cuisine','budget','openOnly','unknownHours'].forEach(id=>$(id).addEventListener('change',makeWheelChoices))
-restaurants=mergeManual([]);refreshCuisine();drawWheel();updateLists()
-if('serviceWorker' in navigator)navigator.serviceWorker.register('./service-worker.js').catch(()=>{})
+const BASE_DB=[{"name":"ODAEGAM Ramen Station","area":"Lacson","cuisine":"Korean · Ramen","price":2,"address":"27 BS Aquino Dr","rating":4.3,"reviews":75,"hours":"11:00-21:00"},{"name":"Daebak Korean Restaurant","area":"Mandalagan","cuisine":"Korean","price":2,"address":"Mandalagan","rating":4.7,"reviews":78,"hours":"11:00-22:00"},{"name":"Furai Contemporary Japanese","area":"Lacson","cuisine":"Japanese","price":1,"address":"The Row, Lacson St","rating":4.8,"reviews":143,"hours":"11:00-14:00|16:30-21:00"},{"name":"Gerry's SM Bacolod","area":"Downtown","cuisine":"Filipino · Grill","price":3,"address":"SM City Bacolod","rating":4.9,"reviews":2312,"hours":"10:00-22:00"},{"name":"Studio Cafe","area":"Downtown","cuisine":"Cafe · Casual","price":1,"address":"Bacolod City","rating":4.6,"reviews":385,"hours":"06:30-22:00"},{"name":"Golden Fortune Seafood Restaurant","area":"South","cuisine":"Chinese · Seafood","price":3,"address":"Magsaysay Ave","rating":4.3,"reviews":455,"hours":"09:30-14:00|16:30-21:00"},{"name":"Pzza PH","area":"Upper East","cuisine":"Pizza","price":2,"address":"Burgos Ext., Villamonte","rating":4.5,"reviews":130,"hours":"12:00-21:30"},{"name":"Modern Shang","area":"Downtown","cuisine":"Chinese","price":2,"address":"Ayala Malls Capitol Central","rating":4.7,"reviews":219,"hours":null},{"name":"KitcheNamit Buffet Restaurant","area":"Downtown","cuisine":"Buffet · Filipino","price":1,"address":"San Sebastian St","rating":4.1,"reviews":8,"hours":"10:30-22:30"},{"name":"Fuego Bar & Lounge","area":"Lacson","cuisine":"Bar · International","price":3,"address":"Lacson St","rating":4.8,"reviews":52,"hours":"16:00-22:00"},{"name":"Vikings Luxury Buffet","area":"Downtown","cuisine":"Buffet · International","price":3,"address":"SM City Bacolod","rating":4.9,"reviews":16034,"hours":"11:00-14:30|17:30-22:00"},{"name":"Hanok Authentic Korean Restaurant","area":"Singcang","cuisine":"Korean","price":2,"address":"Goldenfield Commercial Complex","rating":4.5,"reviews":361,"hours":"11:00-20:30"},{"name":"Ikkoryu Ramen","area":"Downtown","cuisine":"Japanese · Ramen","price":1,"address":"Bacolod City","rating":4.7,"reviews":387,"hours":"10:00-22:00"},{"name":"IMAY'S","area":"Lacson","cuisine":"Filipino","price":2,"address":"6th Lacson St","rating":4.3,"reviews":591,"hours":"10:30-21:00"},{"name":"Coffee Culture ROASTERY","area":"South","cuisine":"Cafe · Coffee","price":1,"address":"Alijis Rd","rating":4.7,"reviews":381,"hours":"09:00-18:00"},{"name":"Rojo's Beach Resort and Floating Restaurant","area":"South","cuisine":"Seafood · Filipino","price":1,"address":"Bacolod City","rating":4.2,"reviews":433,"hours":"08:00-21:30"},{"name":"Johnny's Pizza","area":"Upper East","cuisine":"Pizza · American","price":1,"address":"C.L. Montelibano Ave","rating":4.5,"reviews":125,"hours":"11:00-21:00"},{"name":"Chino's WOK 6100","area":"Tangub","cuisine":"Thai","price":1,"address":"Gardenville Subdivision, Tangub","rating":4.9,"reviews":110,"hours":"12:00-21:00"},{"name":"Yukimix Buffet International","area":"Downtown","cuisine":"Buffet · International","price":1,"address":"Lopez Jaena St","rating":4.6,"reviews":311,"hours":"06:00-22:00"},{"name":"Kristin's Akasya Grill & Steakhouse","area":"Lacson","cuisine":"Steak · Grill","price":2,"address":"17th St","rating":4.3,"reviews":168,"hours":"11:00-22:00"},{"name":"Inasal & co!","area":"Downtown","cuisine":"Filipino · Inasal","price":1,"address":"Bacolod City","rating":4.5,"reviews":237,"hours":"14:00-22:00"},{"name":"Calea Pastries & Coffee","area":"Lacson","cuisine":"Cafe · Dessert","price":1,"address":"15th St","rating":4.6,"reviews":1923,"hours":"09:00-22:00"},{"name":"GUNNY'S ALL AMERICAN BURGERHOUSE","area":"Upper East","cuisine":"Burger · American","price":1,"address":"Villamonte","rating":4.6,"reviews":337,"hours":"10:00-22:00"},{"name":"Rau-Ram Restaurant","area":"Bata","cuisine":"Vietnamese","price":1,"address":"Brgy. Bata","rating":4.5,"reviews":704,"hours":"11:00-21:00"},{"name":"Italianni's SM City Bacolod","area":"Downtown","cuisine":"Italian","price":3,"address":"SM City Bacolod","rating":4.9,"reviews":983,"hours":"10:00-22:00"},{"name":"Mimi's Cafe & Restaurant","area":"Lacson","cuisine":"Cafe · Casual","price":1,"address":"25th St. corner Lacson","rating":4.4,"reviews":233,"hours":"07:30-20:00"},{"name":"The Samgyup 31","area":"Downtown","cuisine":"Korean · BBQ","price":2,"address":"Bacolod City","rating":4.5,"reviews":201,"hours":"10:00-22:00"},{"name":"Sugaree Gelato, Bakery, Pizza and Cafe","area":"Upper East","cuisine":"Cafe · Dessert · Pizza","price":2,"address":"Bacolod City","rating":4.7,"reviews":143,"hours":"09:00-22:00"},{"name":"Sprout Burger - Villamonte","area":"Upper East","cuisine":"Burger · American","price":1,"address":"BS Aquino Dr., Villamonte","rating":4.7,"reviews":33,"hours":"10:00-21:00"},{"name":"Bánh Mì Kitchen - Shell Lacson","area":"Mandalagan","cuisine":"Vietnamese · Sandwich","price":1,"address":"Shell Lacson, Mandalagan","rating":4.6,"reviews":27,"hours":"07:00-19:00"},{"name":"BAAN THAI HOMM","area":"Mandalagan","cuisine":"Thai","price":1,"address":"GM Cordova Ave","rating":4.7,"reviews":44,"hours":"11:00-15:00|17:00-20:30"},{"name":"Italia Restaurant","area":"Mandalagan","cuisine":"Italian","price":2,"address":"Paseo Verde","rating":4.4,"reviews":389,"hours":"11:00-22:00"},{"name":"Ishan's Coffee and Diner","area":"Lacson","cuisine":"Cafe · Diner","price":1,"address":"La Salle Ave","rating":4.5,"reviews":134,"hours":"06:30-20:30"},{"name":"Muhan Samgyeopsal Grill","area":"Upper East","cuisine":"Korean · BBQ","price":2,"address":"Villa Angela Marketplace","rating":3.2,"reviews":35,"hours":"10:00-22:00"},{"name":"Mang Inasal - New City Mall","area":"Downtown","cuisine":"Filipino · Inasal","price":1,"address":"Luzuriaga St","rating":4.3,"reviews":121,"hours":"09:00-21:00"},{"name":"GLACIERS Bar & Restaurant","area":"Upper East","cuisine":"Cafe · Casual","price":1,"address":"C.L. Montelibano Ave","rating":4.8,"reviews":37,"hours":"07:00-19:00"},{"name":"Veego","area":"Downtown","cuisine":"Vegan · Healthy","price":1,"address":"Hilado St","rating":4.9,"reviews":72,"hours":"11:00-20:00"},{"name":"Sian Tian Food Center","area":"Downtown","cuisine":"Chinese","price":1,"address":"Burgos Ave","rating":4.7,"reviews":29,"hours":"08:00-17:00"},{"name":"Ciano's Seafood Grill & Bar - NGC","area":"Upper East","cuisine":"Seafood · Grill","price":1,"address":"Villa Angela, Villamonte","rating":3.9,"reviews":100,"hours":"06:00-21:00"},{"name":"nolew's kitchen","area":"Upper East","cuisine":"Casual · Family","price":1,"address":"Margarita St","rating":4.7,"reviews":21,"hours":"17:00-21:00"},{"name":"Taverna Bacolod","area":"South","cuisine":"International · Casual","price":2,"address":"May's Organic Garden, Pahanocoy","rating":4.8,"reviews":94,"hours":null},{"name":"Good Coffee Bacolod","area":"Lacson","cuisine":"Cafe · Coffee","price":1,"address":"11th St., Lacson","rating":4.9,"reviews":20,"hours":"10:00-22:00"},{"name":"Tippy's Bistro","area":"Lacson","cuisine":"Bistro · Bar","price":1,"address":"Lacson St","rating":4.5,"reviews":424,"hours":"16:00-23:00"},{"name":"Natural Garden Cafe","area":"Upper East","cuisine":"Cafe · Healthy","price":1,"address":"Kametal Rd","rating":4.7,"reviews":55,"hours":"09:00-17:00"},{"name":"Scarborough Seafoods","area":"South","cuisine":"Seafood","price":2,"address":"Bacolod City","rating":4.4,"reviews":159,"hours":"11:00-14:00|17:00-21:00"},{"name":"Delicioso","area":"Mandalagan","cuisine":"European · International","price":2,"address":"Lacson St","rating":4.4,"reviews":661,"hours":"07:30-22:00"},{"name":"Juliana's Cafe & Resto","area":"Lacson","cuisine":"Cafe · Filipino","price":3,"address":"7th St","rating":4.4,"reviews":70,"hours":"11:00-21:00"},{"name":"Bob's Restaurant Main Northdrive","area":"Lacson","cuisine":"Filipino · International","price":2,"address":"BS Aquino Dr","rating":4.4,"reviews":1257,"hours":"07:30-21:30"},{"name":"21 Restaurant","area":"Lacson","cuisine":"Filipino · International","price":1,"address":"21 Lacson St","rating":4.4,"reviews":451,"hours":"10:00-22:00"},{"name":"Aboy's Restaurant","area":"Singcang","cuisine":"Filipino · Seafood","price":2,"address":"Liroville Subd., Singcang","rating":4.4,"reviews":778,"hours":"10:00-22:00"},{"name":"Chicken House - Main Branch","area":"Lacson","cuisine":"Filipino · Inasal","price":1,"address":"24th Lacson St","rating":4.4,"reviews":513,"hours":"11:00-22:00"},{"name":"Aida's Chicken - Manokan Country","area":"Downtown","cuisine":"Filipino · Inasal","price":1,"address":"Manokan Country","rating":4.2,"reviews":276,"hours":"09:00-23:30"},{"name":"Masskara Chicken","area":"Lacson","cuisine":"Filipino · Inasal","price":1,"address":"BS Aquino Dr","rating":4.1,"reviews":628,"hours":"10:00-21:00"},{"name":"Palawud","area":"Bata","cuisine":"Filipino · Seafood · Grill","price":3,"address":"San Patricio, Banago","rating":4.3,"reviews":1032,"hours":"11:00-00:00"},{"name":"Cafe Uma","area":"Mandalagan","cuisine":"Asian Fusion","price":2,"address":"Paseo Verde","rating":4.5,"reviews":100,"hours":"11:00-21:00"},{"name":"Quedan","area":"Mandalagan","cuisine":"Spanish · Filipino","price":2,"address":"Paseo Verde","rating":4.4,"reviews":202,"hours":"16:00-00:00"},{"name":"Kinoboy Restaurant and Bar","area":"Lacson","cuisine":"Filipino · Bar","price":1,"address":"26 Lacson St","rating":4.4,"reviews":77,"hours":"00:00-24:00"},{"name":"Chicken House - Shopping Branch","area":"Downtown","cuisine":"Filipino · Inasal","price":1,"address":"Hilado St","rating":4.4,"reviews":434,"hours":"11:00-22:00"},{"name":"Aida's Chicken Inasal - Art District","area":"Mandalagan","cuisine":"Filipino · Inasal","price":1,"address":"Art District, Mandalagan","rating":4.1,"reviews":50,"hours":"10:00-21:30"},{"name":"Masskara Chicken Inasal Buri Rd","area":"Mandalagan","cuisine":"Filipino · Inasal","price":1,"address":"Buri Road","rating":3.8,"reviews":52,"hours":null},{"name":"Chicken House - Alunan Branch","area":"South","cuisine":"Filipino · Inasal","price":1,"address":"Araneta Ave","rating":4.3,"reviews":328,"hours":"11:00-22:00"},{"name":"Aida's Chicken San Juan Branch","area":"Downtown","cuisine":"Filipino · Inasal","price":1,"address":"San Juan St","rating":4.3,"reviews":125,"hours":"09:00-23:00"},{"name":"Masskara Chicken Inasal East NGC","area":"Upper East","cuisine":"Filipino · Inasal","price":1,"address":"Circumferential Rd., Villamonte","rating":4.1,"reviews":113,"hours":"11:00-22:00"},{"name":"Chicken House - Homesite Branch","area":"Upper East","cuisine":"Filipino · Inasal","price":1,"address":"Homesite, Circumferential Rd","rating":4.3,"reviews":19,"hours":"11:00-22:00"},{"name":"Masskara Chicken Inasal - La Salle Ave","area":"Lacson","cuisine":"Filipino · Inasal","price":1,"address":"La Salle Ave","rating":5.0,"reviews":2,"hours":null},{"name":"Chicken House - San Juan Branch","area":"Downtown","cuisine":"Filipino · Inasal","price":1,"address":"San Juan / San Sebastian","rating":4.3,"reviews":74,"hours":"11:00-22:00"},{"name":"Jin Long Hotpot","area":"Downtown","cuisine":"Chinese · Hotpot","price":2,"address":"Anahaw Arcade","rating":4.3,"reviews":42,"hours":"11:00-22:00"},{"name":"Coffee Culture On Lacson","area":"Lacson","cuisine":"Cafe · Coffee","price":1,"address":"20th St. corner Lacson","rating":4.7,"reviews":49,"hours":"09:00-21:00"},{"name":"74 Cafe - Bacolod","area":"Upper East","cuisine":"Cafe · Casual","price":1,"address":"One Regis Tower, Upper East","rating":4.4,"reviews":67,"hours":"08:00-22:00"},{"name":"Buttery Bacolod","area":"Mandalagan","cuisine":"Cafe · Dessert","price":2,"address":"Lacson / C.L. Montelibano","rating":4.6,"reviews":74,"hours":"09:00-22:00"},{"name":"Ribshack - SM City Bacolod","area":"Downtown","cuisine":"Ribs · Grill","price":1,"address":"SM City Bacolod","rating":4.2,"reviews":327,"hours":"10:00-21:00"},{"name":"Uncle Rick's Pizza","area":"Upper East","cuisine":"Pizza","price":1,"address":"Victorina Drive","rating":4.8,"reviews":37,"hours":"11:30-20:00"},{"name":"Subarashii","area":"Mandalagan","cuisine":"Japanese","price":1,"address":"GM Cordova Ave","rating":4.7,"reviews":71,"hours":"11:00-20:00"},{"name":"NEW NATURE'S HOTPOT RESTAURANT","area":"Lacson","cuisine":"Chinese · Hotpot","price":1,"address":"BS Aquino Dr","rating":4.3,"reviews":66,"hours":"08:00-20:00"},{"name":"Angel's Pizza Bacolod","area":"Mandalagan","cuisine":"Pizza","price":1,"address":"Lacson St","rating":4.0,"reviews":157,"hours":"09:00-21:00"},{"name":"SEOUL BLACK SM CITY BACOLOD","area":"Downtown","cuisine":"Korean · BBQ","price":2,"address":"SM City Bacolod","rating":4.3,"reviews":36,"hours":"10:00-22:00"}];
+const ZONES={
+  "Downtown":{lat:10.6712,lon:122.9505},
+  "Lacson":{lat:10.6835,lon:122.9560},
+  "Mandalagan":{lat:10.7000,lon:122.9610},
+  "Upper East":{lat:10.6745,lon:122.9750},
+  "Singcang":{lat:10.6505,lon:122.9475},
+  "Bata":{lat:10.7160,lon:122.9650},
+  "South":{lat:10.6350,lon:122.9560},
+  "Tangub":{lat:10.6230,lon:122.9690}
+};
+const NEAR={
+  "Downtown":["Lacson","Upper East","Singcang"],
+  "Lacson":["Downtown","Mandalagan","Upper East"],
+  "Mandalagan":["Lacson","Bata","Upper East"],
+  "Upper East":["Downtown","Lacson","Mandalagan","South"],
+  "Singcang":["Downtown","South"],
+  "Bata":["Mandalagan"],
+  "South":["Singcang","Upper East","Tangub"],
+  "Tangub":["South"]
+};
+
+const $=id=>document.getElementById(id);
+const chambers=[...document.querySelectorAll('.chamber')];
+const cylinder=$('cylinder');
+const cards=$('cards');
+const hammer=$('hammer');
+const trigger=$('trigger');
+const spark=$('spark');
+const speech=$('speech');
+
+let loaded=[];
+let winner=null;
+let sound=true;
+let rotation=0;
+let busy=false;
+
+let favorites=new Set(JSON.parse(localStorage.getItem('dibs_favorites')||'[]'));
+let skipped=new Set(JSON.parse(localStorage.getItem('dibs_skipped')||'[]'));
+let custom=JSON.parse(localStorage.getItem('dibs_custom')||'[]');
+
+const allRestaurants=()=>[
+  ...BASE_DB,
+  ...custom.map(x=>({
+    name:x.name,
+    area:x.area||'Downtown',
+    cuisine:x.cuisine||'Custom',
+    price:x.price||null,
+    address:x.address||'Bacolod City',
+    rating:null,
+    reviews:0,
+    hours:null,
+    custom:true
+  }))
+];
+
+function safeText(v){return String(v??'')}
+function priceText(p){return p===1?'₱':p===2?'₱₱':p===3?'₱₱₱':'₱?'}
+function mins(s){
+  const [h,m]=String(s).split(':').map(Number);
+  return h*60+m;
+}
+function isOpenNow(r){
+  if(!r.hours)return null;
+  const nowD=new Date();
+  const now=nowD.getHours()*60+nowD.getMinutes();
+  const slots=String(r.hours).split('|');
+  for(const slot of slots){
+    const parts=slot.split('-');
+    if(parts.length!==2)continue;
+    let a=mins(parts[0]);
+    let b=mins(parts[1]);
+    if(Number.isNaN(a)||Number.isNaN(b))continue;
+    if(b<=a)b+=1440;
+    let t=now;
+    if(b>1440 && now<360)t+=1440;
+    if(t>=a && t<b)return true;
+  }
+  return false;
+}
+function openText(r){
+  const o=isOpenNow(r);
+  if(o===true)return 'Open now';
+  if(o===false)return 'Closed now';
+  return 'Hours unknown';
+}
+function filterPool(){
+  const area=$('area').value;
+  const proximity=$('proximity').value;
+  const cuisine=$('cuisine').value;
+  const price=$('price').value;
+
+  let allowedAreas=null;
+  if(area && proximity!=='all'){
+    allowedAreas=proximity==='same' ? [area] : [area,...(NEAR[area]||[])];
+  }
+
+  return allRestaurants().filter(r=>{
+    if(skipped.has(r.name))return false;
+    if(allowedAreas && !allowedAreas.includes(r.area))return false;
+    if(cuisine){
+      const tags=String(r.cuisine||'').split(' · ');
+      if(!tags.includes(cuisine))return false;
+    }
+    if(price && String(r.price||'')!==price)return false;
+
+    if($('openOnly').checked){
+      const state=isOpenNow(r);
+      if(state===false)return false;
+      if(state===null && !$('allowUnknown').checked)return false;
+    }
+    return true;
+  });
+}
+function shuffle(arr){
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+function updateCuisineOptions(){
+  const prev=$('cuisine').value;
+  const vals=[...new Set(allRestaurants().flatMap(r=>String(r.cuisine||'').split(' · ')).filter(Boolean))].sort();
+  $('cuisine').innerHTML='<option value="">Anything</option>';
+  for(const v of vals){
+    const o=document.createElement('option');
+    o.value=v;o.textContent=v;
+    $('cuisine').appendChild(o);
+  }
+  if(vals.includes(prev))$('cuisine').value=prev;
+}
+function updateCounts(){
+  $('eligibleLabel').textContent=`${filterPool().length} eligible`;
+  $('dbCount').textContent=allRestaurants().length;
+}
+function shortName(name){
+  if(name.length<=22)return name;
+  const words=name.split(' ');
+  let out='';
+  for(const w of words){
+    if((out+' '+w).trim().length>22)break;
+    out=(out+' '+w).trim();
+  }
+  return out||name.slice(0,21)+'…';
+}
+function renderLoaded(){
+  chambers.forEach((c,i)=>{
+    c.classList.remove('win');
+    c.querySelector('.restaurant').textContent=loaded[i] ? shortName(loaded[i].name) : 'EMPTY';
+  });
+
+  cards.innerHTML='';
+  loaded.forEach((r,i)=>{
+    const card=document.createElement('button');
+    card.type='button';
+    card.className='card';
+    const review = r.rating ? `★ ${r.rating}` : 'No rating';
+    card.innerHTML=`<b>${i+1}</b><strong>${safeText(r.name)}</strong><span>${safeText(r.cuisine||'Cuisine ?')} · ${priceText(r.price)} · ${review}</span>`;
+    card.addEventListener('click',()=>replaceOne(i));
+    cards.appendChild(card);
+  });
+}
+function replaceOne(index){
+  if(busy)return;
+  const pool=shuffle(filterPool()).filter(r=>!loaded.some((x,i)=>i!==index && x.name===r.name));
+  const replacement=pool.find(r=>r.name!==loaded[index]?.name);
+  if(!replacement){
+    $('status').textContent='No different match available with these filters.';
+    return;
+  }
+  loaded[index]=replacement;
+  winner=null;
+  $('winner').classList.remove('show');
+  renderLoaded();
+  tone(430,.05);
+  speech.textContent='Changed your mind? Fine. I swapped that one. 😒🍣';
+}
+function loadSix(){
+  const pool=filterPool();
+  loaded=shuffle(pool).slice(0,6);
+  winner=null;
+  $('winner').classList.remove('show');
+  updateCounts();
+  renderLoaded();
+
+  if(loaded.length<2){
+    $('status').textContent='Not enough matches. Loosen a filter.';
+    speech.textContent='You filtered me into a corner. Give me more options. 🥲';
+    return;
+  }
+
+  $('status').textContent=`${loaded.length} restaurants loaded. Sushi has no regrets.`;
+  speech.textContent=[
+    'I picked six. You just have to be brave. 🍣',
+    'These six passed my very serious sushi inspection. 🫡',
+    'If Odaegam appears, that is between you and fate. 🍜',
+    'No spreadsheets. No overthinking. Just pew. 💚',
+    'Your dinner committee has exactly one member: me. 😌'
+  ][Math.floor(Math.random()*5)];
+
+  tone(470,.05);
+  setTimeout(()=>tone(610,.05),65);
+  setTimeout(()=>tone(760,.06),130);
+}
+function tone(freq,duration=.05,type='triangle',gain=.035){
+  if(!sound)return;
+  try{
+    const A=window.AudioContext||window.webkitAudioContext;
+    const ctx=new A();
+    const o=ctx.createOscillator();
+    const g=ctx.createGain();
+    o.type=type;
+    o.frequency.value=freq;
+    g.gain.setValueAtTime(gain,ctx.currentTime);
+    g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+duration);
+    o.connect(g);g.connect(ctx.destination);
+    o.start();o.stop(ctx.currentTime+duration);
+  }catch(e){}
+}
+function pew(){
+  if(!sound)return;
+  try{
+    const A=window.AudioContext||window.webkitAudioContext;
+    const ctx=new A();
+    const o=ctx.createOscillator();
+    const g=ctx.createGain();
+    o.type='square';
+    o.frequency.setValueAtTime(430,ctx.currentTime);
+    o.frequency.exponentialRampToValueAtTime(120,ctx.currentTime+.17);
+    g.gain.setValueAtTime(.065,ctx.currentTime);
+    g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.18);
+    o.connect(g);g.connect(ctx.destination);
+    o.start();o.stop(ctx.currentTime+.19);
+  }catch(e){}
+}
+function animateGun(){
+  hammer.classList.add('cocked');
+  setTimeout(()=>trigger.classList.add('pulled'),120);
+  setTimeout(()=>{
+    hammer.classList.remove('cocked');
+    spark.classList.add('show');
+    pew();
+  },350);
+  setTimeout(()=>trigger.classList.remove('pulled'),430);
+  setTimeout(()=>spark.classList.remove('show'),560);
+}
+function shoot(){
+  if(busy||loaded.length<2)return;
+  busy=true;
+  chambers.forEach(x=>x.classList.remove('win'));
+  [...cards.children].forEach(x=>x.classList.remove('hit'));
+  $('winner').classList.remove('show');
+
+  const index=Math.floor(Math.random()*loaded.length);
+  const target=index*60;
+  rotation += 360*(4+Math.floor(Math.random()*3)) - target;
+
+  speech.textContent='PEW INCOMING. I take no responsibility. 😳';
+  $('status').textContent='click · click · click · click…';
+
+  animateGun();
+  cylinder.style.transform=`rotate(${rotation}deg)`;
+
+  let tick=0;
+  const clicker=setInterval(()=>{
+    tone(285+tick*13,.035,'square',.018);
+    tick++;
+    if(tick>12)clearInterval(clicker);
+  },130);
+
+  setTimeout(()=>{
+    winner=loaded[index];
+    chambers[index].classList.add('win');
+    if(cards.children[index])cards.children[index].classList.add('hit');
+
+    const rating=winner.rating ? `★ ${winner.rating} · ${Number(winner.reviews||0).toLocaleString()} reviews snapshot` : 'No rating snapshot';
+    $('winner-name').textContent=winner.name;
+    $('winner-meta').innerHTML=
+      `${safeText(winner.cuisine||'Cuisine unknown')} · ${priceText(winner.price)} · ${safeText(winner.area||'Bacolod')}<br>`+
+      `${rating}<br>${openText(winner)}${winner.hours?' · '+safeText(winner.hours):''}<br>${safeText(winner.address||'Bacolod City')}`;
+    $('winner').classList.add('show');
+    $('status').textContent=`Dibs on ${winner.name}. Dinner has been decided.`;
+    speech.textContent='Direct hit. Go eat before you change your mind. 😌🍣';
+
+    tone(720,.07);
+    setTimeout(()=>tone(920,.12),70);
+    busy=false;
+  },2500);
+}
+function openMaps(name){
+  const q=encodeURIComponent(`${name}, Bacolod City`);
+  window.open(`https://www.google.com/maps/search/?api=1&query=${q}`,'_blank');
+}
+function saveSets(){
+  localStorage.setItem('dibs_favorites',JSON.stringify([...favorites]));
+  localStorage.setItem('dibs_skipped',JSON.stringify([...skipped]));
+}
+function loveWinner(){
+  if(!winner)return;
+  favorites.add(winner.name);
+  skipped.delete(winner.name);
+  saveSets();
+  speech.textContent='Added to the favorites. Good taste. 💚';
+  $('status').textContent=`Saved ${winner.name} to your favorites.`;
+}
+function skipWinner(){
+  if(!winner)return;
+  skipped.add(winner.name);
+  favorites.delete(winner.name);
+  saveSets();
+  speech.textContent='Blocked from future chaos. I will remember. 🙅';
+  loadSix();
+}
+function renderSearch(){
+  const q=$('search').value.trim().toLowerCase();
+  const source=q
+    ? allRestaurants().filter(r=>(`${r.name} ${r.cuisine||''} ${r.area||''}`).toLowerCase().includes(q))
+    : [];
+
+  $('list').innerHTML='';
+  for(const r of source.slice(0,40)){
+    const row=document.createElement('div');
+    row.className='row';
+
+    const info=document.createElement('div');
+    const title=document.createElement('strong');
+    title.textContent=(favorites.has(r.name)?'❤️ ':'')+(skipped.has(r.name)?'🙅 ':'')+r.name;
+    const meta=document.createElement('span');
+    meta.textContent=`${r.cuisine||'Cuisine ?'} · ${priceText(r.price)} · ${r.area||'Bacolod'} · ${openText(r)}`;
+    info.appendChild(title);info.appendChild(meta);
+
+    const mapBtn=document.createElement('button');
+    mapBtn.type='button';mapBtn.className='row-map';mapBtn.textContent='MAPS';
+    mapBtn.addEventListener('click',()=>openMaps(r.name));
+
+    row.appendChild(info);row.appendChild(mapBtn);
+    $('list').appendChild(row);
+  }
+}
+function addCustom(){
+  const name=$('customName').value.trim();
+  if(!name)return;
+  if(allRestaurants().some(r=>r.name.toLowerCase()===name.toLowerCase())){
+    $('status').textContent='That restaurant is already in the stash.';
+    return;
+  }
+  custom.push({
+    name,
+    area:$('area').value||'Downtown',
+    cuisine:'Custom',
+    price:null,
+    address:'Bacolod City'
+  });
+  localStorage.setItem('dibs_custom',JSON.stringify(custom));
+  $('customName').value='';
+  updateCuisineOptions();
+  updateCounts();
+  renderSearch();
+  loadSix();
+  speech.textContent='Added it. It can now get picked. 🍣';
+}
+function hav(a,b,c,d){
+  const R=6371,t=x=>x*Math.PI/180;
+  const dp=t(c-a),dl=t(d-b);
+  const q=Math.sin(dp/2)**2+Math.cos(t(a))*Math.cos(t(c))*Math.sin(dl/2)**2;
+  return R*2*Math.atan2(Math.sqrt(q),Math.sqrt(1-q));
+}
+function nearestZone(lat,lon){
+  return Object.entries(ZONES).sort((a,b)=>
+    hav(lat,lon,a[1].lat,a[1].lon)-hav(lat,lon,b[1].lat,b[1].lon)
+  )[0][0];
+}
+function useGPS(){
+  $('locationLabel').textContent='📍 Finding your Bacolod area…';
+  navigator.geolocation.getCurrentPosition(
+    pos=>{
+      const zone=nearestZone(pos.coords.latitude,pos.coords.longitude);
+      $('area').value=zone;
+      $('proximity').value='nearby';
+      $('locationLabel').textContent=`📍 ${zone} + nearby`;
+      loadSix();
+    },
+    ()=>{
+      $('locationLabel').textContent='📍 GPS unavailable. Pick an area.';
+      $('status').textContent='Could not access GPS. You can still choose an area manually.';
+    },
+    {enableHighAccuracy:true,timeout:10000}
+  );
+}
+
+$('sound').addEventListener('click',()=>{
+  sound=!sound;
+  $('sound').textContent=sound?'🔊 sound':'🔇 muted';
+  if(sound)tone(700,.07);
+});
+$('new-six').addEventListener('click',loadSix);
+$('shoot').addEventListener('click',shoot);
+$('again').addEventListener('click',()=>{
+  loadSix();
+  setTimeout(shoot,220);
+});
+$('maps').addEventListener('click',()=>winner&&openMaps(winner.name));
+$('love').addEventListener('click',loveWinner);
+$('skip').addEventListener('click',skipWinner);
+$('gpsBtn').addEventListener('click',useGPS);
+$('search').addEventListener('input',renderSearch);
+$('addCustom').addEventListener('click',addCustom);
+$('customName').addEventListener('keydown',e=>{
+  if(e.key==='Enter')addCustom();
+});
+
+['area','proximity','cuisine','price','openOnly','allowUnknown'].forEach(id=>{
+  $(id).addEventListener('change',()=>{
+    if(id==='area'){
+      $('locationLabel').textContent=$('area').value ? `📍 ${$('area').value}` : '📍 Anywhere in Bacolod';
+    }
+    loadSix();
+  });
+});
+
+updateCuisineOptions();
+updateCounts();
+loadSix();
+
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('./service-worker.js').catch(()=>{});
+}
 </script>
 </body>
 </html>

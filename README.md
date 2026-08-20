@@ -25,3 +25,16 @@ If an older version remains cached on iPhone:
 1. refresh the GitHub Pages URL in Safari
 2. remove the old Home Screen shortcut
 3. add Dibs4u to Home Screen again
+
+
+## v25 cleanup
+- fixed the center sushi alignment
+- removed the extra white/beige ghost circles on the roulette slots
+- forced the wheel surface to render clean green again
+
+## v26 polish
+- moved the six side plates farther outward so they no longer feel cut into the center
+- made empty side slots invisible to remove the white cut-out look
+
+## v27
+- replaced the center mascot with a truly centered transparent mascot asset

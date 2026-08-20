@@ -1,14 +1,14 @@
-# Dibs4u v17 - Sushi Plate Aesthetic
+# Dibs4u v18 - Perfect Center + Moving Sushi Fix
 
-## What changed
-- changed the wheel aesthetic to a cleaner plate-style sushi tray
-- restored a circular tray feel like the version you liked
-- each slot now looks like a ceramic plate on a sushi serving tray
-- kept the crisp dancing sushi winner, drum roll, confetti, and all filters/features
+## Fixes
+- centered the sushi mascot exactly in the middle of the tray
+- reinforced the winner sushi animation so it visibly dances again
+- kept the crisp PNG-based motion to avoid the pixel artifacts from the previous GIF
+- kept the sushi plate aesthetic, drum roll, confetti, and all filters/features
 
 ## Included
-- Filters / Near Me / 6 Choices
+- Near Me / Filters / 6 Choices
 - area, nearby, cuisine, budget, open now
-- 363+ Bacolod restaurants
 - favorites, recent, delete / restore
 - sounds, music, PEW, drum roll
+- full Bacolod restaurant database

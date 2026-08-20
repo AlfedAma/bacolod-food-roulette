@@ -595,6 +595,347 @@ button{touch-action:manipulation}
   }
 }
 
+
+/* v14 sushi tray */
+.home-shortcuts{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:7px;
+}
+.shortcut{
+  height:34px;
+  border:1px solid rgba(53,92,56,.48);
+  border-radius:999px;
+  background:rgba(255,253,245,.70);
+  color:var(--dark);
+  font-size:8px;
+  font-weight:850;
+  letter-spacing:.45px;
+}
+.location-card{
+  margin-top:13px;
+  background:rgba(255,253,245,.88);
+  border-radius:14px;
+  padding:12px;
+}
+.near-me-big{
+  width:100%;
+  height:45px;
+  border:0;
+  border-radius:999px;
+  background:var(--dark);
+  color:white;
+  font-size:10px;
+  font-weight:850;
+  letter-spacing:.55px;
+}
+.filter-location{
+  margin-top:9px;
+  text-align:center;
+}
+.wheel-shell{
+  width:330px;
+  height:330px;
+}
+.wheel-rotor{
+  border:10px solid #a46f3c;
+  background:
+    radial-gradient(circle at 50% 50%,#6f8b5a 0 65%,#758f5e 66% 100%);
+  box-shadow:
+    inset 0 0 0 5px #d5a76b,
+    inset 0 0 0 8px rgba(85,54,29,.34),
+    0 7px 0 rgba(62,78,49,.13);
+}
+.wheel-rotor:before{
+  content:"";
+  position:absolute;
+  inset:25px;
+  border-radius:50%;
+  background:
+    repeating-radial-gradient(circle at 50% 50%,rgba(255,255,255,.035) 0 1px,transparent 1px 9px),
+    #708c59;
+  border:2px solid rgba(255,253,235,.18);
+}
+.wheel-rotor:after{
+  inset:101px;
+  background:#58744b;
+  border:5px solid #35533a;
+  box-shadow:0 0 0 5px #d2a366, 0 0 0 7px rgba(85,54,29,.30);
+}
+.wheel-line{display:none}
+.food-slot{
+  width:78px;
+  height:78px;
+  margin:-39px;
+  transform:rotate(var(--a)) translateY(-111px) rotate(calc(var(--a) * -1));
+  border-radius:50%;
+  background:#fffaf0;
+  border:4px solid #d8c7a8;
+  box-shadow:0 4px 0 rgba(53,67,42,.12);
+  z-index:5;
+}
+.food-slot:after{
+  content:"";
+  position:absolute;
+  inset:6px;
+  border:1px solid #ece0ca;
+  border-radius:50%;
+  pointer-events:none;
+}
+.food-slot.win{
+  background:#f2d983;
+  border-color:#efc862;
+  box-shadow:0 0 0 6px rgba(244,218,131,.26),0 4px 0 rgba(53,67,42,.12);
+  transform:rotate(var(--a)) translateY(-111px) rotate(calc(var(--a) * -1)) scale(1.14);
+}
+.food-slot .food-svg{
+  position:relative;
+  z-index:2;
+  width:43px;
+  height:43px;
+}
+.wheel-center{
+  width:122px;
+  height:122px;
+  border:6px solid #35533a;
+  box-shadow:0 0 0 5px #d2a366;
+}
+.pointer{
+  top:-22px;
+  border-top-color:#263f2b;
+}
+@media(max-width:390px){
+  .wheel-shell{width:300px;height:300px}
+  .food-slot{
+    width:71px;height:71px;margin:-35.5px;
+    transform:rotate(var(--a)) translateY(-101px) rotate(calc(var(--a) * -1));
+  }
+  .food-slot.win{
+    transform:rotate(var(--a)) translateY(-101px) rotate(calc(var(--a) * -1)) scale(1.13);
+  }
+  .wheel-rotor:after{inset:91px}
+  .wheel-center{width:112px;height:112px}
+}
+
+/* real confetti layer */
+#confettiLayer{
+  position:fixed;
+  inset:0;
+  overflow:hidden;
+  pointer-events:none;
+  z-index:5;
+}
+.winner-inner{
+  z-index:10;
+}
+.confetti{
+  position:absolute;
+  top:-30px;
+  width:10px;
+  height:18px;
+  border-radius:2px;
+  opacity:1;
+  z-index:6;
+  box-shadow:0 1px 0 rgba(0,0,0,.06);
+}
+.winner-overlay{
+  z-index:3000;
+}
+.winner-art{
+  width:300px;
+  height:255px;
+  object-fit:contain;
+  mix-blend-mode:normal;
+  animation:none !important;
+}
+
+
+@keyframes fall{
+  0%{transform:translate3d(0,-30px,0) rotate(0deg)}
+  100%{transform:translate3d(var(--drift),115vh,0) rotate(900deg)}
+}
+
+
+/* v15 tray + gif fix */
+.home-wheel-zone{
+  height:420px;
+  margin-top:18px;
+}
+.tray-wrap{
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  width:340px;
+  height:340px;
+  border-radius:34px;
+  background:linear-gradient(180deg,#214c2f 0%, #1c4028 100%);
+  box-shadow:
+    inset 0 0 0 4px rgba(255,255,255,.08),
+    inset 0 -6px 16px rgba(0,0,0,.18),
+    0 8px 18px rgba(34,54,26,.14);
+  padding:18px;
+}
+.tray-wrap:before{
+  content:"";
+  position:absolute;
+  inset:14px;
+  border-radius:28px;
+  background:
+    radial-gradient(circle at 10% 18%, rgba(255,216,108,.92) 0 2px, transparent 3px),
+    radial-gradient(circle at 88% 20%, rgba(255,216,108,.92) 0 2px, transparent 3px),
+    radial-gradient(circle at 14% 78%, rgba(255,216,108,.92) 0 2px, transparent 3px),
+    radial-gradient(circle at 86% 80%, rgba(255,216,108,.92) 0 2px, transparent 3px),
+    linear-gradient(180deg,#1d5a34 0%, #173f28 100%);
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.04);
+}
+.tray-wrap:after{
+  content:"";
+  position:absolute;
+  inset:52px;
+  border-radius:50%;
+  border:3px solid rgba(255,255,255,.08);
+  pointer-events:none;
+}
+.wheel-shell{
+  position:relative;
+  width:100%;
+  height:100%;
+  left:auto;
+  top:auto;
+  transform:none;
+}
+.pointer{
+  top:-13px;
+  left:50%;
+  border-left:14px solid transparent;
+  border-right:14px solid transparent;
+  border-top:22px solid #f0c35d;
+  z-index:60;
+  filter:drop-shadow(0 2px 0 rgba(0,0,0,.16));
+}
+.wheel-rotor{
+  inset:18px;
+  border-radius:50%;
+  border:0;
+  background:radial-gradient(circle at 50% 50%, #44663f 0 26%, #3d5d38 26% 100%);
+  box-shadow:
+    inset 0 0 0 3px rgba(255,255,255,.08),
+    inset 0 -10px 18px rgba(0,0,0,.14);
+}
+.wheel-rotor:before{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:50%;
+  background:
+    conic-gradient(
+      from -30deg,
+      transparent 0 58deg,
+      rgba(15,40,22,.48) 58deg 62deg,
+      transparent 62deg 118deg,
+      rgba(15,40,22,.48) 118deg 122deg,
+      transparent 122deg 178deg,
+      rgba(15,40,22,.48) 178deg 182deg,
+      transparent 182deg 238deg,
+      rgba(15,40,22,.48) 238deg 242deg,
+      transparent 242deg 298deg,
+      rgba(15,40,22,.48) 298deg 302deg,
+      transparent 302deg 360deg
+    );
+}
+.wheel-rotor:after{
+  inset:118px;
+  border-radius:50%;
+  background:#506f46;
+  border:4px solid rgba(255,255,255,.12);
+  box-shadow:inset 0 0 0 3px rgba(20,50,30,.22);
+}
+.food-slot{
+  width:74px;
+  height:74px;
+  margin:-37px;
+  transform:rotate(var(--a)) translateY(-120px) rotate(calc(var(--a) * -1));
+  border-radius:22px;
+  background:linear-gradient(180deg,#6d8c55 0%, #5c7b48 100%);
+  border:0;
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.06), inset 0 -6px 10px rgba(0,0,0,.18);
+}
+.food-slot:before{
+  content:"";
+  position:absolute;
+  inset:8px;
+  border-radius:50%;
+  background:#23492d;
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.06);
+}
+.food-slot:after{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:56px;
+  height:56px;
+  transform:translate(-50%,-50%);
+  border-radius:50%;
+  background:#f5f0df;
+  box-shadow:inset 0 0 0 2px #e1d6bb;
+}
+.food-slot .food-svg{
+  position:relative;
+  z-index:4;
+  width:44px;
+  height:44px;
+}
+.food-slot.win{
+  background:linear-gradient(180deg,#8cab67 0%, #72985a 100%);
+  box-shadow:
+    0 0 0 6px rgba(249,214,103,.16),
+    inset 0 0 0 2px rgba(255,255,255,.08),
+    inset 0 -6px 10px rgba(0,0,0,.16);
+  transform:rotate(var(--a)) translateY(-120px) rotate(calc(var(--a) * -1)) scale(1.11);
+}
+.wheel-center{
+  width:100px;
+  height:100px;
+  border:0;
+  box-shadow:none;
+  background:#607d50;
+}
+.wheel-center img{
+  width:84%;
+  height:84%;
+  margin:8%;
+  object-fit:contain;
+  border-radius:50%;
+}
+.winner-art{
+  width:320px;
+  height:280px;
+  object-fit:contain;
+  image-rendering:auto;
+}
+@media(max-width:390px){
+  .home-wheel-zone{height:390px}
+  .tray-wrap{width:308px;height:308px;padding:16px}
+  .tray-wrap:after{inset:48px}
+  .wheel-rotor{inset:16px}
+  .wheel-rotor:after{inset:105px}
+  .food-slot{
+    width:66px;
+    height:66px;
+    margin:-33px;
+    transform:rotate(var(--a)) translateY(-109px) rotate(calc(var(--a) * -1));
+  }
+  .food-slot.win{
+    transform:rotate(var(--a)) translateY(-109px) rotate(calc(var(--a) * -1)) scale(1.11);
+  }
+  .food-slot:after{
+    width:50px;height:50px;
+  }
+  .wheel-center{width:92px;height:92px}
+}
+
 </style>
 </head>
 <body>
@@ -615,10 +956,11 @@ button{touch-action:manipulation}
       <div class="home">
         <div class="cloud one"></div><div class="cloud two"></div><div class="hills"></div>
         <div class="home-wheel-zone">
-          <div class="wheel-shell">
-            <div class="pointer"></div>
-            <div id="pew" class="pew"></div>
-            <div id="wheelRotor" class="wheel-rotor">
+          <div class="tray-wrap">
+            <div class="wheel-shell">
+              <div class="pointer"></div>
+              <div id="pew" class="pew"></div>
+              <div id="wheelRotor" class="wheel-rotor">
               <i class="wheel-line" style="transform:rotate(0deg)"></i>
               <i class="wheel-line" style="transform:rotate(60deg)"></i>
               <i class="wheel-line" style="transform:rotate(120deg)"></i>
@@ -632,12 +974,17 @@ button{touch-action:manipulation}
               <div class="food-slot" style="--a:240deg"></div>
               <div class="food-slot" style="--a:300deg"></div>
             </div>
-            <div class="wheel-center"><img src="sushi-icon-source.png" alt="Dibs4u sushi mascot"></div>
+              <div class="wheel-center"><img src="sushi-icon-source.png" alt="Dibs4u sushi mascot"></div>
+            </div>
           </div>
         </div>
         <div class="home-actions">
           <button id="pullHome" class="primary" type="button">PULL THE TRIGGER</button>
-          <button id="showChoices" class="choices-link" type="button">VIEW THE 6 CHOICES ›</button>
+          <div class="home-shortcuts">
+            <button id="homeFilters" class="shortcut" type="button">☷ FILTERS</button>
+            <button id="homeNearMe" class="shortcut" type="button">⌖ NEAR ME</button>
+            <button id="showChoices" class="shortcut" type="button">6 CHOICES</button>
+          </div>
         </div>
         <div id="status" class="home-status">Loading six restaurants…</div>
       </div>
@@ -659,16 +1006,44 @@ button{touch-action:manipulation}
         <button class="filter-row" data-mood="breakfast" type="button"><span class="filter-icon">🍳</span><span class="filter-copy"><b>Breakfast / Brunch</b><small>Morning favorites</small></span><span class="filter-check">✓</span></button>
       </div>
 
+      <div class="location-card">
+        <div class="more-title">LOCATION</div>
+        <button id="nearMeBig" class="near-me-big" type="button">⌖ USE MY CURRENT LOCATION</button><button id="gpsBtn" class="hidden" type="button"></button>
+        <div class="grid2" style="margin-top:9px">
+          <div class="field"><label>Area / Mall</label><select id="area"><option value="">Anywhere in Bacolod</option></select></div>
+          <div class="field"><label>Distance</label><select id="proximity"><option value="nearby">Area + nearby</option><option value="same">This area only</option><option value="all">All Bacolod</option></select></div>
+        </div>
+        <div id="locationLabel" class="location filter-location">📍 Anywhere in Bacolod</div>
+      </div>
+
       <div class="more">
-        <div class="more-title">MORE FILTERS</div>
+        <div class="more-title">CUISINE & OTHER FILTERS</div>
         <div class="grid2">
-          <div class="field"><label>Area</label><select id="area"><option value="">Anywhere</option></select></div>
-          <div class="field"><label>Distance</label><select id="proximity"><option value="nearby">My area + nearby</option><option value="same">My area only</option><option value="all">All Bacolod</option></select></div>
-          <div class="field"><label>Budget</label><select id="price"><option value="">Any</option><option value="1">₱ budget</option><option value="2">₱₱ mid</option><option value="3">₱₱₱ treat</option></select></div>
+          <div class="field"><label>Cuisine</label>
+            <select id="cuisineDetail">
+              <option value="">Any cuisine</option>
+              <option value="japanese">Japanese</option>
+              <option value="korean">Korean</option>
+              <option value="chinese">Chinese</option>
+              <option value="thai">Thai</option>
+              <option value="vietnamese">Vietnamese</option>
+              <option value="indian">Indian</option>
+              <option value="italian">Italian</option>
+              <option value="mexican">Mexican</option>
+              <option value="filipino">Filipino</option>
+              <option value="american">American</option>
+              <option value="seafood">Seafood</option>
+              <option value="steak">Steak / Grill</option>
+              <option value="ramen">Ramen</option>
+              <option value="sushi">Sushi</option>
+              <option value="samgyup">Samgyup / Korean BBQ</option>
+              <option value="hotpot">Hotpot</option>
+            </select>
+          </div>
+          <div class="field"><label>Budget</label><select id="price"><option value="">Any budget</option><option value="1">₱ budget</option><option value="2">₱₱ mid</option><option value="3">₱₱₱ treat</option></select></div>
           <div class="field hidden"><label>Mood</label><select id="mood"><option value="dinner" selected>Dinner</option></select></div>
         </div>
-        <div class="gps-row"><div id="locationLabel" class="location">📍 Anywhere in Bacolod</div><button id="gpsBtn" class="gps" type="button">USE GPS</button></div>
-        <div class="checks"><label class="check-pill"><input id="openOnly" type="checkbox"> Open now</label><label class="check-pill"><input id="allowUnknown" type="checkbox" checked> Unknown hours OK</label></div>
+        <div class="checks"><label class="check-pill"><input id="openOnly" type="checkbox"> Open now</label><label class="check-pill"><input id="allowUnknown" type="checkbox" checked> Include unknown hours</label></div>
         <button id="filtersDone" class="primary" style="width:100%;margin-top:11px" type="button">DONE</button>
       </div>
     </section>
@@ -751,7 +1126,7 @@ button{touch-action:manipulation}
   <div class="winner-inner">
     <div class="match">IT’S A MATCH!</div>
     <div id="winnerName" class="winner-name"></div>
-    <img class="winner-art" src="sushi-winner.png" alt="Dibs4u sushi celebrating">
+    <img class="winner-art" src="sushi-dance.gif" alt="Dibs4u sushi dancing">
     <div class="winner-actions">
       <button id="winnerMaps" class="win-btn primary" type="button">📍 OPEN IN MAPS</button>
       <button id="winnerFavorite" class="win-btn secondary" type="button">♡ SAVE TO FAVORITES</button>
@@ -921,6 +1296,7 @@ function currentPool(){
   const area=$('area').value;
   const prox=$('proximity').value;
   const mood=$('mood').value;
+  const cuisineDetail=$('cuisineDetail').value;
   const price=$('price').value;
   const zone=area?areaZone(area):null;
   const near=zone&&prox==='nearby'?[zone,...(NEAR[zone]||[])]:null;
@@ -931,6 +1307,19 @@ function currentPool(){
       if(prox==='nearby'&&!near.includes(areaZone(r.area)))return false;
     }
     if(mood&&!moodTags(r).has(mood))return false;
+    if(cuisineDetail){
+      const detailText=`${r.name||''} ${r.cuisine||''}`.toLowerCase();
+      const aliases={
+        steak:['steak','grill'],
+        samgyup:['samgyup','samgyeop','korean bbq'],
+        hotpot:['hotpot','hot pot'],
+        japanese:['japanese','ramen','sushi'],
+        korean:['korean','samgyup','samgyeop'],
+        filipino:['filipino','inasal','batchoy','kansi','cansi']
+      };
+      const needles=aliases[cuisineDetail]||[cuisineDetail];
+      if(!needles.some(n=>detailText.includes(n)))return false;
+    }
     if(price&&String(r.price||'')!==price)return false;
     if($('openOnly').checked){
       const o=isOpenNow(r);
@@ -1074,13 +1463,19 @@ function shoot(){
 }
 function confetti(){
   const host=$('confettiLayer');host.innerHTML='';
-  const cols=['#ed8c5d','#e4bc60','#6e8a5f','#cbd79e','#fffdf5'];
-  for(let i=0;i<62;i++){
-    const p=document.createElement('i');p.className='confetti';
-    p.style.left=Math.random()*100+'vw';p.style.background=cols[i%cols.length];
-    p.style.setProperty('--dur',(2.2+Math.random()*2)+'s');
-    p.style.setProperty('--drift',(-70+Math.random()*140)+'px');
-    p.style.animationDelay=(Math.random()*.45)+'s';
+  const cols=['#ed8c5d','#e4bc60','#547a4b','#9fba72','#d45d55','#f7f4e8','#6f8b5a'];
+  for(let i=0;i<120;i++){
+    const p=document.createElement('i');
+    p.className='confetti';
+    p.style.left=(Math.random()*100)+'vw';
+    p.style.background=cols[i%cols.length];
+    p.style.width=(7+Math.random()*7)+'px';
+    p.style.height=(8+Math.random()*14)+'px';
+    p.style.borderRadius=Math.random()>.65?'50%':'2px';
+    p.style.setProperty('--dur',(2.0+Math.random()*2.4)+'s');
+    p.style.setProperty('--drift',(-120+Math.random()*240)+'px');
+    p.style.animationDelay=(Math.random()*.55)+'s';
+    p.style.transform=`rotate(${Math.random()*180}deg)`;
     host.appendChild(p);
   }
 }
@@ -1228,10 +1623,13 @@ $('soundBtn').addEventListener('click',()=>show('settings'));
 $('pullHome').addEventListener('click',shoot);
 $('pullChoices').addEventListener('click',shoot);
 $('showChoices').addEventListener('click',()=>show('choices'));
+$('homeFilters').addEventListener('click',()=>show('filters'));
+$('homeNearMe').addEventListener('click',()=>{show('filters');useGPS();});
+$('nearMeBig').addEventListener('click',useGPS);
 $('newSix').addEventListener('click',loadSix);
 $('filtersDone').addEventListener('click',()=>{loadSix();show('home')});
 document.querySelectorAll('.filter-row').forEach(b=>b.addEventListener('click',()=>{$('mood').value=b.dataset.mood;syncFilters();loadSix()}));
-['area','proximity','price','openOnly','allowUnknown'].forEach(id=>$(id).addEventListener('change',loadSix));
+['area','proximity','cuisineDetail','price','openOnly','allowUnknown'].forEach(id=>$(id).addEventListener('change',loadSix));
 $('gpsBtn').addEventListener('click',useGPS);
 $('search').addEventListener('input',renderBrowse);
 $('browseAll').addEventListener('click',()=>{browseMode=!browseMode;$('browseAll').textContent=browseMode?'HIDE':'ALL';renderBrowse()});

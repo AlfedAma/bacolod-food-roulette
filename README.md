@@ -1,33 +1,30 @@
-# Dibs for you
+# Dibs for you - Expanded Bacolod Database
 
-Cute Bacolod restaurant roulette for GitHub Pages.
+GitHub Pages build with 247 built-in Bacolod food places.
 
-## What's in this build
-- 104 Bacolod restaurant/eatery records built into the app
-- Cute green 2D revolver roulette
-- Six restaurant names inside the cylinder
-- Tap any choice card to replace only that restaurant
-- Animated sushi mascot
-- iPhone-friendly sound unlock button and persistent sound engine
-- Click-click roulette audio and cute pew sound
-- Open-now filter is OFF by default so the initial pool stays large
-- Area, nearby-area, cuisine and budget filters
-- GPS estimates your nearest Bacolod area cluster
-- Favorites and skips saved on-device
-- Browse all local restaurants
-- Add a restaurant by pasting a Google Maps link
-- Long Google Maps links can auto-fill the restaurant name
-- Short maps.app.goo.gl links are saved exactly, but you type the restaurant name once because the short URL hides it
-- Exact pasted Google Maps link is saved and reopened for that restaurant
-- Custom restaurants can be deleted
-- Google Maps winner button
-- Offline-capable PWA after first successful load
+## Major database expansion
+The built-in stash now includes:
+- SM City Bacolod branches and dining spots
+- Ayala Malls Capitol Central branches and dining spots
+- 888 Chinatown Square / Premier food stalls and branches
+- Robinsons Bacolod and Central Citywalk food tenants
+- Downtown, Lacson, Villamonte, Upper East, Mandalagan, Goldenfield/Singcang,
+  Bata/Banago, Alijis, Mansilingan, Tangub, Granada, Pahanocoy/Sum-ag and more
 
-## Important local-storage note
-Restaurants that you add yourself are saved in that browser/device's local storage. Clearing Safari website data or using a different phone will not carry those personal additions over.
+Sandok Comfort Food is classified under Villamonte.
 
-## Update an existing GitHub Pages repository
-Replace:
+## Delete restaurants
+Every restaurant in Browse All now has DELETE.
+- Added/custom restaurant: removed from local storage.
+- Built-in restaurant: hidden locally and remembered in `dibs_deleted`.
+- Use RESTORE DELETED to bring all deleted built-in restaurants back.
+
+## Add from Google Maps
+Paste a Google Maps link and save the restaurant to the local database.
+The exact link is retained for the Open in Google Maps button.
+
+## GitHub Pages update
+Replace your existing repo files with:
 - index.html
 - manifest.json
 - service-worker.js
@@ -35,4 +32,4 @@ Replace:
 - icon-512.png
 - apple-touch-icon.png
 
-Commit to main. GitHub Pages should redeploy automatically.
+Then commit to `main`.
